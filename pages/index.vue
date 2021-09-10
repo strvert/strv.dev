@@ -25,7 +25,7 @@ export default defineComponent({
   setup(props) {
     const { $content } = useContext();
     const fetchPage = async () => {
-      return await $content('test').fetch();
+      return await $content('home').fetch();
     };
     const page = useAsync(fetchPage);
 
