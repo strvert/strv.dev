@@ -6,7 +6,7 @@
       </h1>
       <p class="message">
         <span class="lineblock">トップページはまだ作成されていません。</span
-        ><span class="lineblock"
+        ><span v-if="redirect" class="lineblock"
           >5秒後に<nuxt-link to="/blog">ブログページ</nuxt-link>へ自動で移動します。</span
         >
       </p>
@@ -15,14 +15,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api';
+import { defineComponent, useMeta, useRouter } from '@nuxtjs/composition-api';
 
 export default defineComponent({
-  setup() {
-    const router = useRouter();
-    setTimeout(() => {
-      router.push('/blog');
-    }, 5000);
+  head: {},
+  props: {
+    redirect: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props) {
+    if (props.redirect) {
+      const router = useRouter();
+      setTimeout(() => {
+        router.push('/blog');
+      }, 5000);
+    }
+    useMeta({ titleTemplate: '', title: 'strv.dev' });
   },
 });
 </script>

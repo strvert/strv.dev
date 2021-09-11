@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt build",
+    "build": "BASE_URL=https://strv.dev nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
+    "generate": "BASE_URL=https://strv.dev nuxt generate",
     "test": "jest"
   },
   "dependencies": {
