@@ -7,6 +7,7 @@ import sharp from "sharp";
 import { OverlayOptions } from "sharp";
 import TextToSVG from "text-to-svg";
 import { GenerationOptions } from "text-to-svg";
+import imageminPngquant from "imagemin-pngquant";
 
 // [私は型情報を書くのをサボりました] の札
 const TinySeqmenter = require("tiny-segmenter");
@@ -31,6 +32,11 @@ interface SVGData {
 interface TitleSVGSet {
   title: string;
   svgs: SVGData[];
+}
+
+interface PngBuffer {
+  filePath: string;
+  buffer: Buffer;
 }
 
 const generatorConfig: GeneratorConfig = {
@@ -101,7 +107,10 @@ function AdjustTexts(
   return result;
 }
 
-function compositeImage(svgSet: TitleSVGSet, config: GeneratorConfig) {
+function compositeImage(
+  svgSet: TitleSVGSet,
+  config: GeneratorConfig
+): Promise<PngBuffer> {
   // FIXME: マジックナンバーじゃなくする
   const baseImageW = 1200;
   const baseImageH = 630;
@@ -110,10 +119,8 @@ function compositeImage(svgSet: TitleSVGSet, config: GeneratorConfig) {
   // FIXME: 完全に正確ではない可能性がある
   const lineHeightSample = svgSet.svgs[0].size[1];
   const verticalOffset =
-    (((lineNums - 1) * config.lineSpacing +
-      lineNums * lineHeightSample -
-      lineHeightSample) /
-      2) *
+    (((lineNums - 1) * config.lineSpacing + lineNums * lineHeightSample) / 2 -
+      lineHeightSample / 2) *
     (lineNums === 1 ? 0 : 1);
 
   const commonCalc = (imageSize: number, svgSize: number, offset: number) => {
@@ -133,16 +140,37 @@ function compositeImage(svgSet: TitleSVGSet, config: GeneratorConfig) {
     };
   });
 
-  sharp(generatorConfig.baseImagePath)
-    .composite(options)
-    .toFile(
-      path.join(generatorConfig.ogpImageDir, `articles/${svgSet.title}.png`),
-      err => {
-        if (err) {
-          throw err;
-        }
-      }
-    );
+  const buffer = (async (): Promise<PngBuffer> => {
+    return {
+      filePath: path.join(
+        generatorConfig.ogpImageDir,
+        `articles/${svgSet.title}.png`
+      ),
+      buffer: await sharp(generatorConfig.baseImagePath)
+        .composite(options)
+        .png()
+        .toBuffer()
+    };
+  })();
+
+  return buffer;
+}
+
+async function WritePngWithOptimization(pngBuffer: PngBuffer) {
+  const optimizedPngBuffer = await imageminPngquant({
+    speed: 1,
+    quality: [0.8, 0.0]
+  })(pngBuffer.buffer);
+
+  fs.writeFile(pngBuffer.filePath, optimizedPngBuffer, err => {
+    if (err) throw err;
+  });
+}
+
+function WritePng(pngBuffer: PngBuffer) {
+    fs.writeFile(pngBuffer.filePath, pngBuffer.buffer, err => {
+      if (err) throw err;
+    });
 }
 
 const OgpImageGeneratorModule: Module<Options> = function() {
@@ -163,15 +191,12 @@ const OgpImageGeneratorModule: Module<Options> = function() {
       };
     });
 
-    svgs.map(svgSet => compositeImage(svgSet, generatorConfig));
+    const pngBuffers = await Promise.all(
+      svgs.map(svgSet => compositeImage(svgSet, generatorConfig))
+    );
 
-    // svgs.forEach((titleSVGs, idx) => {
-    //   titleSVGs.forEach(svgData =>
-    //     fs.writeFile(path.join(fontDir, `${idx}-${svgData[0]}.svg`), svgData[1], err => {
-    //       if (err) throw err;
-    //     })
-    //   );
-    // });
+    // pngBuffers.map(async buf => await WritePngWithOptimization(buf));
+    pngBuffers.map(buf => WritePng(buf));
   });
 };
 

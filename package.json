@@ -24,6 +24,7 @@
     "@vue/test-utils": "^1.2.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.0.5",
+    "imagemin-pngquant": "^9.0.2",
     "jest": "^27.0.5",
     "sass": "^1.39.2",
     "sass-loader": "10",
