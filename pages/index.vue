@@ -1,9 +1,60 @@
 <template>
   <div>
-    <nuxt-content :document="page" />
+    <header class="redirect-message">
+      <h1 class="rounded-font">COMMING SOON......</h1>
+      <p class="message">
+        <span class="lineblock">トップページはまだ作成されていません。</span
+        ><span class="lineblock"
+          >5秒後に<nuxt-link to="/blog">ブログページ</nuxt-link>へ自動で移動します。</span
+        >
+      </p>
+    </header>
   </div>
 </template>
 
+<script lang="ts">
+import { defineComponent, useRouter } from '@nuxtjs/composition-api';
+
+export default defineComponent({
+  setup() {
+    const router = useRouter();
+    setTimeout(() => {
+      router.push('/blog');
+    }, 5000);
+  },
+});
+</script>
+
+<style lang="scss" scoped>
+.redirect-message {
+  text-align: center;
+  inline-size: 100%;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  > h1 {
+    font-size: 3rem;
+  }
+
+  > .message {
+    font-size: 1.2rem;
+
+    > .lineblock {
+      display: inline;
+    }
+
+    @media screen and (max-width: 820px) {
+      > .lineblock {
+        display: block;
+      }
+    }
+  }
+}
+</style>
+
+<!--
 <script lang="ts">
 import {
   defineComponent,
@@ -39,6 +90,4 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss">
-</style>
+-->

@@ -1,5 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500&display=swap");
+
 html {
   font-family: "Helvetica Neue", "Helvetica", "Arial", YuGothic, "Yu Gothic",
     "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "メイリオ", Meiryo,
     "ＭＳ ゴシック", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--strvdev-text-color);
+  background-color: var(--strvdev-bg-color);
+  block-size: 100%;
+}
+
+body {
+}
+
+a {
+  color: var(--strvdev-link-color);
+  text-decoration: {
+    line: none;
+    thickness: 0.07em;
+  }
+
+  &:hover {
+    text-decoration: {
+    line: underline;
+      style: dashed;
+    }
+  }
+}
+
+.rounded-font {
+  font-weight: 500;
+  font-family: "M PLUS Rounded 1c", sans-serif;
 }
