@@ -1,7 +1,6 @@
 ---
 title: Hello
 description: Helloコンテンツの要約です。
-additionalData: 追加情報です
 ---
 
 # Lorem ipsum
