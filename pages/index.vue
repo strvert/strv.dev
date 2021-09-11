@@ -1,7 +1,9 @@
 <template>
   <div>
     <header class="redirect-message">
-      <h1 class="rounded-font">COMMING SOON......</h1>
+      <h1 class="rounded-font">
+        <span class="lineblock">COMING</span><span class="lineblock">SOON....</span>
+      </h1>
       <p class="message">
         <span class="lineblock">トップページはまだ作成されていません。</span
         ><span class="lineblock"
@@ -35,11 +37,25 @@ export default defineComponent({
   transform: translate(-50%, -50%);
 
   > h1 {
-    font-size: 3rem;
+    font-size: 5rem;
+    margin-block-end: 1rem;
+
+    > .lineblock {
+      &:last-child:before {
+        content: ' ';
+      }
+    }
+
+    @media screen and (max-width: 700px) {
+      font-size: 4.9rem;
+      > .lineblock {
+        display: block;
+      }
+    }
   }
 
   > .message {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 
     > .lineblock {
       display: inline;
@@ -49,6 +65,9 @@ export default defineComponent({
       > .lineblock {
         display: block;
       }
+    }
+    @media screen and (max-width: 700px) {
+      font-size: 1.1rem;
     }
   }
 }
