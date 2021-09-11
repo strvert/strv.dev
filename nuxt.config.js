@@ -41,7 +41,16 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     "@nuxt/typescript-build",
-    "@nuxtjs/composition-api/module"
+    "@nuxtjs/composition-api/module",
+    [
+      "@nuxtjs/google-fonts",
+      {
+        families: {
+          "M PLUS Rounded 1c": [300, 400, 500]
+        },
+        display: "swap"
+      }
+    ]
   ],
 
   generate: {
