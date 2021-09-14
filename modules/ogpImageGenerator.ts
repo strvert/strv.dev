@@ -76,7 +76,7 @@ interface TitleSVGSet {
 }
 
 interface PngBuffer {
-  filePath: string;
+  filename: string;
   buffer: Buffer;
 }
 
@@ -184,10 +184,10 @@ function compositeImage(svgSet: TitleSVGSet, config: GeneratorConfig): Promise<P
   });
 
   const buffer = (async (): Promise<PngBuffer> => {
-    const { path: outputPath, nameTemplate } = config.output;
+    const { nameTemplate } = config.output;
     const { baseImagePath } = config.resources;
     return {
-      filePath: path.join(outputPath, nameTemplate.replace('%s', svgSet.title)),
+      filename: nameTemplate.replace('%s', svgSet.title),
       buffer: await sharp(baseImagePath)
         .composite(options)
         .png()
@@ -198,13 +198,14 @@ function compositeImage(svgSet: TitleSVGSet, config: GeneratorConfig): Promise<P
   return buffer;
 }
 
-async function WritePngWithOptimization(pngBuffer: PngBuffer) {
+async function WritePngWithOptimization(pngBuffer: PngBuffer, config: GeneratorConfig) {
   const optimizedPngBuffer = await imageminPngquant({
     speed: 1,
     quality: [0.8, 0.9]
   })(pngBuffer.buffer);
 
-  fs.writeFile(pngBuffer.filePath, optimizedPngBuffer, err => {
+  fs.mkdirSync(path.resolve(config.output.path), { recursive: true });
+  fs.writeFile(path.resolve(path.join(config.output.path, pngBuffer.filename)), optimizedPngBuffer, err => {
     if (err) throw err;
   });
 }
@@ -248,7 +249,7 @@ const OgpImageGeneratorModule: Module<Options> = function(moduleOptions) {
       svgs.map(svgSet => compositeImage(svgSet, config))
     );
 
-    pngBuffers.map(async buf => await WritePngWithOptimization(buf));
+    pngBuffers.map(async buf => await WritePngWithOptimization(buf, config));
     // pngBuffers.map(buf => WritePng(buf));
   });
 };
