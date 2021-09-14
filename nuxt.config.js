@@ -136,9 +136,6 @@ export default {
             anchor: 'center middle'
           },
           contentPath: 'articles',
-          contentQuery: {
-            title: { $contains: 'UE4' }
-          }
         }
       }
     ]
