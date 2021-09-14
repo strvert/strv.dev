@@ -116,7 +116,7 @@ export default {
         config: {
           output: {
             nameTemplate: '%s.png',
-            path: path.join(process.cwd(), '/static/images/ogp/articles')
+            path: path.join(process.cwd(), '/static/images/ogp/generated')
           },
           resources: {
             get baseImagePath() {
