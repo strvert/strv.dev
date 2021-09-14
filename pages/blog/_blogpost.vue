@@ -1,17 +1,19 @@
 <template>
-  <div><strv-dev-logo></strv-dev-logo></div>
+  <div>{{ temp }}</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, useMeta, useRouter, ref, useContext } from '@nuxtjs/composition-api';
-import StrvDevLogo from '@/components/atoms/StrvDevLogo.vue';
 
 export default defineComponent({
-  components: { StrvDevLogo },
   head: {},
+  props: {},
   setup() {
     useMeta({ title: 'blog' });
-    const config = useContext();
+    const { route } = useContext();
+    const temp = ref(route.value.params.blogpost);
+
+    return { temp };
   },
 });
 </script>
