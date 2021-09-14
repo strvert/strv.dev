@@ -1,13 +1,15 @@
-const baseUrl = process.env.BASE_URL || "http://localhost:3000";
-const baseDir = process.env.BASE_DIR || "/";
+import path from 'path';
+
+const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+const baseDir = process.env.BASE_DIR || '/';
 const basePath = baseUrl + baseDir;
 
-const lang = "ja";
-const locale = "ja_jp";
-const siteName = "strv.dev";
-const siteDesc = "すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場";
+const lang = 'ja';
+const locale = 'ja_jp';
+const siteName = 'strv.dev';
+const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場';
 
-const ogpImages = basePath + "images/ogp/";
+const ogpImages = basePath + 'images/ogp/';
 
 export default {
   env: {
@@ -24,7 +26,7 @@ export default {
     base: baseDir
   },
   // Target: https://go.nuxtjs.dev/config-target
-  target: "static",
+  target: 'static',
 
   vue: {
     config: {
@@ -38,45 +40,45 @@ export default {
     htmlAttrs: {
       lang
     },
-    titleTemplate: "%s - strv.dev",
+    titleTemplate: '%s - strv.dev',
     meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "format-detection", content: "telephone=no" },
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'format-detection', content: 'telephone=no' },
       {
-        hid: "description",
-        name: "description",
-        content: "すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場"
+        hid: 'description',
+        name: 'description',
+        content: 'すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場'
       },
-      { hid: "og:locale", property: "og:locale", content: locale },
-      { hid: "og:site_name", property: "og:site_name", content: siteName },
-      { hid: "og:type", property: "og:type", content: "article" },
-      { hid: "og:url", property: "og:url", content: baseUrl },
-      { hid: "og:title", property: "og:title", content: "strv.dev" },
+      { hid: 'og:locale', property: 'og:locale', content: locale },
+      { hid: 'og:site_name', property: 'og:site_name', content: siteName },
+      { hid: 'og:type', property: 'og:type', content: 'article' },
+      { hid: 'og:url', property: 'og:url', content: baseUrl },
+      { hid: 'og:title', property: 'og:title', content: 'strv.dev' },
       {
-        hid: "og:description",
-        property: "og:description",
+        hid: 'og:description',
+        property: 'og:description',
         content: siteDesc
       },
       {
-        hid: "og:image",
-        property: "og:image",
-        content: ogpImages + "main.png"
+        hid: 'og:image',
+        property: 'og:image',
+        content: ogpImages + 'main.png'
       },
       {
-        name: "twitter:card",
-        content: "summary_large_image"
+        name: 'twitter:card',
+        content: 'summary_large_image'
       },
-      { name: "twitter:creator", content: "@strvert" }
+      { name: 'twitter:creator', content: '@strvert' }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    "~/assets/css/thirdparty/sanitize.css",
-    "~/assets/css/global.scss",
-    "~/assets/css/variables.scss"
+    '~/assets/css/thirdparty/sanitize.css',
+    '~/assets/css/global.scss',
+    '~/assets/css/variables.scss'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -88,15 +90,15 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
-    "@nuxt/typescript-build",
-    "@nuxtjs/composition-api/module",
+    '@nuxt/typescript-build',
+    '@nuxtjs/composition-api/module',
     [
-      "@nuxtjs/google-fonts",
+      '@nuxtjs/google-fonts',
       {
         families: {
-          "M PLUS Rounded 1c": [300, 400, 500]
+          'M PLUS Rounded 1c': [300, 400, 500]
         },
-        display: "swap"
+        display: 'swap'
       }
     ]
   ],
@@ -106,7 +108,41 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxt/content", "~/modules/ogpImageGenerator"],
+  modules: [
+    '@nuxt/content',
+    [
+      '~/modules/ogpImageGenerator',
+      {
+        config: {
+          output: {
+            nameTemplate: '%s.png',
+            path: path.join(process.cwd(), '/static/images/ogp/articles')
+          },
+          resources: {
+            get baseImagePath() {
+              return path.join(process.cwd(), '/assets/images/ogp', 'article_base.png');
+            },
+            fontPath: path.join(process.cwd(), '/assets/fonts', 'MPLUS1p-ExtraBold.ttf')
+          },
+          textStyle: {
+            textOptions: {
+              fontSize: 50,
+              attributes: { fill: '#37424e' }
+            },
+            lineSpacing: 10,
+            width: 900,
+            position: imageSize => [imageSize[0] / 2, imageSize[1] / 2 - 90],
+            textAlign: 'center',
+            anchor: 'center middle'
+          },
+          contentPath: 'articles',
+          contentQuery: {
+            title: { $contains: 'UE4' }
+          }
+        }
+      }
+    ]
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {}

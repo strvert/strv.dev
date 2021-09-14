@@ -1,34 +1,75 @@
-import { Module } from "@nuxt/types";
-import { IContent } from "@/composables/stores/Article";
-import { $content } from "@nuxt/content";
-import path from "path";
-import fs from "fs";
-import sharp from "sharp";
-import { OverlayOptions } from "sharp";
-import TextToSVG from "text-to-svg";
-import { GenerationOptions } from "text-to-svg";
-import imageminPngquant from "imagemin-pngquant";
+import { Module } from '@nuxt/types';
+import { IContent } from '@/composables/stores/Article';
+import { $content } from '@nuxt/content';
+import path from 'path';
+import fs from 'fs';
+import sharp from 'sharp';
+import { OverlayOptions } from 'sharp';
+import TextToSVG from 'text-to-svg';
+import { GenerationOptions } from 'text-to-svg';
+import imageminPngquant from 'imagemin-pngquant';
 
 // [私は型情報を書くのをサボりました] の札
-const TinySeqmenter = require("tiny-segmenter");
+const TinySeqmenter = require('tiny-segmenter');
 
-interface GeneratorConfig {
-  ogpImageDir: string;
+export interface GeneratorOutputs {
+  nameTemplate: string;
+  path: string;
+}
+
+export interface GeneratorResources {
   baseImagePath: string;
   fontPath: string;
-  textColor: string;
-  maxWidth: number;
-  lineSpacing: number;
-  fontSize: number;
-  textOffset: [number, number];
+}
+
+type VerticalAlignment = 'top' | 'bottom' | 'middle';
+type HorizonalAlignment = 'left' | 'center' | 'right';
+
+type Anchor = `${HorizonalAlignment} ${VerticalAlignment}`;
+type TextAlignment = 'left' | 'right' | 'center';
+
+function SplitToAlignments(anchor: Anchor): [HorizonalAlignment, VerticalAlignment]{
+    return anchor.split(' ') as [HorizonalAlignment, VerticalAlignment];
+}
+
+export interface TextsStyle {
+  textOptions?: GenerationOptions;
+  textAlign?: TextAlignment;
+  lineSpacing?: number;
+  width?: number;
+  anchor?: Anchor;
+  position(imageSize: Vector2D): Vector2D;
+}
+
+const defaultTextStyle: TextsStyle = {
+  textOptions: {
+    fontSize: 50,
+    attributes: { fill: 'black' }
+  },
+  textAlign: 'left',
+  lineSpacing: 10,
+  width: 900,
+  anchor: 'left top',
+  position: () => [0, 0]
+};
+
+export interface GeneratorConfig {
+  output: GeneratorOutputs;
+  resources: GeneratorResources;
+  textStyle: TextsStyle;
+  contentPath: string;
+  contentQuery?: object;
 }
 
 type AdjastedTexts = string[];
+type Vector2D = [number, number]; // W : H
+
 interface SVGData {
   text: string;
   svg: string;
-  size: [number, number];
+  size: Vector2D;
 }
+
 interface TitleSVGSet {
   title: string;
   svgs: SVGData[];
@@ -39,31 +80,14 @@ interface PngBuffer {
   buffer: Buffer;
 }
 
-const generatorConfig: GeneratorConfig = {
-  ogpImageDir: path.join(process.cwd(), "/static/images/ogp/"),
-  get baseImagePath() {
-    return path.join(this.ogpImageDir, "article_base.png");
-  },
-  fontPath: path.join(process.cwd(), "/assets/fonts/", "MPLUS1p-ExtraBold.ttf"),
-  textColor: "#37424e",
-  maxWidth: 900,
-  lineSpacing: 10,
-  fontSize: 50,
-  textOffset: [0, -90]
-};
+interface Options {
+    config: GeneratorConfig
+}
 
-const textToSVG = TextToSVG.loadSync(generatorConfig.fontPath);
-
-interface Options {}
-
-function RenderText(text: string, config: GeneratorConfig): SVGData {
-  const options: GenerationOptions = {
-    x: 0,
-    y: 0,
-    anchor: "left top",
-    fontSize: config.fontSize,
-    attributes: { fill: config.textColor, stores: config.textColor }
-  };
+function RenderText(textToSVG: TextToSVG, text: string, config: GeneratorConfig): SVGData {
+  const options: GenerationOptions =
+      config.textStyle.textOptions === undefined ? defaultTextStyle.textOptions! :
+          config.textStyle.textOptions!;
 
   const { width, height } = textToSVG.getMetrics(text, options);
   return {
@@ -79,74 +103,92 @@ function SegmentText(text: string): string[] {
   return segs;
 }
 
-function AdjustTexts(
-  segmentedTexts: string[],
-  config: GeneratorConfig
-): AdjastedTexts {
-  const options = {
-    x: 0,
-    y: 0,
-    anchor: "left top",
-    fontSize: config.fontSize
-  } as GenerationOptions;
+function AdjustTexts(textToSVG: TextToSVG, segmentedTexts: string[], config: GeneratorConfig): AdjastedTexts {
+  const options = config.textStyle.textOptions;
+  const boxWidth = config.textStyle.width === undefined ? defaultTextStyle.width! : config.textStyle.width!;
 
   let result: string[] = [];
-  let textBuffer = "";
+  let textBuffer = '';
   for (const seg of segmentedTexts) {
     const beforeText = textBuffer;
     textBuffer += seg;
     const { width } = textToSVG.getMetrics(textBuffer, options);
-    if (config.maxWidth < width) {
+    if (boxWidth < width) {
       result.push(beforeText);
       textBuffer = seg;
     }
   }
-  if (textBuffer !== "") {
+  if (textBuffer !== '') {
     result.push(textBuffer);
   }
   return result;
 }
 
-function compositeImage(
-  svgSet: TitleSVGSet,
-  config: GeneratorConfig
-): Promise<PngBuffer> {
+type BoxAlignmentCalculator = (size: number) => number ;
+const HAlignmentCalculatorMap: Map<HorizonalAlignment, BoxAlignmentCalculator> = new Map([
+    ['left', () => 0],
+    ['center', (size: number) => -size / 2],
+    ['right', (size: number) => -size]
+]);
+const VAlignmentCalculatorMap: Map<VerticalAlignment, BoxAlignmentCalculator> = new Map([
+    ['top', () => 0],
+    ['middle', (size: number) => -size / 2],
+    ['bottom', (size: number) => -size]
+]);
+
+type TextAlignmentCalculator = (textWidth: number, config: GeneratorConfig) => number;
+const TextAlignmentCalculatorMap: Map<TextAlignment, TextAlignmentCalculator>  = new Map([
+    ['left', () => 0],
+    ['right', (textWidth: number, config: GeneratorConfig) =>
+        config.textStyle.width === undefined ? defaultTextStyle.width! :
+            config.textStyle.width! - textWidth],
+    ['center', (textWidth: number, config: GeneratorConfig) =>
+        (config.textStyle.width === undefined ? defaultTextStyle.width! :
+             config.textStyle.width! - textWidth) / 2]
+]);
+
+function compositeImage(svgSet: TitleSVGSet, config: GeneratorConfig): Promise<PngBuffer> {
   // FIXME: マジックナンバーじゃなくする
   const baseImageW = 1200;
   const baseImageH = 630;
+  const textStyle = config.textStyle === undefined ? defaultTextStyle : config.textStyle!;
+  const lineSpacing = textStyle.lineSpacing === undefined ?
+      defaultTextStyle.lineSpacing! : textStyle.lineSpacing!;
+  const anchor = textStyle.anchor === undefined ? defaultTextStyle.anchor! : textStyle.anchor!;
+  const boxWidth = textStyle.anchor === undefined ? defaultTextStyle.width! : textStyle.width!;
+  const textAlign = textStyle.textAlign === undefined ? defaultTextStyle.textAlign! : textStyle.textAlign!;
 
   const lineNums = svgSet.svgs.length;
-  // FIXME: 完全に正確ではない可能性がある
   const lineHeightSample = svgSet.svgs[0].size[1];
-  const verticalOffset =
-    (((lineNums - 1) * config.lineSpacing + lineNums * lineHeightSample) / 2 -
-      lineHeightSample / 2) *
-    (lineNums === 1 ? 0 : 1);
+  const totalHeight = (lineNums - 1) * lineSpacing + lineNums * lineHeightSample;
 
-  const commonCalc = (imageSize: number, svgSize: number, offset: number) => {
-    return imageSize / 2 - svgSize / 2 + offset;
-  };
+  // const verticalOffset =
+  //   (((lineNums - 1) * config.textStyle.lineSpacing + lineNums * lineHeightSample) / 2 -
+  //     lineHeightSample / 2) *
+  //   (lineNums === 1 ? 0 : 1);
+  const [ hAlign, vAlign ] = SplitToAlignments(anchor);
+  const textBoxOffset: Vector2D = [
+      HAlignmentCalculatorMap.get(hAlign)!(boxWidth),
+      VAlignmentCalculatorMap.get(vAlign)!(totalHeight)];
+
   const options: OverlayOptions[] = svgSet.svgs.map((svg, idx) => {
+    const { position } = config.textStyle;
+    const pos = position([baseImageW, baseImageH]);
+    const textOffset = TextAlignmentCalculatorMap
+                    .get(textAlign)!(svg.size[0], config);
     return {
       input: Buffer.from(svg.svg),
-      top: Math.floor(
-        commonCalc(baseImageH, svg.size[1], config.textOffset[1]) +
-          idx * (lineHeightSample + config.lineSpacing) -
-          verticalOffset
-      ),
-      left: Math.floor(
-        commonCalc(baseImageW, svg.size[0], config.textOffset[0])
-      )
+      top: Math.floor(pos[1] + idx * (lineHeightSample + lineSpacing) + textBoxOffset[1]),
+      left: Math.floor(pos[0] + textOffset + textBoxOffset[0])
     };
   });
 
   const buffer = (async (): Promise<PngBuffer> => {
+    const { path: outputPath, nameTemplate } = config.output;
+    const { baseImagePath } = config.resources;
     return {
-      filePath: path.join(
-        generatorConfig.ogpImageDir,
-        `articles/${svgSet.title}.png`
-      ),
-      buffer: await sharp(generatorConfig.baseImagePath)
+      filePath: path.join(outputPath, nameTemplate.replace('%s', svgSet.title)),
+      buffer: await sharp(baseImagePath)
         .composite(options)
         .png()
         .toBuffer()
@@ -159,7 +201,7 @@ function compositeImage(
 async function WritePngWithOptimization(pngBuffer: PngBuffer) {
   const optimizedPngBuffer = await imageminPngquant({
     speed: 1,
-    quality: [0.8, 0.0]
+    quality: [0.8, 0.9]
   })(pngBuffer.buffer);
 
   fs.writeFile(pngBuffer.filePath, optimizedPngBuffer, err => {
@@ -167,36 +209,47 @@ async function WritePngWithOptimization(pngBuffer: PngBuffer) {
   });
 }
 
-function WritePng(pngBuffer: PngBuffer) {
-    fs.writeFile(pngBuffer.filePath, pngBuffer.buffer, err => {
-      if (err) throw err;
-    });
+// function WritePng(pngBuffer: PngBuffer) {
+//   fs.writeFile(pngBuffer.filePath, pngBuffer.buffer, err => {
+//     if (err) throw err;
+//   });
+// }
+
+function OverwriteConfig(config: GeneratorConfig) {
+    config.textStyle.textOptions = config.textStyle.textOptions === undefined
+        ? defaultTextStyle.textOptions! : config.textStyle.textOptions!;
+    config.textStyle.textOptions.anchor = "left top";
 }
 
-const OgpImageGeneratorModule: Module<Options> = function() {
+const OgpImageGeneratorModule: Module<Options> = function(moduleOptions) {
+  const config = moduleOptions.config;
+  OverwriteConfig(config);
+  const textToSVG = TextToSVG.loadSync(config.resources.fontPath);
+
   const { nuxt } = this;
 
-  nuxt.hook("generate:before", async () => {
-    const contents = (await $content("articles").fetch()) as IContent[];
+  nuxt.hook('generate:before', async () => {
+    const contents = config.contentQuery === undefined ?
+        (await $content(config.contentPath).fetch()) as IContent[] :
+        (await $content(config.contentPath).where(config.contentQuery).fetch()) as IContent[];
+
 
     const titles = contents.map(content => content.title);
     const segmentedTexts = titles.map(title => SegmentText(title));
-    const adjustedTexts = segmentedTexts.map(segs =>
-      AdjustTexts(segs, generatorConfig)
-    );
+    const adjustedTexts = segmentedTexts.map(segs => AdjustTexts(textToSVG, segs, config));
     const svgs: TitleSVGSet[] = adjustedTexts.map((texts, idx) => {
       return {
         title: titles[idx],
-        svgs: texts.map(text => RenderText(text, generatorConfig))
+        svgs: texts.map(text => RenderText(textToSVG, text, config))
       };
     });
 
     const pngBuffers = await Promise.all(
-      svgs.map(svgSet => compositeImage(svgSet, generatorConfig))
+      svgs.map(svgSet => compositeImage(svgSet, config))
     );
 
-    // pngBuffers.map(async buf => await WritePngWithOptimization(buf));
-    pngBuffers.map(buf => WritePng(buf));
+    pngBuffers.map(async buf => await WritePngWithOptimization(buf));
+    // pngBuffers.map(buf => WritePng(buf));
   });
 };
 
