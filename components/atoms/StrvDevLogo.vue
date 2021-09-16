@@ -1,12 +1,13 @@
 <template>
   <div>
     <svg
+      @click="toggleAnimation"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       style="isolation: isolate"
       viewBox="0 0 35.893 6.419"
-      width="358.93pt"
-      height="64.19pt"
+      :width="logoWidth"
+      :height="logoHeight"
     >
       <defs>
         <clipPath id="_clipPath_wRGPbw1kW50q8FvcamYb3Hxr115iy0Iy">
@@ -217,22 +218,128 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta, useRouter, ref, useContext } from '@nuxtjs/composition-api';
+import {
+  defineComponent,
+  computed,
+  ref,
+  Ref,
+  reactive,
+  watch,
+  PropType,
+  onMounted,
+} from '@nuxtjs/composition-api';
+
+type AspectRatio = [number, number];
+
+const useTwoStateAnimation = (anim: Ref<Animation | undefined>, initState = false) => {
+  const state = ref(initState);
+  const setState = (value: boolean) => {
+    if (value) {
+      anim.value!.playbackRate = 1;
+    } else {
+      anim.value!.playbackRate = -1;
+    }
+    anim.value!.play();
+    state.value = value;
+  };
+  const toggle = () => {
+    setState(!state.value);
+  };
+  return { state, toggle, setState };
+};
 
 export default defineComponent({
-  setup() {},
+  props: {
+    logoScale: {
+      type: Number as PropType<number>,
+      default: 50,
+    },
+    logoAspectRatio: {
+      type: Array as PropType<AspectRatio>,
+      default: () => [10, 1.79],
+    },
+    debug: {
+      type: Boolean,
+      default: false,
+    },
+    transformed: {
+      tpye: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
+    // init settings
+    const logoWidth = computed(() => {
+      return props.logoScale * props.logoAspectRatio[0];
+    });
+    const logoHeight = computed(() => {
+      return props.logoScale * props.logoAspectRatio[1];
+    });
+
+    // animations
+    const commonTiming: EffectTiming = {
+      duration: 600,
+      easing: 'ease',
+      fill: 'forwards',
+    };
+    const chKeyframe: Keyframe[] = [{ opacity: '1' }, { opacity: '0' }];
+    const bcKeyframe: Keyframe[] = [
+      { transform: 'scaleY(101%)' },
+      { transform: 'translateX(-5%) scaleX(105.3%) scaleY(438%)' },
+    ];
+
+    const chAnim = ref<Animation>();
+    const bcAnim = ref<Animation>();
+    onMounted(() => {
+      const characters = document.querySelector('.characters')! as SVGGElement;
+      const barcode = document.querySelector('.barcode')! as SVGGElement;
+      chAnim.value = characters.animate(chKeyframe, commonTiming);
+      chAnim.value.pause();
+      bcAnim.value = barcode.animate(bcKeyframe, commonTiming);
+      bcAnim.value.pause();
+    });
+    const toggleFunctions = [chAnim, bcAnim].map((anim) => {
+      const { toggle } = useTwoStateAnimation(anim);
+      return toggle;
+    });
+    const toggleAnimation = () => {
+      if (props.debug) {
+        toggleFunctions.map((toggle) => toggle());
+      }
+    };
+
+    const setStateFunctions = [chAnim, bcAnim].map((anim) => {
+      const { setState } = useTwoStateAnimation(anim);
+      return setState;
+    });
+    watch(
+      () => props.transformed,
+      (first, second) => {
+        setStateFunctions.map((setState) => setState(first));
+      }
+    );
+
+    return { logoWidth, logoHeight, toggleAnimation };
+  },
 });
 </script>
 
 <style lang="scss" scoped>
-.barcode path {
-  /*
-  transform: translateX(-5%) scaleX(105%) scaleY(420%);
-  */
+svg {
+  display: block;
+  margin: 0 auto;
+  margin-block-start: 10px;
 }
-.characters path {
-  /*
-  opacity: 0;
-  */
+button {
+  display: block;
+  margin: 0 auto;
+  margin-block-start: 20px;
+  width: 85%;
+  height: 30px;
+  border: {
+    width: 3px;
+    style: solid;
+    color: #516073;
+  }
 }
 </style>
