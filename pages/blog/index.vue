@@ -1,5 +1,5 @@
 <template>
-  <div><strv-dev-logo></strv-dev-logo></div>
+  <div><StrvDevLogo :animEffectTiming="logoAnimEffectTiming"></StrvDevLogo></div>
 </template>
 
 <script lang="ts">
@@ -12,6 +12,14 @@ export default defineComponent({
   setup() {
     useMeta({ title: 'blog' });
     const config = useContext();
+
+    const logoAnimEffectTiming: EffectTiming = {
+      duration: 500,
+      easing: 'ease',
+      fill: 'forwards',
+    };
+
+    return { logoAnimEffectTiming };
   },
 });
 </script>

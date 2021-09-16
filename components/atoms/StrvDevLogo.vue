@@ -1,7 +1,6 @@
 <template>
   <div>
     <svg
-      @click="toggleAnimation"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       style="isolation: isolate"
@@ -223,30 +222,14 @@ import {
   computed,
   ref,
   Ref,
+  toRef,
   reactive,
   watch,
   PropType,
   onMounted,
 } from '@nuxtjs/composition-api';
 
-type AspectRatio = [number, number];
-
-const useTwoStateAnimation = (anim: Ref<Animation | undefined>, initState = false) => {
-  const state = ref(initState);
-  const setState = (value: boolean) => {
-    if (value) {
-      anim.value!.playbackRate = 1;
-    } else {
-      anim.value!.playbackRate = -1;
-    }
-    anim.value!.play();
-    state.value = value;
-  };
-  const toggle = () => {
-    setState(!state.value);
-  };
-  return { state, toggle, setState };
-};
+import { useTwoStateAnimation } from '@/composables/utils/TwoStateAnimation';
 
 export default defineComponent({
   props: {
@@ -255,16 +238,22 @@ export default defineComponent({
       default: 50,
     },
     logoAspectRatio: {
-      type: Array as PropType<AspectRatio>,
+      type: Array as PropType<Array<number>>,
       default: () => [10, 1.79],
     },
-    debug: {
+    transformed: {
       type: Boolean,
       default: false,
     },
-    transformed: {
-      tpye: Boolean,
-      default: false,
+    animEffectTiming: {
+      type: Object as PropType<EffectTiming>,
+      default: () => {
+        return {
+          duration: 600,
+          easing: 'ease',
+          fill: 'forwards',
+        } as EffectTiming;
+      },
     },
   },
   setup(props) {
@@ -277,11 +266,6 @@ export default defineComponent({
     });
 
     // animations
-    const commonTiming: EffectTiming = {
-      duration: 600,
-      easing: 'ease',
-      fill: 'forwards',
-    };
     const chKeyframe: Keyframe[] = [{ opacity: '1' }, { opacity: '0' }];
     const bcKeyframe: Keyframe[] = [
       { transform: 'scaleY(101%)' },
@@ -290,36 +274,27 @@ export default defineComponent({
 
     const chAnim = ref<Animation>();
     const bcAnim = ref<Animation>();
+    const animEffectTiming = reactive<EffectTiming>(props.animEffectTiming);
     onMounted(() => {
       const characters = document.querySelector('.characters')! as SVGGElement;
       const barcode = document.querySelector('.barcode')! as SVGGElement;
-      chAnim.value = characters.animate(chKeyframe, commonTiming);
+      chAnim.value = characters.animate(chKeyframe, animEffectTiming);
       chAnim.value.pause();
-      bcAnim.value = barcode.animate(bcKeyframe, commonTiming);
+      bcAnim.value = barcode.animate(bcKeyframe, animEffectTiming);
       bcAnim.value.pause();
     });
-    const toggleFunctions = [chAnim, bcAnim].map((anim) => {
-      const { toggle } = useTwoStateAnimation(anim);
-      return toggle;
-    });
-    const toggleAnimation = () => {
-      if (props.debug) {
-        toggleFunctions.map((toggle) => toggle());
-      }
-    };
-
     const setStateFunctions = [chAnim, bcAnim].map((anim) => {
       const { setState } = useTwoStateAnimation(anim);
       return setState;
     });
     watch(
       () => props.transformed,
-      (first, second) => {
+      (first) => {
         setStateFunctions.map((setState) => setState(first));
       }
     );
 
-    return { logoWidth, logoHeight, toggleAnimation };
+    return { logoWidth, logoHeight };
   },
 });
 </script>
