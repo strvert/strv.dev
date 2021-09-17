@@ -1,13 +1,13 @@
 <template>
-  <div><StrvDevLogo :animEffectTiming="logoAnimEffectTiming"></StrvDevLogo></div>
+  <div><strvdev-logo :animEffectTiming="logoAnimEffectTiming"></strvdev-logo></div>
 </template>
 
 <script lang="ts">
 import { defineComponent, useMeta, useRouter, ref, useContext } from '@nuxtjs/composition-api';
-import StrvDevLogo from '@/components/atoms/StrvDevLogo.vue';
+import StrvdevLogo from '@/components/atoms/StrvdevLogo.vue';
 
 export default defineComponent({
-  components: { StrvDevLogo },
+  components: { StrvdevLogo },
   head: {},
   setup() {
     useMeta({ title: 'blog' });
