@@ -19,7 +19,7 @@ export class ControllableTimer {
   start() {
     this.running = true;
     this.started = new Date();
-    this.timerId = setTimeout(() => {
+    this.timerId = window.setTimeout(() => {
       this.finish();
     }, this.remaining);
   }
