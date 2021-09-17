@@ -1,5 +1,5 @@
 <template>
-  <redirector to="/" :wait="1000">
+  <redirector to="/" :wait="5000">
     <template #message> <span>COMING</span> <span>SOON....</span> </template>
     <template #submessage="slotProps">
       <span>トップページはまだ作成されていません。</span

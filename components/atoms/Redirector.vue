@@ -43,22 +43,23 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const router = useRouter();
+    const remaining = ref<number>(Math.ceil(props.wait / 1000));
+    onMounted(() => {
+      const router = useRouter();
+      const timer = reactive<ControllableTimer>(
+        new ControllableTimer(() => {
+          if (props.redirect) {
+            router.push('/blog');
+          }
+        }, props.wait)
+      );
+      timer.start();
+      useMeta({ titleTemplate: '', title: 'strv.dev' });
 
-    const timer = reactive<ControllableTimer>(
-      new ControllableTimer(() => {
-        if (props.redirect) {
-          router.push('/blog');
-        }
-      }, props.wait)
-    );
-    timer.start();
-    useMeta({ titleTemplate: '', title: 'strv.dev' });
-
-    const remaining = ref<number>(Math.ceil(timer.remainingTime() / 1000));
-    timer.register(() => {
-      remaining.value = Math.ceil(timer.remainingTime() / 1000);
-    }, 100);
+      timer.register(() => {
+        remaining.value = Math.ceil(timer.remainingTime() / 1000);
+      }, 100);
+    });
 
     return { remaining };
   },
