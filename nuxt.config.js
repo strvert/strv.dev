@@ -135,12 +135,14 @@ export default {
             textAlign: 'center',
             anchor: 'center middle'
           },
-          contentPath: 'articles',
+          contentPath: 'articles'
         }
       }
     ]
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {}
+  build: {
+    analyze: true
+  }
 };
