@@ -49,7 +49,7 @@ export default defineComponent({
       const timer = reactive<ControllableTimer>(
         new ControllableTimer(() => {
           if (props.redirect) {
-            router.push('/blog');
+            router.push(props.to);
           }
         }, props.wait)
       );
