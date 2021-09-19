@@ -71,7 +71,11 @@ export default {
       },
       { name: 'twitter:creator', content: '@strvert' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'apple-touch-icon', type: 'image/png', href: '/apple-touch-icon-180x180.png' },
+      { rel: 'icon', type: 'image/png', href: '/icon-192x192.png' }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
