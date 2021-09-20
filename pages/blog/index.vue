@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="sun"></div>
+    <nuxt-link to="/blog/page1">page1</nuxt-link>
   </div>
 </template>
 
@@ -17,7 +18,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
 .sun {
   --size: 2300px;
 
