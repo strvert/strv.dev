@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="sun"></div>
-    <nuxt-link to="/blog/page1">page1</nuxt-link>
+    <nuxt-link to="/blog/page1/">page1</nuxt-link>
   </div>
 </template>
 
