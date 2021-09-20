@@ -1,9 +1,10 @@
 html {
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', YuGothic, 'Yu Gothic',
-    'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'メイリオ', Meiryo, 'ＭＳ ゴシック',
-    sans-serif;
+  font-family: -apple-system, 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+    Meiryo, sans-serif, 'Segoe UI Emoji';
   font-size: 15px;
   font-weight: 500;
+  word-wrap: break-word;
+  word-break: break-word;
   color: var(--strvdev-text-color);
   background-color: var(--strvdev-bg-color);
   block-size: 100%;
@@ -36,9 +37,15 @@ a {
 ::-webkit-scrollbar {
   background: #c9c9c9;
   inline-size: 7.5px;
+  block-size: 7.5px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #808494;
   border-radius: 5px;
+}
+
+::selection {
+  text-shadow: none;
+  background: #b3d4fc;
 }

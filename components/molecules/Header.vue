@@ -29,7 +29,7 @@ export default defineComponent({
   components: { StrvdevLogo },
   setup(props) {
     const logoAnimEffectTiming: EffectTiming = {
-      duration: 500,
+      duration: 1300,
       easing: 'ease',
       fill: 'forwards',
     };

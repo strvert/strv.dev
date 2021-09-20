@@ -82,6 +82,7 @@ export default {
   css: [
     '~/assets/css/thirdparty/sanitize.css',
     '~/assets/css/global.scss',
+    '~/assets/css/blogpost.scss',
     '~/assets/css/variables.scss'
   ],
 
@@ -100,7 +101,8 @@ export default {
       '@nuxtjs/google-fonts',
       {
         families: {
-          'M PLUS Rounded 1c': [300, 400, 500]
+          'M PLUS Rounded 1c': [300, 400, 500],
+          'Source Code Pro': [300, 400]
         },
         display: 'swap'
       }
@@ -148,5 +150,10 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     analyze: true
+  },
+  content: {
+    markdown: {
+      remarkPlugins: ['remark-code-titles']
+    }
   }
 };

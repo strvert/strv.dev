@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta, useRouter, ref, useContext } from '@nuxtjs/composition-api';
+import { defineComponent } from '@nuxtjs/composition-api';
 
 import Container from '@/components/atoms/Container.vue';
 import Header from '@/components/molecules/Header.vue';
