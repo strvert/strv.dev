@@ -303,18 +303,5 @@ export default defineComponent({
 svg {
   display: block;
   margin: 0 auto;
-  margin-block-start: 10px;
-}
-button {
-  display: block;
-  margin: 0 auto;
-  margin-block-start: 20px;
-  width: 85%;
-  height: 30px;
-  border: {
-    width: 3px;
-    style: solid;
-    color: #516073;
-  }
 }
 </style>
