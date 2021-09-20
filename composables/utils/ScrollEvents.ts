@@ -37,7 +37,6 @@ export const useScrollDirectionEvent = () => {
   };
 
   const addEvent = () => {
-    eventHandler();
     window.addEventListener('scroll', eventHandler);
   };
 

@@ -61,7 +61,7 @@ export default defineComponent({
   align-content: center;
 
   background-color: var(--strvdev-palette-1);
-  box-shadow: 0px 0px 2px 0px var(--strvdev-palette-3);
+  box-shadow: 0px 0px 3px 0px var(--strvdev-palette-3);
   inline-size: 100%;
   block-size: 44px;
 }
