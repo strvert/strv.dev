@@ -1,7 +1,7 @@
 html {
-  font-family: "Helvetica Neue", "Helvetica", "Arial", YuGothic, "Yu Gothic",
-    "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "メイリオ", Meiryo,
-    "ＭＳ ゴシック", sans-serif;
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', YuGothic, 'Yu Gothic',
+    'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'メイリオ', Meiryo, 'ＭＳ ゴシック',
+    sans-serif;
   font-size: 15px;
   font-weight: 500;
   color: var(--strvdev-text-color);
@@ -10,7 +10,7 @@ html {
 }
 
 body {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 a {
@@ -30,5 +30,15 @@ a {
 
 .rounded-font {
   font-weight: 500;
-  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+::-webkit-scrollbar {
+  background: #c9c9c9;
+  inline-size: 7.5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #808494;
+  border-radius: 5px;
 }
