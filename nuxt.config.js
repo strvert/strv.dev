@@ -1,4 +1,5 @@
 import path from 'path';
+import { $content } from '@nuxt/content';
 
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 const baseDir = process.env.BASE_DIR || '/';
@@ -116,6 +117,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxt/content',
+    '@nuxtjs/sitemap',
     [
       '~/modules/ogpImageGenerator',
       {
@@ -154,6 +156,19 @@ export default {
   content: {
     markdown: {
       remarkPlugins: ['remark-code-titles']
+    }
+  },
+  sitemap: {
+    hostname: baseUrl,
+    routes: async () => {
+      const postsLoc = 'articles';
+      const postsRoute = 'blog';
+      const posts = await $content(postsLoc)
+        .only(['path'])
+        .fetch();
+      return posts.map(post => {
+        return postsRoute + post.path.slice(postsLoc.length + 1);
+      });
     }
   }
 };
