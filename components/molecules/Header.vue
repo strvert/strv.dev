@@ -23,7 +23,7 @@ import {
   onBeforeUnmount,
 } from '@nuxtjs/composition-api';
 import StrvdevLogo from '@/components/atoms/StrvdevLogo.vue';
-import { useScrollAmountEvent, useScrollDirectionEvent } from '@/composables/utils/ScrollEvents';
+import { useScrollDirectionEvent } from '@/composables/utils/ScrollEvents';
 
 export default defineComponent({
   components: { StrvdevLogo },
@@ -50,11 +50,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header-main {
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  left: 0;
-
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-areas: 'a b c d e';

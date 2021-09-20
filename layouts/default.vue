@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header />
+    <Header class="header" />
     <container>
       <nuxt />
     </container>
@@ -18,3 +18,12 @@ export default defineComponent({
   setup() {},
 });
 </script>
+
+<style lang="scss" scoped>
+.header {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+}
+</style>
