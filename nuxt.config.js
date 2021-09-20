@@ -12,6 +12,17 @@ const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ
 
 const ogpImages = basePath + 'images/ogp/';
 
+const collectBlogPostPaths = async () => {
+      const postsLoc = 'articles';
+      const postsRoute = 'blog';
+      const posts = await $content(postsLoc)
+        .only(['path'])
+        .fetch();
+      return posts.map(post => {
+        return postsRoute + post.path.slice(postsLoc.length + 1);
+      });
+};
+
 export default {
   env: {
     baseUrl,
@@ -113,10 +124,6 @@ export default {
     ]
   ],
 
-  generate: {
-    interval: 2000
-  },
-
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxt/content',
@@ -161,17 +168,16 @@ export default {
       remarkPlugins: ['remark-code-titles']
     }
   },
+  generate: {
+    interval: 2000,
+    async routes() {
+        return await collectBlogPostPaths();
+    }
+  },
   sitemap: {
     hostname: baseUrl,
     routes: async () => {
-      const postsLoc = 'articles';
-      const postsRoute = 'blog';
-      const posts = await $content(postsLoc)
-        .only(['path'])
-        .fetch();
-      return posts.map(post => {
-        return postsRoute + post.path.slice(postsLoc.length + 1);
-      });
+        return await collectBlogPostPaths();
     }
   }
 };
