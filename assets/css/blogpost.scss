@@ -12,14 +12,23 @@
       @extend .headers-border;
     }
 
+    .inline-code {
+      font-family: var(--source-code-font);
+      background-color: #ffffff90;
+      border-radius: 4px;
+      margin: 0 0.2em;
+      padding: 0 0.2em;
+    }
+
     p {
       font-size: 1.03rem;
       code {
-        font-family: var(--source-code-font);
-        background-color: #ffffff90;
-        border-radius: 4px;
-        margin: 0 0.2em;
-        padding: 0 0.2em;
+        @extend .inline-code;
+      }
+    }
+    li {
+      code {
+        @extend .inline-code;
       }
     }
 

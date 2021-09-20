@@ -26,6 +26,9 @@ export default {
   router: {
     base: baseDir
   },
+  server: {
+    host: '0.0.0.0'
+  },
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
