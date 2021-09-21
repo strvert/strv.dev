@@ -13,14 +13,14 @@ const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ
 const ogpImages = basePath + 'images/ogp/';
 
 const collectBlogPostPaths = async () => {
-      const postsLoc = 'articles';
-      const postsRoute = 'blog';
-      const posts = await $content(postsLoc)
-        .only(['path'])
-        .fetch();
-      return posts.map(post => {
-        return postsRoute + post.path.slice(postsLoc.length + 1);
-      });
+  const postsLoc = 'articles';
+  const postsRoute = 'blog';
+  const posts = await $content(postsLoc)
+    .only(['path'])
+    .fetch();
+  return posts.map(post => {
+    return postsRoute + post.path.slice(postsLoc.length + 1);
+  });
 };
 
 export default {
@@ -171,13 +171,13 @@ export default {
   generate: {
     interval: 2000,
     async routes() {
-        return await collectBlogPostPaths();
+      return await collectBlogPostPaths();
     }
   },
   sitemap: {
     hostname: baseUrl,
     routes: async () => {
-        return await collectBlogPostPaths();
+      return await collectBlogPostPaths();
     }
   }
 };

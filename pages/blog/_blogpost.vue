@@ -12,7 +12,7 @@
 import {
   defineComponent,
   useMeta,
-  useAsync,
+  useFetch,
   ref,
   Ref,
   useContext,
@@ -31,9 +31,12 @@ export default defineComponent({
     const fetchPage = async () => {
       return await $content('articles/' + pageParam).fetch();
     };
-    const page = useAsync(fetchPage) as Ref<IContentDocument>;
+    const page = ref<IContentDocument>();
+    useFetch(async () => {
+      page.value = (await fetchPage()) as IContentDocument;
+    });
 
-    onMounted(() => {
+    onMounted(async () => {
       window.$nuxt.$on('content:update', async () => {
         page.value = (await fetchPage()) as IContentDocument;
       });
