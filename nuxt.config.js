@@ -35,10 +35,7 @@ export default {
     locale
   },
   router: {
-    base: baseDir
-  },
-  server: {
-    host: '0.0.0.0'
+    // base: baseDir
   },
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -165,9 +162,7 @@ export default {
     analyze: true
   },
   content: {
-    markdown: {
-      rehypePlugins: [['rehype-autolink-headings', { behavior: 'wrap' }]]
-    }
+    markdown: {}
   },
   generate: {
     interval: 2000,
