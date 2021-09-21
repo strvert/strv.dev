@@ -166,7 +166,7 @@ export default {
   },
   content: {
     markdown: {
-      remarkPlugins: ['remark-code-titles']
+      rehypePlugins: [['rehype-autolink-headings', { behavior: 'wrap' }]]
     }
   },
   generate: {

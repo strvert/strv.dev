@@ -8,13 +8,38 @@
     .headers-margin {
       margin-block-start: 4rem;
     }
+    .headers-link-hash {
+      a {
+        &::before {
+          content: '#';
+          position: absolute;
+          left: -1em;
+        }
+      }
+    }
+    .headers-link {
+      a {
+      }
+    }
+
     h1 {
       font-size: 1.7rem;
       @extend .headers-border;
-      @extend .headers-margin;
     }
-    h2 {
-      @extend .headers-border;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @extend .headers-link-hash;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       @extend .headers-margin;
     }
 
