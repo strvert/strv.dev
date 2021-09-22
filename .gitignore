@@ -90,3 +90,5 @@ sw.*
 *.swp
 
 *:Zone.Identifier
+
+static/images/ogp/generated/

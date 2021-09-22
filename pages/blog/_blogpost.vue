@@ -60,6 +60,7 @@ export default defineComponent({
       page.value = (await fetchPage()) as IArticle;
       series.value = page.value.series;
       const { createdAt, updatedAt } = readDateInfos(page.value);
+      console.log(createdAt.toString(), updatedAt.toString());
       if (createdAt.toString() === updatedAt.toString()) {
         updateDateStrings(createdAt, '公開');
       } else {

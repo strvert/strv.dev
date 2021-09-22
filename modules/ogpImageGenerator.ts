@@ -1,5 +1,6 @@
 import { Module } from '@nuxt/types';
 import { IContent } from '@/composables/stores/Article';
+import { pathToSlug } from '../composables/utils/ConvertArticlePath';
 import { $content } from '@nuxt/content';
 import path from 'path';
 import fs from 'fs';
@@ -231,11 +232,11 @@ const OgpImageGeneratorModule: Module<Options> = function(moduleOptions) {
 
   nuxt.hook('generate:before', async () => {
     const contents = config.contentQuery === undefined ?
-        (await $content(config.contentPath).fetch()) as IContent[] :
-        (await $content(config.contentPath).where(config.contentQuery).fetch()) as IContent[];
+        (await $content(config.contentPath, { deep: true }).fetch()) as IContent[] :
+        (await $content(config.contentPath, { deep: true }).where(config.contentQuery).fetch()) as IContent[];
 
 
-    const titles = contents.map(content => content.title);
+    const titles = contents.map(content => pathToSlug(content.path, 'articles'));
     const segmentedTexts = titles.map(title => SegmentText(title));
     const adjustedTexts = segmentedTexts.map(segs => AdjustTexts(textToSVG, segs, config));
     const svgs: TitleSVGSet[] = adjustedTexts.map((texts, idx) => {
