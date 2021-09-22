@@ -30,7 +30,7 @@ export default defineComponent({
 }
 
 .content {
-  max-inline-size: 700px;
+  max-inline-size: 800px;
   margin: 0 auto;
 
   @media screen and (max-width: 700px) {

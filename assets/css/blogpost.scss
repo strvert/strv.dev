@@ -55,8 +55,9 @@
     }
 
     p {
-      font-size: 1.03rem;
-      letter-spacing: 0.01em;
+      font-size: 1.08rem;
+      letter-spacing: 0.03em;
+      line-height: 3ex;
       code {
         @extend .inline-code;
       }
