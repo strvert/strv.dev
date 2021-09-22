@@ -6,19 +6,34 @@
       border-bottom-width: 2px;
     }
     .headers-margin {
-      margin-block-start: 4rem;
+      --header-height: 44px;
+      padding-block-start: var(--header-height);
+      margin-block-start: calc(-1 * var(--header-height) + 2rem);
     }
-    .headers-link-hash {
-      a {
-        &::before {
-          content: '#';
-          position: absolute;
-          left: -1em;
+    @mixin headers-link-mark($mark) {
+      content: $mark;
+      display: block;
+      inline-size: 2em;
+      position: absolute;
+      font-size: 1.5rem;
+      left: -1em;
+      bottom: 0.05em;
+    }
+
+    @mixin headers-link($mark) {
+      &:hover {
+        a {
+          &::before {
+            @include headers-link-mark($mark);
+          }
         }
       }
-    }
-    .headers-link {
       a {
+        &::before {
+          &:hover {
+            @include headers-link-mark($mark);
+          }
+        }
       }
     }
 
@@ -26,6 +41,12 @@
       font-size: 1.7rem;
       @extend .headers-border;
     }
+    // h2,
+    // h3,
+    // h4,
+    // h5,
+    // h6 {
+    // }
     h1,
     h2,
     h3,
@@ -33,15 +54,8 @@
     h5,
     h6 {
       position: relative;
-      @extend .headers-link-hash;
-    }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
       @extend .headers-margin;
+      @include headers-link('§');
     }
 
     .inline-code {
@@ -59,10 +73,8 @@
         @extend .inline-code;
       }
     }
-    li {
-      code {
-        @extend .inline-code;
-      }
+    code {
+      @extend .inline-code;
     }
 
     pre {

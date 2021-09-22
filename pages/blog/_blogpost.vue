@@ -3,7 +3,7 @@
     <article>
       <div class="blogpost">
         <header>
-          <h1 class="post-title">{{ page === undefined ? "" : page.title }}</h1>
+          <h1 class="post-title">{{ page === undefined ? '' : page.title }}</h1>
           <p class="publish-time">
             <time :datetime="dateString">{{ displayDateString }}</time
             >に{{ publishStatus }}
@@ -71,15 +71,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .blogpost {
-  max-inline-size: 700px;
-  min-inline-size: 350px;
-  margin: 0 auto;
-
-  @media screen and (max-width: 700px) {
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-
   > header {
     > .post-title {
       font-size: 2rem;

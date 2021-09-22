@@ -1,9 +1,11 @@
 <template>
   <div>
     <Header class="header" />
-    <container>
-      <nuxt />
-    </container>
+    <div class="content">
+      <container>
+        <nuxt />
+      </container>
+    </div>
   </div>
 </template>
 
@@ -25,5 +27,15 @@ export default defineComponent({
   z-index: 100;
   top: 0;
   left: 0;
+}
+
+.content {
+  max-inline-size: 700px;
+  margin: 0 auto;
+
+  @media screen and (max-width: 700px) {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 </style>
