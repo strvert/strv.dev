@@ -8,7 +8,7 @@
     .headers-margin {
       --header-height: 44px;
       padding-block-start: var(--header-height);
-      margin-block-start: calc(-1 * var(--header-height) + 2rem);
+      margin-block-start: calc(-1 * var(--header-height) + 1.7rem);
     }
     @mixin headers-link-mark($mark) {
       content: $mark;
@@ -67,13 +67,19 @@
       }
     }
 
+    .panel-shadow {
+      box-shadow: 5px 5px 5px 5px #0000000a;
+    }
+
     pre {
       margin: 0;
+      @extend .panel-shadow;
       border-radius: 5px;
       border-style: solid;
       border-width: 2px;
       border-color: #00000022;
       padding-block-start: 2rem;
+      padding-block-end: 2rem;
       code {
         font-family: var(--source-code-font);
       }
@@ -95,6 +101,30 @@
       background-color: #0000000a;
 
       font-family: var(--source-code-font);
+    }
+
+    img {
+      inline-size: 100%;
+      border-radius: 4px;
+      @extend .panel-shadow;
+    }
+
+    table {
+      @extend .panel-shadow;
+      thead {
+        border-radius: 40px;
+        background-color: var(--strvdev-palette-4);
+        color: #ffffffd9;
+      }
+      tbody {
+        tr:nth-child(even) {
+          background-color: #ccc;
+        }
+
+        td {
+          padding: 0.5em;
+        }
+      }
     }
   }
 }
