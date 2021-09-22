@@ -28,25 +28,13 @@
           }
         }
       }
-      a {
-        &::before {
-          &:hover {
-            @include headers-link-mark($mark);
-          }
-        }
-      }
     }
 
     h1 {
       font-size: 1.7rem;
       @extend .headers-border;
     }
-    // h2,
-    // h3,
-    // h4,
-    // h5,
-    // h6 {
-    // }
+
     h1,
     h2,
     h3,
@@ -73,8 +61,10 @@
         @extend .inline-code;
       }
     }
-    code {
-      @extend .inline-code;
+    li {
+      code {
+        @extend .inline-code;
+      }
     }
 
     pre {
