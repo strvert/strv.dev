@@ -1,5 +1,6 @@
 import path from 'path';
 import { $content } from '@nuxt/content';
+import { pathToSlug } from './composables/utils/ConvertArticlePath.ts';
 
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 const baseDir = process.env.BASE_DIR || '/';
@@ -13,14 +14,14 @@ const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ
 const ogpImages = basePath + 'images/ogp/';
 const articlesPath = 'articles';
 
-const collectBlogPostPaths = async () => {
-  const postsLoc = 'articles';
+const collectBlogPostURIs = async () => {
+  const postsLoc = articlesPath;
   const postsRoute = 'blog';
   const posts = await $content(postsLoc, { deep: true })
     .only(['path'])
     .fetch();
   return posts.map(post => {
-    return postsRoute + post.path.slice(postsLoc.length + 1);
+    return postsRoute + '/' + pathToSlug(post.path, articlesPath);
   });
 };
 
@@ -168,7 +169,6 @@ export default {
   build: {
     analyze: true,
     cache: true,
-    hardSource: true,
     parallel: true
   },
   content: {
@@ -178,13 +178,13 @@ export default {
     workers: 16,
     interval: 2000,
     async routes() {
-      return await collectBlogPostPaths();
+      return await collectBlogPostURIs();
     }
   },
   sitemap: {
     hostname: baseUrl,
     routes: async () => {
-      return await collectBlogPostPaths();
+      return await collectBlogPostURIs();
     }
   }
 };

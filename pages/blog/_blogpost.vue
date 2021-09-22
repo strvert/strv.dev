@@ -59,7 +59,6 @@ export default defineComponent({
     useFetch(async () => {
       page.value = (await fetchPage()) as IArticle;
       series.value = page.value.series;
-      console.log(series.value);
       const { createdAt, updatedAt } = readDateInfos(page.value);
       if (createdAt.toString() === updatedAt.toString()) {
         updateDateStrings(createdAt, '公開');

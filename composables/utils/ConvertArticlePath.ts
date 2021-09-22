@@ -9,11 +9,11 @@ export const correntDuplicatePaths = (path: string) => {
   return path;
 };
 
-export const slugToPath = (slug: string) => {
-  return correntDuplicatePaths('/' + articles_dir + '/' + slug.replace('--', '/'));
+export const slugToPath = (slug: string, basedir: string = articles_dir) => {
+  return correntDuplicatePaths('/' + basedir + '/' + slug.replace('--', '/'));
 };
 
-export const pathToSlug = (path: string) => {
+export const pathToSlug = (path: string, basedir: string = articles_dir) => {
   path = correntDuplicatePaths(path);
-  return path.substr(articles_dir.length + 2).replace('/', '--');
+  return path.substr(basedir.length + 2).replace('/', '--');
 };
