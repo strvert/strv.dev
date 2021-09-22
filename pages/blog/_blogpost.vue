@@ -22,6 +22,7 @@
 import {
   defineComponent,
   useMeta,
+  watch,
   useFetch,
   ref,
   useContext,
@@ -31,6 +32,7 @@ import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import { IArticle, PublishStatus } from '@/composables/stores/Article';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
 import { slugToPath } from '@/composables/utils/ConvertArticlePath';
+import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 import { Moment } from 'moment-timezone';
 
 export default defineComponent({
@@ -38,7 +40,8 @@ export default defineComponent({
   components: { SurroundArticleMenu },
   props: {},
   setup() {
-    useMeta({ title: 'blog' });
+    const { setBlogpostMeta } = useBlogpostMeta();
+
     const { route, $content } = useContext();
     const currentSlug = route.value.params.blogpost;
     const pagePath = slugToPath(currentSlug);
@@ -60,11 +63,17 @@ export default defineComponent({
       page.value = (await fetchPage()) as IArticle;
       series.value = page.value.series;
       const { createdAt, updatedAt } = readDateInfos(page.value);
-      console.log(createdAt.toString(), updatedAt.toString());
       if (createdAt.toString() === updatedAt.toString()) {
         updateDateStrings(createdAt, '公開');
       } else {
         updateDateStrings(updatedAt, '更新');
+      }
+      setBlogpostMeta(page.value);
+    });
+
+    watch(page, (value) => {
+      if (value !== undefined) {
+        setBlogpostMeta(value);
       }
     });
 
@@ -72,6 +81,7 @@ export default defineComponent({
       window.$nuxt.$on('content:update', async () => {
         page.value = (await fetchPage()) as IArticle;
         series.value = page.value.series;
+        setBlogpostMeta(page.value);
       });
     });
 

@@ -11,17 +11,17 @@ const locale = 'ja_jp';
 const siteName = 'strv.dev';
 const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場';
 
-const ogpImages = basePath + 'images/ogp/';
+const ogpImages = basePath + 'images/ogp';
 const articlesPath = 'articles';
+const articlesRoute = 'blog';
 
 const collectBlogPostURIs = async () => {
   const postsLoc = articlesPath;
-  const postsRoute = 'blog';
   const posts = await $content(postsLoc, { deep: true })
     .only(['path'])
     .fetch();
   return posts.map(post => {
-    return postsRoute + '/' + pathToSlug(post.path, articlesPath);
+    return `${articlesRoute}/${pathToSlug(post.path, articlesPath)}`;
   });
 };
 
@@ -35,7 +35,8 @@ export default {
     ogpImages,
     lang,
     locale,
-    articlesPath
+    articlesPath,
+    articlesRoute
   },
   router: {
     // base: baseDir
@@ -67,7 +68,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場'
+        content: siteDesc
       },
       { hid: 'og:locale', property: 'og:locale', content: locale },
       { hid: 'og:site_name', property: 'og:site_name', content: siteName },
@@ -82,7 +83,7 @@ export default {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: ogpImages + 'main.png'
+        content: `${ogpImages}/main.png`
       },
       {
         name: 'twitter:card',

@@ -4,18 +4,23 @@
     <template #submessage="slotProps">
       <span>トップページはまだ作成されていません。</span
       ><span v-if="slotProps.redirect"
-        >{{ slotProps.remaining }}秒後に<nuxt-link to="/blog">ブログページ</nuxt-link>へ自動で移動します。</span
+        >{{ slotProps.remaining }}秒後に<nuxt-link to="/blog">ブログページ</nuxt-link
+        >へ自動で移動します。</span
       >
     </template>
   </redirector>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api';
+import { defineComponent, useMeta } from '@nuxtjs/composition-api';
 import Redirector from '@/components/atoms/Redirector.vue';
 
 export default defineComponent({
+  head: {},
   components: { Redirector },
+  setup() {
+    useMeta({ titleTemplate: 'strv.dev' });
+  },
 });
 </script>
 
