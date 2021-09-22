@@ -68,7 +68,7 @@
     }
 
     .panel-shadow {
-      box-shadow: 5px 5px 5px 5px #0000000a;
+      box-shadow: 5px 5px 7px 2px #0000000a;
     }
 
     pre {
@@ -111,6 +111,7 @@
 
     table {
       @extend .panel-shadow;
+      inline-size: 100%;
       thead {
         border-radius: 40px;
         background-color: var(--strvdev-palette-4);
