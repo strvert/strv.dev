@@ -24,4 +24,6 @@ export interface IArticle extends IContent {
   tags?: string[];
   foreignArticleMeta?: IForeignArticleMetadata;
   customThumbnail?: string;
+  series?: string;
+  seriesIndex: number;
 }

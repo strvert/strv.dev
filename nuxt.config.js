@@ -11,6 +11,7 @@ const siteName = 'strv.dev';
 const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場';
 
 const ogpImages = basePath + 'images/ogp/';
+const articlesPath = 'articles';
 
 const collectBlogPostPaths = async () => {
   const postsLoc = 'articles';
@@ -32,7 +33,8 @@ export default {
     siteDesc,
     ogpImages,
     lang,
-    locale
+    locale,
+    articlesPath
   },
   router: {
     // base: baseDir

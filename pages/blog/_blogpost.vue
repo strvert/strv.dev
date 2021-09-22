@@ -11,6 +11,9 @@
         </header>
         <nuxt-content :document="page" />
       </div>
+      <div class="surround-menu">
+        <surround-article-menu :path="pagePath" :useSeries="true" :series="series" />
+      </div>
     </article>
   </div>
 </template>
@@ -24,20 +27,24 @@ import {
   useContext,
   onMounted,
 } from '@nuxtjs/composition-api';
+import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import { IArticle, PublishStatus } from '@/composables/stores/Article';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
+import { slugToPath } from '@/composables/utils/ConvertArticlePath';
 import { Moment } from 'moment-timezone';
 
 export default defineComponent({
   head: {},
+  components: { SurroundArticleMenu },
   props: {},
   setup() {
     useMeta({ title: 'blog' });
     const { route, $content } = useContext();
-    const pageParam = route.value.params.blogpost;
+    const currentSlug = route.value.params.blogpost;
+    const pagePath = slugToPath(currentSlug);
 
     const fetchPage = async () => {
-      return await $content('articles/' + pageParam).fetch();
+      return await $content(pagePath).fetch();
     };
     const page = ref<IArticle>();
     const displayDateString = ref<string>();
@@ -48,8 +55,11 @@ export default defineComponent({
       dateString.value = at.format();
       publishStatus.value = status;
     };
+    const series = ref<string>();
     useFetch(async () => {
       page.value = (await fetchPage()) as IArticle;
+      series.value = page.value.series;
+      console.log(series.value);
       const { createdAt, updatedAt } = readDateInfos(page.value);
       if (createdAt.toString() === updatedAt.toString()) {
         updateDateStrings(createdAt, '公開');
@@ -61,10 +71,11 @@ export default defineComponent({
     onMounted(async () => {
       window.$nuxt.$on('content:update', async () => {
         page.value = (await fetchPage()) as IArticle;
+        series.value = page.value.series;
       });
     });
 
-    return { page, displayDateString, dateString, publishStatus };
+    return { page, displayDateString, dateString, publishStatus, pagePath, series };
   },
 });
 </script>
@@ -82,5 +93,10 @@ export default defineComponent({
       margin: 0;
     }
   }
+}
+
+.surround-menu {
+  display: block;
+  margin-block-start: 4rem;
 }
 </style>
