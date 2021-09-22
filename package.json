@@ -31,6 +31,7 @@
     "imagemin-pngquant": "^9.0.2",
     "jest": "^27.0.5",
     "nuxt-content-git": "^2.0.9",
+    "nuxt-generate-cluster": "^2.7.0",
     "sass": "^1.39.2",
     "sass-loader": "10",
     "sharp": "^0.29.1",

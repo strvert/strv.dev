@@ -164,12 +164,16 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    analyze: true
+    analyze: true,
+    cache: true,
+    hardSource: true,
+    parallel: true
   },
   content: {
     markdown: {}
   },
   generate: {
+    workers: 16,
     interval: 2000,
     async routes() {
       return await collectBlogPostPaths();
