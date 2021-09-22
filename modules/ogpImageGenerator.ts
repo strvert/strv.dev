@@ -73,6 +73,7 @@ interface SVGData {
 
 interface TitleSVGSet {
   title: string;
+  slug: string;
   svgs: SVGData[];
 }
 
@@ -188,7 +189,7 @@ function compositeImage(svgSet: TitleSVGSet, config: GeneratorConfig): Promise<P
     const { nameTemplate } = config.output;
     const { baseImagePath } = config.resources;
     return {
-      filename: nameTemplate.replace('%s', svgSet.title),
+      filename: nameTemplate.replace('%s', svgSet.slug),
       buffer: await sharp(baseImagePath)
         .composite(options)
         .png()
@@ -236,12 +237,14 @@ const OgpImageGeneratorModule: Module<Options> = function(moduleOptions) {
         (await $content(config.contentPath, { deep: true }).where(config.contentQuery).fetch()) as IContent[];
 
 
-    const titles = contents.map(content => pathToSlug(content.path, 'articles'));
+    const titles = contents.map(content => content.title);
+    const slugs = contents.map(content => pathToSlug(content.path, 'articles'));
     const segmentedTexts = titles.map(title => SegmentText(title));
     const adjustedTexts = segmentedTexts.map(segs => AdjustTexts(textToSVG, segs, config));
     const svgs: TitleSVGSet[] = adjustedTexts.map((texts, idx) => {
       return {
         title: titles[idx],
+        slug: slugs[idx],
         svgs: texts.map(text => RenderText(textToSVG, text, config))
       };
     });
