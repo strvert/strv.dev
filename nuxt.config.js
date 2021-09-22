@@ -16,7 +16,7 @@ const articlesPath = 'articles';
 const collectBlogPostPaths = async () => {
   const postsLoc = 'articles';
   const postsRoute = 'blog';
-  const posts = await $content(postsLoc)
+  const posts = await $content(postsLoc, { deep: true })
     .only(['path'])
     .fetch();
   return posts.map(post => {
