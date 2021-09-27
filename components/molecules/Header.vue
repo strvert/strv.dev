@@ -1,27 +1,29 @@
 <template>
   <div class="header-main">
-    <div class="strvdev-logo">
-      <nuxt-link to="/">
-        <strvdev-logo
-          :transformed="logoTransformed"
-          :logoScale="17"
-          :animEffectTiming="logoAnimEffectTiming"
-        />
-      </nuxt-link>
-    </div>
+    <nav class="header-nav">
+      <ul>
+        <li class="strvdevlogo">
+          <nuxt-link to="/">
+            <strvdev-logo
+              :transformed="logoTransformed"
+              :logoScale="17"
+              :animEffectTiming="logoAnimEffectTiming"
+            />
+          </nuxt-link>
+        </li>
+        <li class="textlink blogposts">
+          <span>BLOG POSTS</span>
+        </li>
+        <li class="textlink about">
+          <span>ABOUT</span>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useMeta,
-  useRouter,
-  ref,
-  useContext,
-  onMounted,
-  onBeforeUnmount,
-} from '@nuxtjs/composition-api';
+import { defineComponent, onMounted, useContext, onBeforeUnmount } from '@nuxtjs/composition-api';
 import StrvdevLogo from '@/components/atoms/StrvdevLogo.vue';
 import { useScrollDirectionEvent } from '@/composables/utils/ScrollEvents';
 
@@ -42,6 +44,8 @@ export default defineComponent({
     onBeforeUnmount(() => {
       removeEvent();
     });
+    // const { app } = useContext();
+    // console.log(app.$repositories.navContent.get());
 
     return { logoAnimEffectTiming, logoTransformed };
   },
@@ -50,18 +54,44 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header-main {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-areas: 'a b c d e';
-  align-content: center;
-
+  --header-height: 44px;
   background-color: var(--strvdev-palette-1);
   box-shadow: 0px 0px 3px 0px var(--strvdev-palette-3);
   inline-size: 100%;
-  block-size: 44px;
+  block-size: var(--header-height);
 }
 
-.strvdev-logo {
-  grid-area: c;
+.header-nav {
+  max-inline-size: 800px;
+  block-size: var(--header-height);
+  margin: 0 auto;
+
+  > ul {
+    display: grid;
+    margin: 0;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas: 'a b c d e';
+    align-content: center;
+    justify-items: center;
+
+    > .textlink {
+      font-size: 20px;
+      font-weight: bold;
+      line-height: var(--header-height);
+    }
+
+    > .blogposts {
+      justify-self: left;
+      grid-area: a;
+    }
+    > .strvdevlogo {
+      grid-area: c;
+      margin: auto 0;
+    }
+    > .about {
+      justify-self: right;
+      grid-area: e;
+    }
+  }
 }
 </style>

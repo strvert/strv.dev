@@ -19,6 +19,7 @@ import { defineComponent } from '@nuxtjs/composition-api';
 
 import Container from '@/components/atoms/Container.vue';
 import Header from '@/components/molecules/Header.vue';
+import Footer from '@/components/molecules/Footer.vue';
 import Giscus from '@/components/atoms/Giscus.vue';
 
 export default defineComponent({
@@ -39,14 +40,17 @@ export default defineComponent({
   max-inline-size: 800px;
   margin: 0 auto;
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 820px) {
     margin-left: 10px;
     margin-right: 10px;
   }
 }
 
 .giscus-wrapper {
-  max-inline-size: 800px;
+  max-inline-size: 820px;
+  @media screen and (max-width: 820px) {
+    max-inline-size: 800px;
+  }
   margin: 0 auto;
 }
 </style>

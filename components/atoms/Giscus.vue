@@ -21,7 +21,7 @@ export default defineComponent({
         'data-mapping': 'pathname',
         'data-reactions-enabled': '1',
         'data-emit-metadata': '0',
-        'data-theme': 'https://cdn.jsdelivr.net/gh/strvert/giscus-strv.dev-style@2.0/style.css',
+        'data-theme': 'https://cdn.jsdelivr.net/gh/strvert/giscus-strv.dev-style@2.0.6/style.css',
         crossorigin: 'anonymous',
         async: true,
       },
