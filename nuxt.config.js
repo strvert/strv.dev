@@ -96,7 +96,8 @@ export default {
       { rel: 'apple-touch-icon', type: 'image/png', href: '/apple-touch-icon-180x180.png' },
       { rel: 'icon', type: 'image/png', href: '/icon-192x192.png' }
     ],
-    script: [{ src: 'https://polyfill.io/v3/polyfill.min.js?features=WebAnimations' }]
+    script: [
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

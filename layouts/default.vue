@@ -33,7 +33,7 @@ export default defineComponent({
   max-inline-size: 800px;
   margin: 0 auto;
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 800px) {
     margin-left: 10px;
     margin-right: 10px;
   }
