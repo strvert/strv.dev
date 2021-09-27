@@ -96,8 +96,7 @@ export default {
       { rel: 'apple-touch-icon', type: 'image/png', href: '/apple-touch-icon-180x180.png' },
       { rel: 'icon', type: 'image/png', href: '/icon-192x192.png' }
     ],
-    script: [
-    ]
+    script: []
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -109,7 +108,7 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['~/plugins/RepositoryFactory'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

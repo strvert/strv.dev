@@ -44,8 +44,8 @@ export default defineComponent({
     onBeforeUnmount(() => {
       removeEvent();
     });
-    // const { app } = useContext();
-    // console.log(app.$repositories.navContent.get());
+    const { app } = useContext();
+    console.log(app.$repositories.navContent.get());
 
     return { logoAnimEffectTiming, logoTransformed };
   },
