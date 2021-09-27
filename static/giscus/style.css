@@ -97,11 +97,15 @@ main .pagination-loader-container {
 }
 
 /*! Custom CSS */
-main {
-  color-scheme: light;
-}
 
 .gsc-comment {
-  border-style: none;
   box-shadow: 5px 5px 7px 2px #0000000a;
+}
+
+.color-border-primary {
+  border-style: none;
+}
+
+.color-box-border-info {
+  border-style: none;
 }
