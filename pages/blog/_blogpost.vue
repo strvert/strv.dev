@@ -15,11 +15,6 @@
         <surround-article-menu :path="pagePath" :useSeries="true" :series="series" />
       </div>
     </article>
-    <article>
-      <div class="giscus-wrapper">
-        <giscus />
-      </div>
-    </article>
   </div>
 </template>
 
@@ -34,7 +29,6 @@ import {
   onMounted,
 } from '@nuxtjs/composition-api';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
-import Giscus from '@/components/atoms/Giscus.vue';
 import { IArticle, PublishStatus } from '@/composables/stores/Article';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
 import { slugToPath } from '@/composables/utils/ConvertArticlePath';
@@ -43,7 +37,8 @@ import { Moment } from 'moment-timezone';
 
 export default defineComponent({
   head: {},
-  components: { SurroundArticleMenu, Giscus },
+  layout: 'blogpost',
+  components: { SurroundArticleMenu },
   props: {},
   setup() {
     const { setBlogpostMeta } = useBlogpostMeta();

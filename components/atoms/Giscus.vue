@@ -32,7 +32,6 @@ export default defineComponent({
 
 <style lang="scss">
 .giscus-frame {
-  inline-size: calc(100% + 20px);
-  transform: translateX(-10px);
+  width: 100%;
 }
 </style>
