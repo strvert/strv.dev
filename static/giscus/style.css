@@ -101,6 +101,7 @@ main {
   color-scheme: light;
 }
 
-.gcs-comment {
-  box-shadow: 5px 5px7px 2px #0000000a;
+.gsc-comment {
+  border-style: none;
+  box-shadow: 5px 5px 7px 2px #0000000a;
 }
