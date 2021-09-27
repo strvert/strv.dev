@@ -21,7 +21,6 @@
 <script lang="ts">
 import {
   defineComponent,
-  useMeta,
   watch,
   useFetch,
   ref,
