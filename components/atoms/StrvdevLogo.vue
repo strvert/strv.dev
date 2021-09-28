@@ -237,7 +237,7 @@ export default defineComponent({
     },
     logoAspectRatio: {
       type: Array as PropType<Array<number>>,
-      default: () => [10, 1.79],
+      default: () => [5.587, 1],
     },
     transformed: {
       type: Boolean,
