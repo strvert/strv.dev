@@ -4,7 +4,7 @@ import { NavContentRepositroyInterface } from '@/composables/repositories/NavCon
 export class NavContentRepositroy implements NavContentRepositroyInterface {
   get(): Array<NavContent> {
     return new Array<NavContent>(
-      { URI: '/', DisplayName: 'TOP' },
+      { URI: '/', DisplayName: 'HOME' },
       { URI: '/blog', DisplayName: 'BLOG' },
       { URI: '/about', DisplayName: 'ABOUT' }
     );

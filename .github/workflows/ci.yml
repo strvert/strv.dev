@@ -46,8 +46,8 @@ jobs:
         run: yarn
 
 
-      - name: Run tests 🧪
-        run: yarn test
+          # - name: Run tests 🧪
+          #   run: yarn test
 
       - name: Page Generation
         run: yarn run generate
