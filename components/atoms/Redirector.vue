@@ -16,13 +16,11 @@
 <script lang="ts">
 import {
   defineComponent,
-  computed,
   reactive,
   ref,
   useMeta,
   useRouter,
   onMounted,
-  onBeforeUnmount,
 } from '@nuxtjs/composition-api';
 import { ControllableTimer } from '@/composables/utils/Timers';
 
