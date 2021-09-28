@@ -28,9 +28,7 @@ export class ControllableTimer {
     this.running = false;
     this.callback();
 
-    if (this.eventId !== undefined) {
-      clearInterval(this.eventId);
-    }
+    this.unregister();
   }
 
   pause() {
@@ -44,7 +42,16 @@ export class ControllableTimer {
   }
 
   register(event: () => void, interval: number) {
-    setInterval(event, interval);
+    this.eventId = window.setInterval(event, interval);
+  }
+
+  unregister() {
+    if (this.eventId !== undefined) {
+      clearInterval(this.eventId);
+    }
+    if (this.timerId !== undefined) {
+      clearTimeout(this.timerId);
+    }
   }
 
   remainingTime() {

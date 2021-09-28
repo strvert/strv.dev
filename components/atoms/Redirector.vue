@@ -21,6 +21,7 @@ import {
   useMeta,
   useRouter,
   onMounted,
+  onBeforeUnmount,
 } from '@nuxtjs/composition-api';
 import { ControllableTimer } from '@/composables/utils/Timers';
 
@@ -42,21 +43,25 @@ export default defineComponent({
   },
   setup(props) {
     const remaining = ref<number>(Math.ceil(props.wait / 1000));
+    const router = useRouter();
+    const timer = reactive<ControllableTimer>(
+      new ControllableTimer(() => {
+        if (props.redirect) {
+          router.push(props.to);
+        }
+      }, props.wait)
+    );
     onMounted(() => {
-      const router = useRouter();
-      const timer = reactive<ControllableTimer>(
-        new ControllableTimer(() => {
-          if (props.redirect) {
-            router.push(props.to);
-          }
-        }, props.wait)
-      );
       timer.start();
       useMeta({ titleTemplate: '', title: 'strv.dev' });
 
       timer.register(() => {
         remaining.value = Math.ceil(timer.remainingTime() / 1000);
       }, 100);
+    });
+
+    onBeforeUnmount(() => {
+      timer.unregister();
     });
 
     return { remaining };
