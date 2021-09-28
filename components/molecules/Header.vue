@@ -1,30 +1,32 @@
 <template>
-  <div class="header-main" :style="cssVariables">
+  <div
+    class="header-main"
+    @mouseleave="menuLeave"
+    :class="{ open: menuOpened }"
+    :style="{
+      '--header-row-height': `${rowHeight}px`,
+      '--header-row-count': `${siteContentWrap ? siteContent.length : 1}`,
+    }"
+  >
     <div class="site-content-list">
       <nav class="sitenav">
         <site-content-list :wrap="siteContentWrap" row-height="44px" :contents="siteContent" />
       </nav>
     </div>
     <div class="header-grid">
-      <div class="strvdevlogo">
+      <button @click="open" class="strvdevlogo">
         <strvdev-logo
           :transformed="logoTransformed"
           :logoScale="33"
           :animEffectTiming="logoAnimEffectTiming"
         />
-      </div>
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  useContext,
-  onBeforeUnmount,
-  computed,
-} from '@nuxtjs/composition-api';
+import { defineComponent, useContext, ref, computed } from '@nuxtjs/composition-api';
 import StrvdevLogo from '@/components/atoms/StrvdevLogo.vue';
 import SiteContentList from '@/components/atoms/SiteContentList.vue';
 import { useScrollDirectionEvent } from '@/composables/utils/ScrollEvents';
@@ -52,10 +54,26 @@ export default defineComponent({
     const { app } = useContext();
     const { navContent } = app.$repositories;
     const siteContent = navContent.get();
-    const headerRowHeight = 44; // px
-    const cssVariables = { '--header-row-height': `${headerRowHeight}px` };
+    const rowHeight = 44; // px
 
-    return { logoAnimEffectTiming, logoTransformed, siteContent, cssVariables, siteContentWrap };
+    const menuOpened = ref<boolean>(false);
+    const open = () => {
+      menuOpened.value = true;
+    };
+    const menuLeave = () => {
+      menuOpened.value = false;
+    };
+
+    return {
+      logoAnimEffectTiming,
+      logoTransformed,
+      siteContent,
+      rowHeight,
+      siteContentWrap,
+      open,
+      menuLeave,
+      menuOpened,
+    };
   },
 });
 </script>
@@ -65,6 +83,15 @@ export default defineComponent({
   background-color: var(--strvdev-palette-1);
   box-shadow: 0px 0px 3px 0px var(--strvdev-palette-3);
   inline-size: 100%;
+
+  transition-property: transform;
+  transition-duration: 0.3s;
+
+  transform: translateY(calc(-1 * var(--header-row-height) * var(--header-row-count)));
+
+  &.open {
+    transform: translateY(0);
+  }
 }
 
 .site-content-list {
@@ -85,19 +112,18 @@ export default defineComponent({
   justify-items: center;
 
   > .strvdevlogo {
+    background-color: inherit;
+    border-style: none;
     grid-area: c;
     padding-top: 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   > .sitenav {
     grid-area: c;
-
-    position: absolute;
-    top: 0;
-
-    &.open {
-      background-color: red;
-    }
   }
 }
 </style>

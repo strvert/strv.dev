@@ -30,6 +30,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.0.5",
     "imagemin-pngquant": "^9.0.2",
+    "jest": "^27.2.3",
     "nuxt-content-git": "^2.0.9",
     "nuxt-generate-cluster": "^2.7.0",
     "sass": "^1.39.2",

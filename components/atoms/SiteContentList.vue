@@ -71,12 +71,12 @@ ul {
       color: rgb(51, 60, 73);
     }
 
-    &:hover {
-      background-color: rgb(51, 60, 73);
-      a {
-        color: var(--strvdev-palette-1);
-      }
-    }
+    // &:hover {
+    //   background-color: rgb(51, 60, 73);
+    //   a {
+    //     color: var(--strvdev-palette-1);
+    //   }
+    // }
   }
 }
 </style>
