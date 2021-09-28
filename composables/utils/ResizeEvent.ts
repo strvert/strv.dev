@@ -1,4 +1,4 @@
-import { ref, Ref } from '@nuxtjs/composition-api';
+import { ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api';
 
 export const useResizeEvent = () => {
   const width = ref<number>();
@@ -17,5 +17,14 @@ export const useResizeEvent = () => {
   const removeEvent = () => {
     window.removeEventListener('resize', eventHandler);
   };
+
+  onMounted(() => {
+    addEvent();
+  });
+
+  onBeforeUnmount(() => {
+    removeEvent();
+  });
+
   return { width, height, addEvent, removeEvent };
 };

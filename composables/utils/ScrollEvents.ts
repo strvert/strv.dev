@@ -1,4 +1,4 @@
-import { ref } from '@nuxtjs/composition-api';
+import { ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api';
 
 export const useScrollAmountEvent = (amount: number) => {
   const state = ref(false);
@@ -19,6 +19,14 @@ export const useScrollAmountEvent = (amount: number) => {
   const removeEvent = () => {
     window.removeEventListener('scroll', eventHandler);
   };
+
+  onMounted(() => {
+    addEvent();
+  });
+
+  onBeforeUnmount(() => {
+    removeEvent();
+  });
 
   return { state, addEvent, removeEvent };
 };
@@ -43,6 +51,14 @@ export const useScrollDirectionEvent = () => {
   const removeEvent = () => {
     window.removeEventListener('scroll', eventHandler);
   };
+
+  onMounted(() => {
+    addEvent();
+  });
+
+  onBeforeUnmount(() => {
+    removeEvent();
+  });
 
   return { state, addEvent, removeEvent };
 };
