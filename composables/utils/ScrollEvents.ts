@@ -1,4 +1,4 @@
-import { ref, Ref } from '@nuxtjs/composition-api';
+import { ref } from '@nuxtjs/composition-api';
 
 export const useScrollAmountEvent = (amount: number) => {
   const state = ref(false);
@@ -28,12 +28,12 @@ export const useScrollDirectionEvent = () => {
   let scrollPos = 0;
 
   const eventHandler = () => {
-      if (window.scrollY >= scrollPos) {
-        state.value = true;
-      } else {
-        state.value = false;
-      }
-      scrollPos = window.scrollY;
+    if (window.scrollY >= scrollPos) {
+      state.value = true;
+    } else {
+      state.value = false;
+    }
+    scrollPos = window.scrollY;
   };
 
   const addEvent = () => {
