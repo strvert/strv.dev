@@ -1,6 +1,10 @@
 ---
 title: "[C++]型だけでN bit加算器を書こう"
 description: "C++の型システムで組み合わせ回路を実装していきたいと思います。"
+tags:
+    - hoge
+    - fuga
+    - c++
 customThumbnail: "~/images/ogp/article_base.png"
 ---
 

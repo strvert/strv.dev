@@ -6,6 +6,7 @@
         <nuxt />
       </container>
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -14,9 +15,10 @@ import { defineComponent } from '@nuxtjs/composition-api';
 
 import Container from '@/components/atoms/Container.vue';
 import Header from '@/components/molecules/Header.vue';
+import Footer from '@/components/molecules/Footer.vue';
 
 export default defineComponent({
-  components: { Container, Header },
+  components: { Container, Header, Footer },
   setup() {},
 });
 </script>

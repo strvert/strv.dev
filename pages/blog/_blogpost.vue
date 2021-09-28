@@ -4,10 +4,15 @@
       <div class="blogpost">
         <header>
           <h1 class="post-title">{{ page === undefined ? '' : page.title }}</h1>
-          <p class="publish-time">
-            <time :datetime="dateString">{{ displayDateString }}</time
-            >に{{ publishStatus }}
-          </p>
+          <div class="post-info-wrapper">
+            <div class="tag-list">
+              <tag-list :tags="tags" />
+            </div>
+            <p class="publish-time">
+              <time :datetime="dateString">{{ displayDateString }}</time
+              >に{{ publishStatus }}
+            </p>
+          </div>
         </header>
         <nuxt-content :document="page" />
       </div>
@@ -28,6 +33,7 @@ import {
   onMounted,
 } from '@nuxtjs/composition-api';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
+import TagList from '@/components/atoms/TagList.vue';
 import { IArticle, PublishStatus } from '@/composables/stores/Article';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
 import { slugToPath } from '@/composables/utils/ConvertArticlePath';
@@ -37,7 +43,7 @@ import { Moment } from 'moment-timezone';
 export default defineComponent({
   head: {},
   layout: 'blogpost',
-  components: { SurroundArticleMenu },
+  components: { SurroundArticleMenu, TagList },
   props: {},
   setup() {
     const { setBlogpostMeta } = useBlogpostMeta();
@@ -58,10 +64,20 @@ export default defineComponent({
       dateString.value = at.format();
       publishStatus.value = status;
     };
+
     const series = ref<string>();
+    const tags = ref<string[]>([]);
+    const updateTags = (page: IArticle) => {
+      if (page.tags !== undefined) {
+        tags.value = page.tags;
+      } else {
+        tags.value = [];
+      }
+    };
     useFetch(async () => {
       page.value = (await fetchPage()) as IArticle;
       series.value = page.value.series;
+      updateTags(page.value);
       const { createdAt, updatedAt } = readDateInfos(page.value);
       if (createdAt.toString() === updatedAt.toString()) {
         updateDateStrings(createdAt, '公開');
@@ -81,11 +97,12 @@ export default defineComponent({
       window.$nuxt.$on('content:update', async () => {
         page.value = (await fetchPage()) as IArticle;
         series.value = page.value.series;
+        updateTags(page.value);
         setBlogpostMeta(page.value);
       });
     });
 
-    return { page, displayDateString, dateString, publishStatus, pagePath, series };
+    return { page, displayDateString, dateString, publishStatus, pagePath, series, tags };
   },
 });
 </script>
@@ -93,14 +110,20 @@ export default defineComponent({
 <style lang="scss" scoped>
 .blogpost {
   > header {
+    margin-block-end: 1.26em;
     > .post-title {
       font-size: 2rem;
-      margin-block-end: 1rem;
+      margin-block-end: 0.56em;
     }
-    > .publish-time {
-      font-size: 0.95rem;
-      color: #00000088;
-      margin: 0;
+    > .post-info-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      > .publish-time {
+        font-size: 0.95rem;
+        color: #00000088;
+        margin: 0;
+      }
     }
   }
 }

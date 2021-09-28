@@ -11,6 +11,7 @@
         <giscus />
       </div>
     </article>
+    <Footer />
   </div>
 </template>
 
@@ -23,7 +24,7 @@ import Footer from '@/components/molecules/Footer.vue';
 import Giscus from '@/components/atoms/Giscus.vue';
 
 export default defineComponent({
-  components: { Container, Header, Giscus },
+  components: { Container, Header, Footer, Giscus },
   setup() {},
 });
 </script>
