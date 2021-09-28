@@ -10,6 +10,12 @@ const lang = 'ja';
 const locale = 'ja_jp';
 const siteName = 'strv.dev';
 const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場';
+const copyright = 'stonriver (Riku Ishikawa)';
+
+const authorInfo = {
+  twitter: 'strvert',
+  github: 'strvert'
+};
 
 const ogpImages = basePath + 'images/ogp';
 const articlesPath = 'articles';
@@ -35,6 +41,8 @@ export default {
     ogpImages,
     lang,
     locale,
+    copyright,
+    authorInfo,
     articlesPath,
     articlesRoute
   },
@@ -94,7 +102,12 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'apple-touch-icon', type: 'image/png', href: '/apple-touch-icon-180x180.png' },
-      { rel: 'icon', type: 'image/png', href: '/icon-192x192.png' }
+      { rel: 'icon', type: 'image/png', href: '/icon-192x192.png' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+      {
+        rel: 'stylesheet',
+        href: 'https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css'
+      }
     ],
     script: []
   },
