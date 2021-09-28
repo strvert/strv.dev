@@ -11,14 +11,9 @@
     </li>
   </ul>
 </template>
+
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  PropType,
-  useContext,
-  onBeforeUnmount,
-} from '@nuxtjs/composition-api';
+import { defineComponent, PropType } from '@nuxtjs/composition-api';
 import { NavContent } from '@/composables/stores/NavContent';
 
 export default defineComponent({
@@ -42,7 +37,7 @@ export default defineComponent({
       },
     },
   },
-  setup(props) {
+  setup() {
     const width = 200;
     return { width };
   },

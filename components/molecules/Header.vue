@@ -1,6 +1,7 @@
 <template>
   <div
     class="header-main"
+    @mouseenter="open"
     @mouseleave="menuLeave"
     :class="{ open: menuOpened }"
     :style="{
@@ -14,7 +15,7 @@
       </nav>
     </div>
     <div class="header-grid">
-      <button @click="open" class="strvdevlogo">
+      <button class="strvdevlogo">
         <strvdev-logo
           :transformed="logoTransformed"
           :logoScale="33"
