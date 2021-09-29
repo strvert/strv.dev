@@ -10,7 +10,10 @@ const lang = 'ja';
 const locale = 'ja_jp';
 const siteName = 'strv.dev';
 const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場';
-const copyright = 'stonriver (Riku Ishikawa)';
+const copyright = {
+  rights: 'stonriver (Riku Ishikawa)',
+  year: '2021'
+};
 
 const authorInfo = {
   twitter: 'strvert',

@@ -4,12 +4,12 @@
       <div class="links">
         <address>
           <p>
-            <i class="im im-twitter"></i>
-            <a :href="`https://twitter.com/${authorInfo.twitter}`">@{{ authorInfo.twitter }}</a>
-          </p>
-          <p>
             <i class="im im-github"></i>
             <a :href="`https://github.com/${authorInfo.github}`">{{ authorInfo.github }}</a>
+          </p>
+          <p>
+            <i class="im im-twitter"></i>
+            <a :href="`https://twitter.com/${authorInfo.twitter}`">@{{ authorInfo.twitter }}</a>
           </p>
           <p>
             <i class="im im-book"></i>
@@ -17,7 +17,7 @@
           </p>
         </address>
       </div>
-      <div class="copyright">© {{ copyright }}. All Rights Reserved.</div>
+      <div class="copyright">© {{ copyright.year }} {{ copyright.rights }}.</div>
     </footer>
   </div>
 </template>
