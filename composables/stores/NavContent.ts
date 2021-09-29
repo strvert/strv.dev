@@ -1,4 +1,4 @@
 export interface NavContent {
-    URI: string;
-    DisplayName: string;
+  URI: string;
+  displayName: string;
 }

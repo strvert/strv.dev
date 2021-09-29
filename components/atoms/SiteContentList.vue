@@ -6,7 +6,7 @@
       :style="Object.assign({ 'line-height': rowHeight, 'inline-size': `${width}px` }, textStyle)"
     >
       <nuxt-link :to="content.URI">
-        {{ content.DisplayName }}
+        {{ content.displayName }}
       </nuxt-link>
     </li>
   </ul>
