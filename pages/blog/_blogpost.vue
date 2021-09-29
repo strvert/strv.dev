@@ -17,7 +17,7 @@
         <nuxt-content :document="page" />
       </div>
       <div class="surround-menu">
-        <surround-article-menu :path="pagePath" :useSeries="true" :series="series" />
+        <surround-article-menu :path="path" :useSeries="true" :series="series" />
       </div>
     </article>
   </div>
@@ -36,9 +36,9 @@ import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import TagList from '@/components/atoms/TagList.vue';
 import { IArticle, PublishStatus } from '@/composables/stores/Article';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
-import { slugToPath } from '@/composables/utils/ConvertArticlePath';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 import { Moment } from 'moment-timezone';
+import { useBlogContent } from '@/composables/utils/BlogContent';
 
 export default defineComponent({
   head: {},
@@ -50,12 +50,9 @@ export default defineComponent({
 
     const { route, $content } = useContext();
     const currentSlug = route.value.params.blogpost;
-    const pagePath = slugToPath(currentSlug);
 
-    const fetchPage = async () => {
-      return await $content(pagePath).fetch();
-    };
-    const page = ref<IArticle>();
+    const { page, path, series, tags } = useBlogContent(currentSlug);
+
     const displayDateString = ref<string>();
     const dateString = ref<string>();
     const publishStatus = ref<PublishStatus>();
@@ -65,44 +62,20 @@ export default defineComponent({
       publishStatus.value = status;
     };
 
-    const series = ref<string>();
-    const tags = ref<string[]>([]);
-    const updateTags = (page: IArticle) => {
-      if (page.tags !== undefined) {
-        tags.value = page.tags;
-      } else {
-        tags.value = [];
-      }
-    };
-    useFetch(async () => {
-      page.value = (await fetchPage()) as IArticle;
-      series.value = page.value.series;
-      updateTags(page.value);
-      const { createdAt, updatedAt } = readDateInfos(page.value);
-      if (createdAt.toString() === updatedAt.toString()) {
-        updateDateStrings(createdAt, '公開');
-      } else {
-        updateDateStrings(updatedAt, '更新');
-      }
-      setBlogpostMeta(page.value);
-    });
-
     watch(page, (value) => {
       if (value !== undefined) {
+        setBlogpostMeta(value);
+        const { createdAt, updatedAt } = readDateInfos(value);
+        if (createdAt.toString() === updatedAt.toString()) {
+          updateDateStrings(createdAt, '公開');
+        } else {
+          updateDateStrings(updatedAt, '更新');
+        }
         setBlogpostMeta(value);
       }
     });
 
-    onMounted(async () => {
-      window.$nuxt.$on('content:update', async () => {
-        page.value = (await fetchPage()) as IArticle;
-        series.value = page.value.series;
-        updateTags(page.value);
-        setBlogpostMeta(page.value);
-      });
-    });
-
-    return { page, displayDateString, dateString, publishStatus, pagePath, series, tags };
+    return { page, displayDateString, dateString, publishStatus, path, series, tags };
   },
 });
 </script>
