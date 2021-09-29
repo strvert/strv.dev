@@ -10,5 +10,13 @@
   {
     "tag": "Unreal Engine 5",
     "path": "/images/tagicons/UnrealEngine.svg"
+  },
+  {
+    "tag": "OpenGL",
+    "path": "/images/tagicons/OpenGL.png"
+  },
+  {
+    "tag": "C++",
+    "path": "/images/tagicons/C++.png"
   }
 ]
