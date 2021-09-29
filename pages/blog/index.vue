@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta, watch } from '@nuxtjs/composition-api';
+import { defineComponent, useMeta } from '@nuxtjs/composition-api';
 import ArticleList from '@/components/molecules/ArticleList.vue';
 import { useSearchBlogContent } from '@/composables/utils/SearchBlogContent';
 
