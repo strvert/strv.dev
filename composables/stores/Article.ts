@@ -25,5 +25,5 @@ export interface IArticle extends IContent {
   foreignArticleMeta?: IForeignArticleMetadata;
   customThumbnail?: string;
   series?: string;
-  seriesIndex: number;
+  seriesIndex?: number;
 }
