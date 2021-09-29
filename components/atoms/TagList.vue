@@ -1,7 +1,7 @@
 <template>
   <div class="list-wrapper">
-    <span class="material-icons">local_offer</span>
-    <ul class="tag-list">
+    <span class="material-icons" :style="iconStyle">local_offer</span>
+    <ul class="tag-list" :style="listStyle">
       <li v-for="tag in tags" :key="tag">
         <nuxt-link :to="`/blog/search?${makeQuery(tag)}`">{{ tag }}</nuxt-link>
       </li>
@@ -20,13 +20,25 @@ export default defineComponent({
         return new Array();
       },
     },
+    listStyle: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+    iconStyle: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   setup() {
     const makeQuery = (tag: string) => {
       const paramObj: SearchParam = {
         tags: [tag],
       };
-      return makeSearchParameter(paramObj)
+      return makeSearchParameter(paramObj);
     };
     return { makeQuery };
   },
@@ -37,8 +49,7 @@ export default defineComponent({
 .list-wrapper {
   display: flex;
   gap: 0.3em;
-  align-items: center;
-  align-content: center;
+  align-items: start;
 
   > .material-icons {
     color: inherit;

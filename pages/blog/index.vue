@@ -1,35 +1,35 @@
 <template>
-  <div>
-    <div class="sun"></div>
-    <nuxt-link to="/blog/page1/">page1</nuxt-link>
-  </div>
+  <section>
+    <header>
+      <h1>記事一覧</h1>
+    </header>
+
+    <div>
+      <article-list :articles="pages" />
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta, useRouter, ref, useContext } from '@nuxtjs/composition-api';
+import { defineComponent, useMeta, watch } from '@nuxtjs/composition-api';
+import ArticleList from '@/components/molecules/ArticleList.vue';
+import { useSearchBlogContent } from '@/composables/utils/SearchBlogContent';
 
 export default defineComponent({
   head: {},
+  components: { ArticleList },
   setup() {
     useMeta({ title: 'blog' });
-    const config = useContext();
+    const { pages } = useSearchBlogContent();
+    return { pages };
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.sun {
-  --size: 2300px;
-
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 20px auto;
-
-  background: radial-gradient(#0434a322 65%, #22a5fb22);
-
-  inline-size: var(--size);
-  block-size: var(--size);
-  border-radius: var(--size);
+h1 {
+  @media screen and (max-width: 800px) {
+    font-size: 1.4em;
+  }
 }
 </style>

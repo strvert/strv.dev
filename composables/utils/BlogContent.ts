@@ -1,13 +1,6 @@
-import {
-  defineComponent,
-  watch,
-  useFetch,
-  ref,
-  useContext,
-  onMounted
-} from '@nuxtjs/composition-api';
+import { useFetch, ref, useContext, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api';
 import { slugToPath } from '@/composables/utils/ConvertArticlePath';
-import { IArticle, PublishStatus } from '@/composables/stores/Article';
+import { IArticle } from '@/composables/stores/Article';
 
 export const useBlogContent = (slug: string) => {
   const page = ref<IArticle>();
@@ -44,6 +37,10 @@ export const useBlogContent = (slug: string) => {
       series.value = page.value.series;
       updateTags(page.value);
     });
+  });
+
+  onBeforeUnmount(async () => {
+    window.$nuxt.$off('content:update');
   });
 
   return { page, path, series, tags };

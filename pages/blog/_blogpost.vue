@@ -24,12 +24,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  watch,
-  ref,
-  useContext,
-} from '@nuxtjs/composition-api';
+import { defineComponent, watch, ref, useContext } from '@nuxtjs/composition-api';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import TagList from '@/components/atoms/TagList.vue';
 import { PublishStatus } from '@/composables/stores/Article';
