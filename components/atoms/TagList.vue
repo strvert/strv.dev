@@ -3,7 +3,7 @@
     <span class="material-icons">local_offer</span>
     <ul class="tag-list">
       <li v-for="tag in tags" :key="tag">
-        <nuxt-link :to="`/blog/search?tags=${encodeURIComponent(tag)}`">{{ tag }}</nuxt-link>
+        <nuxt-link :to="`/blog/search?${makeQuery(tag)}`">{{ tag }}</nuxt-link>
       </li>
     </ul>
   </div>
@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api';
+import { makeSearchParameter, SearchParam } from '@/composables/utils/SearchParam';
 export default defineComponent({
   props: {
     tags: {
@@ -19,6 +20,15 @@ export default defineComponent({
         return new Array();
       },
     },
+  },
+  setup() {
+    const makeQuery = (tag: string) => {
+      const paramObj: SearchParam = {
+        tags: [tag],
+      };
+      return makeSearchParameter(paramObj)
+    };
+    return { makeQuery };
   },
 });
 </script>

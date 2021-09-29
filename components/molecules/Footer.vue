@@ -59,6 +59,7 @@ export default defineComponent({
       flex-direction: row;
       flex-wrap: wrap;
       gap: 0.8rem;
+      font-style: normal;
       p {
         display: flex;
         gap: 0.6rem;

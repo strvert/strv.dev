@@ -27,14 +27,12 @@
 import {
   defineComponent,
   watch,
-  useFetch,
   ref,
   useContext,
-  onMounted,
 } from '@nuxtjs/composition-api';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import TagList from '@/components/atoms/TagList.vue';
-import { IArticle, PublishStatus } from '@/composables/stores/Article';
+import { PublishStatus } from '@/composables/stores/Article';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 import { Moment } from 'moment-timezone';
@@ -48,7 +46,7 @@ export default defineComponent({
   setup() {
     const { setBlogpostMeta } = useBlogpostMeta();
 
-    const { route, $content } = useContext();
+    const { route } = useContext();
     const currentSlug = route.value.params.blogpost;
 
     const { page, path, series, tags } = useBlogContent(currentSlug);

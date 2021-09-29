@@ -1,7 +1,7 @@
 import { Inject, NuxtApp } from '@nuxt/types/app';
 import { NavContentRepositroyInterface } from '@/composables/repositories/NavContentRepository';
 
-import { NavContentRepositroy } from '@/composables/repositories/NavStaticContentsRepository';
+import { NavContentRepositroy } from '@/composables/repositories/NavContentRepository';
 
 export interface Repositories {
   navContent: NavContentRepositroyInterface;
