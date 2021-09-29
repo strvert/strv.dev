@@ -2,6 +2,8 @@
 title: OpenGL入門から3DCGレンダラ実装まで その4
 description: "OpenGL入門から3DCGレンダラ実装まで"
 series: "OpenGL入門から3DCGレンダラ実装まで"
+tags:
+  - 'OpenGL'
 ---
 
 # ウィンドウを表示する
