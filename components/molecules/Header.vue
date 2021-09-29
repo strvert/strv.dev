@@ -52,8 +52,8 @@ export default defineComponent({
       return false;
     });
 
-    const { app } = useContext();
-    const { navContent } = app.$repositories;
+    const { $repositories } = useContext();
+    const { navContent } = $repositories;
     const siteContent = navContent.get();
     const rowHeight = 44; // px
 

@@ -4,12 +4,9 @@ export interface NavContentRepositroyInterface {
   get(): Array<NavContent>;
 }
 
-export class NavContentRepositroy implements NavContentRepositroyInterface {
+import navcontent from '@/assets/json/navcontent.json';
+export class StaticNavContentRepositroy implements NavContentRepositroyInterface {
   get(): Array<NavContent> {
-    return new Array<NavContent>(
-      { URI: '/', displayName: 'HOME' },
-      { URI: '/blog', displayName: 'BLOG' },
-      { URI: '/about', displayName: 'ABOUT' }
-    );
+    return navcontent;
   }
 }
