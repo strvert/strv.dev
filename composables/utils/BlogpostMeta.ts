@@ -38,7 +38,7 @@ export const useBlogpostMeta = () => {
         property: 'og:url',
         content: `${process.env.baseUrl}/${process.env.articlesRoute}/${pathToSlug(article.path)}`
       },
-      { hid: 'og:title', property: 'og:title', content: 'strv.dev' },
+      { hid: 'og:title', property: 'og:title', content: `${article.title} - ${process.env.siteName}` },
       {
         hid: 'og:image',
         property: 'og:image',
