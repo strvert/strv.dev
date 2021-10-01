@@ -44,7 +44,7 @@ export default defineComponent({
 
       const content = samples
         .only(['title', 'path'])
-        .sortBy('createdAt', 'asc')
+        .sortBy('sereisIndex', 'asc')
         .surround(props.path);
 
       return await content.fetch();

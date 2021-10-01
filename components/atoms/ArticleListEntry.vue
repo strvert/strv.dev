@@ -1,5 +1,9 @@
 <template>
-  <content-list-entry :title="article.title" :uri="`/blog/${pathToSlug(article.path)}`" :iconPath="iconPath">
+  <content-list-entry
+    :title="article.title"
+    :uri="`/blog/${pathToSlug(article.path)}`"
+    :iconPath="iconPath"
+  >
     <div class="meta">
       <div class="pubtime">
         <publish-time
@@ -7,6 +11,11 @@
           :updated="readDate(article).updatedAt"
           :iconStyle="{ 'font-size': '1.06rem' }"
         />
+      </div>
+      <div v-if="isSereis" class="series">
+        <nuxt-link :to="`/blog/series/${article.series}`">
+          <img src="/images/icons/Series.svg" :title="`シリーズ記事 『${article.series}』`" />
+        </nuxt-link>
       </div>
       <div class="taglist">
         <tag-list
@@ -55,7 +64,9 @@ export default defineComponent({
     const readDate = (article: IArticle) => {
       return readDateInfos(article);
     };
-    return { iconPath, pathToSlug, readDate, tags };
+
+    const isSereis = computed(() => props.article.series !== undefined);
+    return { iconPath, pathToSlug, readDate, tags, isSereis };
   },
 });
 </script>
@@ -63,10 +74,22 @@ export default defineComponent({
 <style lang="scss" scoped>
 .meta {
   display: flex;
-  gap: 1.1em;
   align-content: center;
   align-items: flex-start;
   line-height: 1em;
+  gap: 0.8em;
+  .series {
+    position: relative;
+    top: -0.1em;
+  }
+  @media screen and (max-width: 500px) {
+    gap: 0.4em;
+  }
+  .series img {
+    display: inline-block;
+    block-size: 1em;
+    inline-size: 1em;
+  }
   .pubtime {
     min-inline-size: 7em;
   }
