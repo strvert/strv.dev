@@ -43,8 +43,8 @@ export default defineComponent({
       const samples = props.useSeries ? pop.where({ series: { $eq: props.series } }) : pop;
 
       const content = samples
+        .sortBy('seriesIndex', 'asc')
         .only(['title', 'path'])
-        .sortBy('sereisIndex', 'asc')
         .surround(props.path);
 
       return await content.fetch();
