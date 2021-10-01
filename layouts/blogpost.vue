@@ -1,17 +1,19 @@
 <template>
-  <div>
+  <div class="frame">
     <Header class="header" />
-    <div class="content">
-      <container>
-        <nuxt />
-      </container>
-    </div>
-    <article>
-      <div class="giscus-wrapper">
-        <giscus />
+    <main>
+      <div class="content">
+        <container>
+          <nuxt />
+        </container>
       </div>
-    </article>
-    <Footer />
+      <article>
+        <div class="giscus-wrapper">
+          <giscus />
+        </div>
+      </article>
+    </main>
+    <Footer class="footer" />
   </div>
 </template>
 
@@ -30,28 +32,38 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.header {
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  left: 0;
-}
+.frame {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
-.content {
-  max-inline-size: 800px;
-  margin: 0 auto;
-
-  @media screen and (max-width: 820px) {
-    margin-left: 10px;
-    margin-right: 10px;
+  .header {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
   }
-}
 
-.giscus-wrapper {
-  max-inline-size: 820px;
-  @media screen and (max-width: 820px) {
-    max-inline-size: 800px;
+  main {
+    flex: 1;
+
+    .content {
+      max-inline-size: 800px;
+      margin: 0 auto;
+
+      @media screen and (max-width: 820px) {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+
+    .giscus-wrapper {
+      max-inline-size: 820px;
+      @media screen and (max-width: 820px) {
+        max-inline-size: 800px;
+      }
+      margin: 0 auto;
+    }
   }
-  margin: 0 auto;
 }
 </style>

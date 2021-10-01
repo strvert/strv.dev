@@ -1,12 +1,14 @@
 <template>
   <article>
     <div>
-      <img class="tagicon" :src="iconPath" />
+      <nuxt-link :to="uri">
+        <img class="tagicon" :src="iconPath" />
+      </nuxt-link>
     </div>
     <header>
       <nuxt-link :to="uri"
-        ><h1>{{ title }}</h1></nuxt-link
-      >
+        ><h1>{{ title }}</h1>
+      </nuxt-link>
       <slot />
     </header>
   </article>

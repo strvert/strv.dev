@@ -38,12 +38,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .footer-wrapper {
   box-shadow: 0px 0px 3px 0px var(--strvdev-palette-3);
+  margin-block-start: 5rem;
+  padding-block-start: 1.5rem;
   .footer-main {
     position: relative;
     max-inline-size: 800px;
     margin: 0 auto;
-    margin-block-start: 5rem;
-    padding-block-start: 1rem;
     padding-block-end: 1rem;
     color: #000000bb;
 
