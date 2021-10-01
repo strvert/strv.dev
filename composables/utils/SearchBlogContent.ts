@@ -9,18 +9,28 @@ interface sortProp {
 
 export const useSearchBlogContent = (
   param: SearchParam = {},
-  sort: sortProp = { by: 'createdAt', direction: 'asc' }
+  sort: sortProp = { by: 'createdAt', direction: 'desc' }
 ) => {
   const { $content } = useContext();
   const pages = ref<IArticle[]>([]);
 
   const makeWhereParam = () => {
-    if (param.tags !== undefined) {
-      return {
-        tags: { $contains: param.tags }
-      };
-    }
-    return {};
+    return {
+      tags: (() => {
+        if (param.tags !== undefined) {
+          return { $contains: param.tags };
+        } else {
+          return undefined;
+        }
+      })(),
+      series: (() => {
+        if (param.series !== undefined) {
+          return { $eq: param.series };
+        } else {
+          return undefined;
+        }
+      })()
+    };
   };
 
   const fetchPages = async () => {

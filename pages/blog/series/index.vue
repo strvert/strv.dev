@@ -1,22 +1,22 @@
 <template>
-  <content-list-container listTitle="記事一覧">
-    <article-list :articles="pages" />
+  <content-list-container listTitle="シリーズ一覧">
+    <series-list :serieses="serieses" />
   </content-list-container>
 </template>
 
 <script lang="ts">
 import { defineComponent, useMeta } from '@nuxtjs/composition-api';
-import ArticleList from '@/components/molecules/ArticleList.vue';
+import SeriesList from '@/components/molecules/SeriesList.vue';
 import ContentListContainer from '@/components/molecules/ContentListContainer.vue';
-import { useSearchBlogContent } from '@/composables/utils/SearchBlogContent';
+import { useBlogSeries } from '@/composables/utils/BlogSeries';
 
 export default defineComponent({
   head: {},
-  components: { ContentListContainer, ArticleList },
+  components: { ContentListContainer, SeriesList },
   setup() {
     useMeta({ title: 'blog' });
-    const { pages } = useSearchBlogContent();
-    return { pages };
+    const { serieses } = useBlogSeries();
+    return { serieses };
   },
 });
 </script>

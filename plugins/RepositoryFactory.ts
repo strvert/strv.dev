@@ -11,13 +11,13 @@ import {
 
 export interface Repositories {
   navContent: NavContentRepositroyInterface;
-  tagIcon: TagIconRepositoryInterface;
+  icons: TagIconRepositoryInterface;
 }
 
 export default ({}: { app: NuxtApp }, inject: Inject) => {
   const repositories: Repositories = {
     navContent: new StaticNavContentRepositroy(),
-    tagIcon: new StaticTagIconRepository()
+    icons: new StaticTagIconRepository()
   };
   inject('repositories', repositories);
 };

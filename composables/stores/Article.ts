@@ -1,7 +1,7 @@
-import { IContentDocument } from "@nuxt/content/types/content";
+import { IContentDocument } from '@nuxt/content/types/content';
 
-type ForeignArticleProvider = "qiita" | "hatena";
-export type PublishStatus = "更新" | "公開";
+type ForeignArticleProvider = 'qiita' | 'hatena';
+export type PublishStatus = '更新' | '公開';
 
 export interface IForeignArticleMetadata {
   url: string;

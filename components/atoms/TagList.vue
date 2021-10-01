@@ -49,7 +49,7 @@ export default defineComponent({
 .list-wrapper {
   display: flex;
   gap: 0.3em;
-  align-items: start;
+  align-items: flex-start;
 
   > .material-icons {
     color: inherit;

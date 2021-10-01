@@ -5,16 +5,16 @@ export interface TagIconRepositoryInterface {
   getDefaultIcon(): TagIcon;
 }
 
-import tagicon from '@/assets/json/tagicon.json';
+import icons from '@/assets/json/icons.json';
 export class StaticTagIconRepository implements TagIconRepositoryInterface {
-  private findIcon(tag: string): TagIcon | undefined {
-    const icon = tagicon.find(elm => elm.tag === tag);
+  private findIcon(name: string): TagIcon | undefined {
+    const icon = icons.find(elm => elm.name === name);
     return icon;
   }
-  getIcon(tag: string): TagIcon | undefined {
-    return this.findIcon(tag);
+  getIcon(name: string): TagIcon | undefined {
+    return this.findIcon(name);
   }
   getDefaultIcon(): TagIcon {
-    return tagicon.find(elm => elm.tag === '__default')!;
+    return icons.find(elm => elm.name === '__default')!;
   }
 }

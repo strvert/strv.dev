@@ -1,4 +1,4 @@
 export interface TagIcon {
-    "tag": string;
+    "name": string;
     "path": string;
 }

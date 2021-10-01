@@ -1,6 +1,7 @@
 export interface SearchParam {
   tags?: Array<string>;
   keywords?: Array<string>;
+  series?: string;
 }
 
 export const makeSearchParameter = (obj: SearchParam) => {
@@ -14,6 +15,9 @@ export const makeSearchParameter = (obj: SearchParam) => {
     for (const keyword of obj.keywords) {
       param.append('kw', keyword);
     }
+  }
+  if (obj.series !== undefined) {
+    param.append('sr', obj.series);
   }
   return param;
 };
