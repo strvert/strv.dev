@@ -1,5 +1,3 @@
-import { contentFunc } from '@nuxt/content/types/content';
-
 export const articles_dir = process.env.articlesPath as string;
 
 export const correntDuplicatePaths = (path: string) => {

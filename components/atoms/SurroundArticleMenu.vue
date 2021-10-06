@@ -1,20 +1,28 @@
 <template>
   <section class="wrapper">
-    <div>
-      <nuxt-link :title="prevTitle" class="button" :to="prevSlug" v-if="existPrev"
-        >＜＜ PREV</nuxt-link
-      >
+    <div class="prev button">
+      <nuxt-link :title="prevTitle" :to="prevSlug" v-if="existPrev">＜＜ PREV</nuxt-link>
     </div>
-    <div>
-      <nuxt-link :title="nextTitle" class="button" :to="nextSlug" v-if="existNext"
-        >NEXT ＞＞</nuxt-link
-      >
+    <div class="seriesname button">
+      <nuxt-link :title="seriesTitle" :to="`/blog/series/${seriesTitle}`" v-if="useSeries">
+        {{ seriesTitle }}
+      </nuxt-link>
+    </div>
+    <div class="next button">
+      <nuxt-link :title="nextTitle" :to="nextSlug" v-if="existNext">NEXT ＞＞</nuxt-link>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, useFetch, ref, watch, useContext } from '@nuxtjs/composition-api';
+import {
+  defineComponent,
+  useFetch,
+  ref,
+  watch,
+  computed,
+  useContext,
+} from '@nuxtjs/composition-api';
 import { IArticle } from '@/composables/stores/Article';
 import { pathToSlug } from '@/composables/utils/ConvertArticlePath';
 
@@ -50,12 +58,17 @@ export default defineComponent({
       return await content.fetch();
     };
 
+    const seriesTitle = computed(() => {
+      return props.series;
+    });
+
     const prevTitle = ref('');
     const nextTitle = ref('');
     const existPrev = ref(false);
     const existNext = ref(false);
     const prevSlug = ref('');
     const nextSlug = ref('');
+    const seriesPage = ref('');
 
     const update = async () => {
       const pages = (await fetchSurroundPage()) as IArticle[];
@@ -80,15 +93,39 @@ export default defineComponent({
       }
     );
 
-    return { prevTitle, nextTitle, existPrev, existNext, prevSlug, nextSlug };
+    return {
+      prevTitle,
+      nextTitle,
+      existPrev,
+      existNext,
+      prevSlug,
+      nextSlug,
+      seriesTitle,
+      seriesPage,
+    };
   },
 });
 </script>
 
 <style lang="scss" scoped>
 .wrapper {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
   justify-content: space-between;
+  gap: 0.5rem;
+  grid-template-columns: minmax(max-content, auto) auto minmax(max-content, auto);
+  align-items: center;
+
+  .prev {
+    justify-self: flex-start;
+  }
+  .seriesname {
+    text-align: center;
+  }
+  .next {
+    margin-inline-start: auto;
+    text-align: right;
+  }
 }
 
 .button {

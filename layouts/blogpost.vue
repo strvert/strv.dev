@@ -1,10 +1,8 @@
 <template>
   <app-frame>
     <nuxt />
-    <article>
-      <div class="giscus-wrapper">
-        <giscus />
-      </div>
+    <article class="giscus-wrapper">
+      <giscus />
     </article>
   </app-frame>
 </template>
@@ -23,6 +21,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .giscus-wrapper {
   max-inline-size: 820px;
+  padding-block-start: 1rem;
   @media screen and (max-width: 820px) {
     max-inline-size: 800px;
   }

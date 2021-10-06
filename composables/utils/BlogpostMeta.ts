@@ -8,15 +8,15 @@ interface OGPEntry {
   content: string;
 }
 
-interface OGPData {
-  locale: OGPEntry;
-  site_name: OGPEntry;
-  type: OGPEntry;
-  url: OGPEntry;
-  title: OGPEntry;
-  description: OGPEntry;
-  image: OGPEntry;
-}
+// interface OGPData {
+//   locale: OGPEntry;
+//   site_name: OGPEntry;
+//   type: OGPEntry;
+//   url: OGPEntry;
+//   title: OGPEntry;
+//   description: OGPEntry;
+//   image: OGPEntry;
+// }
 
 export const useBlogpostMeta = () => {
   const { meta, title } = useMeta();
