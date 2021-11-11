@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, ref } from '@nuxtjs/composition-api';
+import { defineComponent, PropType, computed, ref } from '#app';
 import { Moment } from 'moment-timezone';
 
 export default defineComponent({
