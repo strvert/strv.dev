@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, useContext, computed } from '@nuxtjs/composition-api';
+import { defineComponent, PropType, ref, useNuxtApp, computed } from '#app';
 import TagList from '@/components/atoms/TagList.vue';
 import PublishTime from '@/components/atoms/PublishTime.vue';
 import ContentListEntry from '@/components/atoms/ContentListEntry.vue';
@@ -50,7 +50,7 @@ export default defineComponent({
     });
     const iconPath = ref(
       (() => {
-        const { $repositories } = useContext();
+        const { $repositories } = useNuxtApp();
         const { icons } = $repositories;
         if (tags.value.length !== 0) {
           const icon = icons.getIcon(tags.value[0]);

@@ -12,14 +12,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta } from '@nuxtjs/composition-api';
+import { defineComponent, useNuxt2Meta } from '#app';
 import Redirector from '@/components/atoms/Redirector.vue';
 
 export default defineComponent({
-  head: {},
   components: { Redirector },
   setup() {
-    useMeta({ titleTemplate: 'strv.dev' });
+    useNuxt2Meta({ titleTemplate: 'strv.dev' });
   },
 });
 </script>
@@ -33,11 +32,11 @@ import {
   defineComponent,
   ref,
   reactive,
-  useContext,
+  useNuxtApp,
   useAsync,
   useFetch,
   onMounted,
-} from '@nuxtjs/composition-api';
+} from '#app';
 import { IContentDocument } from '@nuxt/content/types/content';
 
 interface IArticleContent extends IContentDocument {
@@ -47,7 +46,7 @@ interface IArticleContent extends IContentDocument {
 
 export default defineComponent({
   setup(props) {
-    const { $content } = useContext();
+    const { $content } = useNuxtApp();
     const fetchPage = async () => {
       return await $content('home').fetch();
     };

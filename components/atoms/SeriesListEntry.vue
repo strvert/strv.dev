@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, useContext } from '@nuxtjs/composition-api';
+import { defineComponent, PropType, computed, useNuxtApp } from '#app';
 import { ISeries } from '@/composables/stores/Series';
 import TagList from '@/components/atoms/TagList.vue';
 import PublishTime from '@/components/atoms/PublishTime.vue';
@@ -24,7 +24,7 @@ export default defineComponent({
   },
   setup(props) {
     const iconPath = computed(() => {
-      const { $repositories } = useContext();
+      const { $repositories } = useNuxtApp();
       const { icons } = $repositories;
       const icon = icons.getIcon(props.series.icon);
       if (icon === undefined) {

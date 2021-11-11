@@ -1,4 +1,5 @@
 import { Inject, NuxtApp } from '@nuxt/types/app';
+import { Plugin } from '@nuxt/types';
 
 import {
   NavContentRepositroyInterface,
@@ -14,7 +15,7 @@ export interface Repositories {
   icons: TagIconRepositoryInterface;
 }
 
-export default ({}: { app: NuxtApp }, inject: Inject) => {
+export default <Plugin> ({}: { app: NuxtApp }, inject: Inject) => {
   const repositories: Repositories = {
     navContent: new StaticNavContentRepositroy(),
     icons: new StaticTagIconRepository()

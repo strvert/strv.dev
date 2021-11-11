@@ -5,16 +5,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta } from '@nuxtjs/composition-api';
+import { defineComponent, useNuxt2Meta } from '#app';
 import SeriesList from '@/components/molecules/SeriesList.vue';
 import ContentListContainer from '@/components/molecules/ContentListContainer.vue';
 import { useBlogSeries } from '@/composables/utils/BlogSeries';
 
 export default defineComponent({
-  head: {},
   components: { ContentListContainer, SeriesList },
   setup() {
-    useMeta({ title: 'blog' });
+    useNuxt2Meta({ title: 'blog' });
     const { serieses } = useBlogSeries();
     return { serieses };
   },

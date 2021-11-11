@@ -5,16 +5,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta } from '@nuxtjs/composition-api';
+import { defineComponent, useNuxt2Meta } from '#app';
 import ArticleList from '@/components/molecules/ArticleList.vue';
 import ContentListContainer from '@/components/molecules/ContentListContainer.vue';
 import { useSearchBlogContent } from '@/composables/utils/SearchBlogContent';
 
 export default defineComponent({
-  head: {},
   components: { ContentListContainer, ArticleList },
   setup() {
-    useMeta({ title: 'blog' });
+    useNuxt2Meta({ title: 'blog' });
     const { pages } = useSearchBlogContent();
     return { pages };
   },

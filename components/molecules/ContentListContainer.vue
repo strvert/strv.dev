@@ -15,7 +15,6 @@ import { defineComponent } from '@nuxtjs/composition-api';
 import SeriesList from '@/components/molecules/SeriesList.vue';
 
 export default defineComponent({
-  head: {},
   components: { SeriesList },
   props: {
     listTitle: {

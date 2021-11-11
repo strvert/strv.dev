@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta } from '@nuxtjs/composition-api';
+import { defineComponent, useNuxt2Meta, ref } from '#app';
 
 export default defineComponent({
-  head: {},
   setup() {
-    const { script } = useMeta();
+  const script = ref([]);
+    useNuxt2Meta({ script });
     script.value = [
       {
         src: 'https://giscus.app/client.js',

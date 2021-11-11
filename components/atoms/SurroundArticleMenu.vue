@@ -15,14 +15,8 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  useFetch,
-  ref,
-  watch,
-  computed,
-  useContext,
-} from '@nuxtjs/composition-api';
+import { defineComponent, ref, watch, computed, useNuxtApp } from '#app';
+import { useFetch } from '@nuxtjs/composition-api';
 import { IArticle } from '@/composables/stores/Article';
 import { pathToSlug } from '@/composables/utils/ConvertArticlePath';
 
@@ -41,7 +35,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { $content } = useContext();
+    const { $content } = useNuxtApp();
 
     const fetchSurroundPage = async () => {
       const pop = $content(process.env.articlesPath as string, { deep: true });

@@ -18,15 +18,14 @@ import {
   defineComponent,
   reactive,
   ref,
-  useMeta,
+  useNuxt2Meta,
   useRouter,
   onMounted,
   onBeforeUnmount,
-} from '@nuxtjs/composition-api';
+} from '#app';
 import { ControllableTimer } from '@/composables/utils/Timers';
 
 export default defineComponent({
-  head: {},
   props: {
     redirect: {
       type: Boolean,
@@ -53,7 +52,7 @@ export default defineComponent({
     );
     onMounted(() => {
       timer.start();
-      useMeta({ titleTemplate: '', title: 'strv.dev' });
+      useNuxt2Meta({ titleTemplate: '', title: 'strv.dev' });
 
       timer.register(() => {
         remaining.value = Math.ceil(timer.remainingTime() / 1000);

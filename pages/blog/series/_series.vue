@@ -5,18 +5,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useMeta, useContext } from '@nuxtjs/composition-api';
+import { defineComponent, computed, useNuxt2Meta, useRoute } from '#app';
 import ArticleList from '@/components/molecules/ArticleList.vue';
 import ContentListContainer from '@/components/molecules/ContentListContainer.vue';
 import { useSearchBlogContent } from '@/composables/utils/SearchBlogContent';
 
 export default defineComponent({
-  head: {},
   components: { ContentListContainer, ArticleList },
   setup() {
-    useMeta({ title: 'blog' });
-    const { route } = useContext();
-    const seriesName = route.value.params.series;
+    useNuxt2Meta({ title: 'blog' });
+    const route = useRoute();
+    const seriesName = route.params.series;
     const { pages: foundPages } = useSearchBlogContent({ series: seriesName });
     const pages = computed(() => {
       return foundPages.value.sort((p1, p2) => {

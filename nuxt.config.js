@@ -1,3 +1,4 @@
+import { defineNuxtConfig } from '@nuxt/bridge';
 import path from 'path';
 import { $content } from '@nuxt/content';
 import { pathToSlug } from './composables/utils/ConvertArticlePath.ts';
@@ -12,12 +13,12 @@ const siteName = 'strv.dev';
 const siteDesc = 'すとんりばーのポートフォリオ 兼 技術ブログ 兼 遊び場';
 const copyright = {
   rights: 'stonriver (Riku Ishikawa)',
-  year: '2021'
+  year: '2021',
 };
 
 const authorInfo = {
   twitter: 'strvert',
-  github: 'strvert'
+  github: 'strvert',
 };
 
 const ogpImages = basePath + 'images/ogp';
@@ -26,15 +27,23 @@ const articlesRoute = 'blog';
 
 const collectBlogPostURIs = async () => {
   const postsLoc = articlesPath;
-  const posts = await $content(postsLoc, { deep: true })
-    .only(['path'])
-    .fetch();
-  return posts.map(post => {
+  const posts = await $content(postsLoc, { deep: true }).only(['path']).fetch();
+  return posts.map((post) => {
     return `${articlesRoute}/${pathToSlug(post.path, articlesPath)}`;
   });
 };
 
-export default {
+export default defineNuxtConfig({
+  bridge: {
+    nitro: false,
+    meta: true,
+  },
+  webpack: {
+    watchOptions: {
+      ignored: '/node_modules/',
+    },
+    stats: 'verbose',
+  },
   env: {
     baseUrl,
     baseDir,
@@ -47,14 +56,14 @@ export default {
     copyright,
     authorInfo,
     articlesPath,
-    articlesRoute
+    articlesRoute,
   },
   router: {
     // base: baseDir
   },
   server: {
     host: '0.0.0.0',
-    port: '3000'
+    port: '3000',
   },
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -62,14 +71,14 @@ export default {
   vue: {
     config: {
       productionTip: false,
-      devtools: true
-    }
+      devtools: true,
+    },
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     htmlAttrs: {
-      lang
+      lang,
     },
     titleTemplate: '%s - strv.dev',
     meta: [
@@ -79,7 +88,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: siteDesc
+        content: siteDesc,
       },
       { hid: 'og:locale', property: 'og:locale', content: locale },
       { hid: 'og:site_name', property: 'og:site_name', content: siteName },
@@ -89,18 +98,18 @@ export default {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: siteDesc
+        content: siteDesc,
       },
       {
         hid: 'og:image',
         property: 'og:image',
-        content: `${ogpImages}/main.png`
+        content: `${ogpImages}/main.png`,
       },
       {
         name: 'twitter:card',
-        content: 'summary_large_image'
+        content: 'summary_large_image',
       },
-      { name: 'twitter:creator', content: '@strvert' }
+      { name: 'twitter:creator', content: '@strvert' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -109,10 +118,10 @@ export default {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
       {
         rel: 'stylesheet',
-        href: 'https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css'
-      }
+        href: 'https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css',
+      },
     ],
-    script: []
+    script: [],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -120,7 +129,7 @@ export default {
     '~/assets/css/thirdparty/sanitize.css',
     '~/assets/css/global.scss',
     '~/assets/css/blogpost.scss',
-    '~/assets/css/variables.scss'
+    '~/assets/css/variables.scss',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -132,18 +141,16 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build',
-    '@nuxtjs/composition-api/module',
     [
       '@nuxtjs/google-fonts',
       {
         families: {
           'M PLUS Rounded 1c': [300, 400, 500],
-          'Source Code Pro': [300, 400]
+          'Source Code Pro': [300, 400],
         },
-        display: 'swap'
-      }
-    ]
+        display: 'swap',
+      },
+    ],
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -157,51 +164,51 @@ export default {
         config: {
           output: {
             nameTemplate: '%s.png',
-            path: path.join(process.cwd(), '/static/images/ogp/generated')
+            path: path.join(process.cwd(), '/static/images/ogp/generated'),
           },
           resources: {
             get baseImagePath() {
               return path.join(process.cwd(), '/assets/images/ogp', 'article_base.png');
             },
-            fontPath: path.join(process.cwd(), '/assets/fonts', 'MPLUS1p-ExtraBold.ttf')
+            fontPath: path.join(process.cwd(), '/assets/fonts', 'MPLUS1p-ExtraBold.ttf'),
           },
           textStyle: {
             textOptions: {
               fontSize: 50,
-              attributes: { fill: '#37424e' }
+              attributes: { fill: '#37424e' },
             },
             lineSpacing: 10,
             width: 900,
-            position: imageSize => [imageSize[0] / 2, imageSize[1] / 2 - 90],
+            position: (imageSize) => [imageSize[0] / 2, imageSize[1] / 2 - 90],
             textAlign: 'center',
-            anchor: 'center middle'
+            anchor: 'center middle',
           },
-          contentPath: 'articles'
-        }
-      }
-    ]
+          contentPath: 'articles',
+        },
+      },
+    ],
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     analyze: true,
     cache: true,
-    parallel: true
+    parallel: true,
   },
   content: {
-    markdown: {}
+    markdown: {},
   },
   generate: {
     workers: 16,
     interval: 2000,
     async routes() {
       return await collectBlogPostURIs();
-    }
+    },
   },
   sitemap: {
     hostname: baseUrl,
     routes: async () => {
       return await collectBlogPostURIs();
-    }
-  }
-};
+    },
+  },
+});

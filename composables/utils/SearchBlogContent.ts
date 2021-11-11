@@ -1,4 +1,5 @@
-import { useFetch, ref, useContext, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api';
+import { ref, Ref, useNuxtApp, onMounted, onBeforeUnmount } from '#app';
+import { useFetch } from '@nuxtjs/composition-api';
 import { SearchParam } from '@/composables/utils/SearchParam';
 import { IArticle } from '@/composables/stores/Article';
 
@@ -11,8 +12,8 @@ export const useSearchBlogContent = (
   param: SearchParam = {},
   sort: sortProp = { by: 'createdAt', direction: 'desc' }
 ) => {
-  const { $content } = useContext();
-  const pages = ref<IArticle[]>([]);
+  const { $content } = useNuxtApp();
+  const pages: Ref<IArticle[]> = ref<IArticle[]>([]);
 
   const makeWhereParam = () => {
     return {
@@ -29,7 +30,7 @@ export const useSearchBlogContent = (
         } else {
           return undefined;
         }
-      })()
+      })(),
     };
   };
 

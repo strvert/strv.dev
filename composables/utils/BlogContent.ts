@@ -1,4 +1,5 @@
-import { useFetch, ref, useContext, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api';
+import { ref, useNuxtApp, onMounted, onBeforeUnmount } from '#app';
+import { useFetch } from '@nuxtjs/composition-api';
 import { slugToPath } from '@/composables/utils/ConvertArticlePath';
 import { IArticle } from '@/composables/stores/Article';
 
@@ -7,7 +8,7 @@ export const useBlogContent = (slug: string) => {
   const tags = ref<string[]>([]);
   const series = ref<string>();
 
-  const { $content } = useContext();
+  const { $content } = useNuxtApp();
   const path = ref(slugToPath(slug));
 
   const fetchPage = async () => {

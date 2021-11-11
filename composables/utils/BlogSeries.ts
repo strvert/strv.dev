@@ -1,21 +1,22 @@
-import { ref, onMounted, useFetch, useContext, onBeforeUnmount } from '@nuxtjs/composition-api';
+import { ref, onMounted, useNuxtApp, onBeforeUnmount } from '#app';
+import { useFetch } from '@nuxtjs/composition-api';
 import { IArticle } from '@/composables/stores/Article';
 import { ISeries } from '@/composables/stores/Series';
 
 export const useBlogSeries = () => {
   const serieses = ref<Array<ISeries>>([]);
-  const { $content } = useContext();
+  const { $content } = useNuxtApp();
 
   const fetchSerieses = async () => {
-    const pages = (await $content(process.env.articlesPath!, { deep: true }).fetch<
-      IArticle
-    >()) as IArticle[];
+    const pages = (await $content(process.env.articlesPath!, {
+      deep: true,
+    }).fetch<IArticle>()) as IArticle[];
     const seriesSet = pages
-      .filter(page => page.series !== undefined)
+      .filter((page) => page.series !== undefined)
       .reduce((prev, curr) => prev.add(curr.series!), new Set<string>());
 
     return await Promise.all(
-      Array.from(seriesSet.values()).map(async name => {
+      Array.from(seriesSet.values()).map(async (name) => {
         const pages = (await $content(process.env.articlesPath!, { deep: true })
           .where({ series: { $eq: name } })
           .fetch<IArticle>()) as IArticle[];

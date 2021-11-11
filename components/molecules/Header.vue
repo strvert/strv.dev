@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useContext, ref, computed } from '@nuxtjs/composition-api';
+import { defineComponent, useNuxtApp, ref, computed } from '#app';
 import StrvdevLogo from '@/components/atoms/StrvdevLogo.vue';
 import SiteContentList from '@/components/atoms/SiteContentList.vue';
 import { useScrollDirectionEvent } from '@/composables/utils/ScrollEvents';
@@ -52,7 +52,7 @@ export default defineComponent({
       return false;
     });
 
-    const { $repositories } = useContext();
+    const { $repositories } = useNuxtApp();
     const { navContent } = $repositories;
     const siteContent = navContent.get();
     const rowHeight = 44; // px

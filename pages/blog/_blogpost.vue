@@ -24,25 +24,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, ref, useContext } from '@nuxtjs/composition-api';
+import { defineComponent, watch, ref, useRoute, useNuxt2Meta } from '#app';
+// import BlogpostMeta from '@/components/atoms/BlogpostMeta.vue';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import TagList from '@/components/atoms/TagList.vue';
+import { IArticle } from '@/composables/stores/Article';
 import { PublishStatus } from '@/composables/stores/Article';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
-import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 import { Moment } from 'moment-timezone';
 import { useBlogContent } from '@/composables/utils/BlogContent';
+import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 
 export default defineComponent({
-  head: {},
   layout: 'blogpost',
   components: { SurroundArticleMenu, TagList },
-  props: {},
   setup() {
-    const { setBlogpostMeta } = useBlogpostMeta();
-
-    const { route } = useContext();
-    const currentSlug = route.value.params.blogpost;
+    const route = useRoute();
+    const currentSlug = route.params.blogpost;
 
     const { page, path, series, tags } = useBlogContent(currentSlug);
 
@@ -55,16 +53,18 @@ export default defineComponent({
       publishStatus.value = status;
     };
 
-    watch(page, (value) => {
+    const { makeBlogpostMeta } = useBlogpostMeta();
+    const { title, meta } = makeBlogpostMeta(page);
+    useNuxt2Meta({ title, meta });
+
+    watch(page, (value: IArticle) => {
       if (value !== undefined) {
-        setBlogpostMeta(value);
         const { createdAt, updatedAt } = readDateInfos(value);
         if (createdAt.toString() === updatedAt.toString()) {
           updateDateStrings(createdAt, '公開');
         } else {
           updateDateStrings(updatedAt, '更新');
         }
-        setBlogpostMeta(value);
       }
     });
 
