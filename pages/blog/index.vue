@@ -13,7 +13,7 @@ import { useSearchBlogContent } from '@/composables/utils/SearchBlogContent';
 export default defineComponent({
   components: { ContentListContainer, ArticleList },
   setup() {
-    useNuxt2Meta({ title: 'blog' });
+    useNuxt2Meta({ title: '記事一覧' });
     const { pages } = useSearchBlogContent();
     return { pages };
   },
