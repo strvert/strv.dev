@@ -7,12 +7,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@nuxtjs/composition-api';
+import { defineNuxtComponent, PropType } from '#app';
 import ContentList from '@/components/atoms/ContentList.vue';
 import ArticleListEntry from '@/components/atoms/ArticleListEntry.vue';
 import { IArticle } from '@/composables/stores/Article';
 
-export default defineComponent({
+export const articleSortKeys = ['updatedDate', 'postedDate'] as const;
+export type ArticleSortBy = typeof articleSortKeys[number];
+export const getDisplayNameOfArticalSortBy = (sortBy: ArticleSortBy) => {
+  const dict = new Map<ArticleSortBy, string>([
+    ['postedDate', '投稿日時'],
+    ['updatedDate', '更新日時'],
+  ]);
+  return dict.has(sortBy) ? dict.get(sortBy) : "";
+};
+
+export default defineNuxtComponent({
   components: { ContentList, ArticleListEntry },
   props: {
     articles: {

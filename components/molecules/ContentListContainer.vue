@@ -11,11 +11,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api';
+import { defineNuxtComponent } from '#app';
 import SeriesList from '@/components/molecules/SeriesList.vue';
+import DropDownMenu from '@/components/atoms/DropDownMenu.vue';
 
-export default defineComponent({
-  components: { SeriesList },
+export default defineNuxtComponent({
+  components: { SeriesList, DropDownMenu },
   props: {
     listTitle: {
       type: String,

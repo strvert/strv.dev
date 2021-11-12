@@ -9,6 +9,7 @@ import { defineComponent } from '@nuxtjs/composition-api';
 import AppFrame from '@/components/organisms/AppFrame.vue';
 
 export default defineComponent({
+  name: 'defaultLayout',
   components: { AppFrame },
   setup() {},
 });
