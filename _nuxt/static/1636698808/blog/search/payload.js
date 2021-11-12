@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/blog/search", {data:[{}],fetch:{"data-v-089779c6:0":{pages:[]}},mutations:void 0});
