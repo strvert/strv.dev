@@ -1,6 +1,6 @@
 <template>
   <div>
-    <article>
+    <blogpost-frame>
       <div class="blogpost">
         <header>
           <h1 class="post-title">{{ page === undefined ? '' : page.title }}</h1>
@@ -19,13 +19,13 @@
       <div class="surround-menu">
         <surround-article-menu :path="path" :useSeries="true" :series="series" />
       </div>
-    </article>
+    </blogpost-frame>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch, ref, useRoute, useNuxt2Meta } from '#app';
-// import BlogpostMeta from '@/components/atoms/BlogpostMeta.vue';
+import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import TagList from '@/components/atoms/TagList.vue';
 import { IArticle } from '@/composables/stores/Article';
@@ -36,8 +36,7 @@ import { useBlogContent } from '@/composables/utils/BlogContent';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 
 export default defineComponent({
-  layout: 'blogpost',
-  components: { SurroundArticleMenu, TagList },
+  components: { BlogpostFrame, SurroundArticleMenu, TagList },
   setup() {
     const route = useRoute();
     const currentSlug = route.params.blogpost;

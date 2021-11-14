@@ -129,9 +129,13 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/thirdparty/sanitize.css',
     '~/assets/css/global.scss',
+    '~/assets/css/transition.scss',
     '~/assets/css/blogpost.scss',
     '~/assets/css/variables.scss',
   ],
+
+  pageTransition: 'page',
+  layoutTransition: 'layout',
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ['~/plugins/RepositoryFactory'],

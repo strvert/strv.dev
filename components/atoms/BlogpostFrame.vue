@@ -1,19 +1,19 @@
 <template>
-  <app-frame>
-    <nuxt />
+  <div>
+    <article>
+      <slot />
+    </article>
     <article class="giscus-wrapper">
       <giscus />
     </article>
-  </app-frame>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineNuxtComponent } from '#app';
 import Giscus from '@/components/atoms/Giscus.vue';
-import AppFrame from '@/components/organisms/AppFrame.vue';
-
 export default defineNuxtComponent({
-  components: { AppFrame, Giscus },
+  components: { Giscus },
 });
 </script>
 
@@ -26,4 +26,3 @@ export default defineNuxtComponent({
   }
   margin: 0 auto;
 }
-</style>

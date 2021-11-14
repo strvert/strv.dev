@@ -5,12 +5,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api';
+import { defineNuxtComponent } from '#app';
 import AppFrame from '@/components/organisms/AppFrame.vue';
 
-export default defineComponent({
+export default defineNuxtComponent({
   name: 'defaultLayout',
   components: { AppFrame },
-  setup() {},
 });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="frame">
-    <Header class="header" />
+    <Header class="header exclude-transition" />
     <main>
       <div class="content">
         <container>
@@ -13,15 +13,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api';
+import { defineNuxtComponent } from '#app';
 
 import Container from '@/components/atoms/Container.vue';
 import Header from '@/components/molecules/Header.vue';
 import Footer from '@/components/molecules/Footer.vue';
 
-export default defineComponent({
+export default defineNuxtComponent({
   components: { Container, Header, Footer },
-  setup() {},
 });
 </script>
 

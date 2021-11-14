@@ -4,14 +4,16 @@
       <h1>{{ listTitle }}</h1>
     </header>
 
-    <div class="list" v-bind:class="classObject">
-      <slot />
-    </div>
+    <transition name="content-list">
+      <div v-if="ready">
+        <slot />
+      </div>
+    </transition>
   </section>
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, computed } from '#app';
+import { defineNuxtComponent } from '#app';
 import SeriesList from '@/components/molecules/SeriesList.vue';
 import DropDownMenu from '@/components/atoms/DropDownMenu.vue';
 
@@ -27,12 +29,6 @@ export default defineNuxtComponent({
       required: true,
     },
   },
-  setup(props) {
-    const classObject = computed(() => {
-      return { ready: props.ready };
-    });
-    return { classObject };
-  },
 });
 </script>
 
@@ -43,13 +39,13 @@ h1 {
   }
 }
 
-.list {
-  transition-property: opacity;
-  transition-duration: 0.3s;
-  opacity: 0;
+.content-list-enter-active,
+.content-list-leave-active {
+  transition: opacity 0.2s;
 }
 
-.ready {
-  opacity: 1;
+.content-list-enter,
+.content-list-leave-to {
+  opacity: 0;
 }
 </style>

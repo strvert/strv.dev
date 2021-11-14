@@ -1,6 +1,6 @@
 @mixin transition-a {
   transition-property: opacity height block-size transform;
-  transition-duration: 0.7s;
+  transition-duration: 0.2s;
 }
 
 .page-enter-active,
@@ -16,7 +16,17 @@
 .inverse-page-leave-active {
   @include transition-a;
 }
-.page-enter,
-.page-leave-to {
+
+.layout-enter-active,
+.layout-leave-active {
+  @include transition-a;
+}
+.layout-enter,
+.layout-leave-to {
   opacity: 0;
+}
+
+.inverse-layout-enter-active,
+.inverse-layout-leave-active {
+  @include transition-a;
 }
