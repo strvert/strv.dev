@@ -66,6 +66,7 @@ export default defineNuxtConfig({
     port: '3000',
   },
   // Target: https://go.nuxtjs.dev/config-target
+  ssr: true,
   target: 'static',
 
   vue: {
@@ -194,6 +195,7 @@ export default defineNuxtConfig({
     analyze: true,
     cache: true,
     parallel: true,
+    hardSource: true,
   },
   content: {
     markdown: {},

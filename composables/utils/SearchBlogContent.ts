@@ -1,5 +1,5 @@
 import { ref, Ref, useNuxtApp, onMounted, onBeforeUnmount, watch, Query } from '#app';
-import { useFetch } from '@nuxtjs/composition-api';
+import { useFetch, useAsync } from '@nuxtjs/composition-api';
 import { ParamBuilder } from '@/composables/utils/SearchParamBuilder/SearchParamBuilder';
 import { SearchParam } from '@/composables/utils/SearchParam';
 import { IArticle } from '@/composables/stores/Article';
@@ -56,14 +56,14 @@ export const useSearchBlogContent = (
     pages.value = await fetchPages();
   };
 
-  useFetch(async () => {
+  useAsync(async () => {
     await fetch();
   });
 
   onMounted(async () => {
     watch(
       () => window.$nuxt.$route.query,
-      async (q: Query) => {
+      async () => {
         await fetch();
       }
     );
