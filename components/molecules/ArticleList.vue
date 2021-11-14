@@ -30,6 +30,11 @@ export default defineNuxtComponent({
       required: true,
     },
   },
-  setup(props) {},
 });
 </script>
+
+<style lang="scss" scoped>
+[v-cloak] {
+  opacity: 0;
+}
+</style>

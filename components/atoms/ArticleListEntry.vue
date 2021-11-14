@@ -3,6 +3,7 @@
     :title="article.title"
     :uri="`/blog/${pathToSlug(article.path)}`"
     :iconPath="iconPath"
+    v-cloak
   >
     <div class="meta">
       <div class="pubtime">

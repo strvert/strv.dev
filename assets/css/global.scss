@@ -48,3 +48,7 @@ a {
   text-shadow: none;
   background: #a3c4fc;
 }
+
+[v-cloak] {
+  opacity: 0;
+}

@@ -15,6 +15,7 @@ export const useSearchBlogContent = (
 ) => {
   const { $content } = useNuxtApp();
   const pages: Ref<IArticle[]> = ref<IArticle[]>([]);
+  const completed = ref<boolean>(false);
   const param = ref<SearchParam>({});
 
   const updateParameter = () => {
@@ -41,7 +42,6 @@ export const useSearchBlogContent = (
   };
 
   const fetchPages = async () => {
-    updateParameter();
     const pages = (await $content(process.env.articlesPath!, { deep: true })
       .sortBy(sort.by, sort.direction)
       .where(makeWhereParam())
@@ -53,7 +53,9 @@ export const useSearchBlogContent = (
   };
 
   const fetch = async () => {
+    updateParameter();
     pages.value = await fetchPages();
+    completed.value = true;
   };
 
   useAsync(async () => {
@@ -64,6 +66,7 @@ export const useSearchBlogContent = (
     watch(
       () => window.$nuxt.$route.query,
       async () => {
+        completed.value = false;
         await fetch();
       }
     );
@@ -76,5 +79,5 @@ export const useSearchBlogContent = (
     window.$nuxt.$off('content:update');
   });
 
-  return { pages };
+  return { pages, completed };
 };

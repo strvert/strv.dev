@@ -1,16 +1,10 @@
 <template>
-  <div>
+  <div v-cloak>
     <ul>
       <slot />
     </ul>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api';
-
-export default defineComponent({});
-</script>
 
 <style lang="scss" scoped>
 ul {

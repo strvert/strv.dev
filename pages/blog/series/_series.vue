@@ -1,5 +1,5 @@
 <template>
-  <content-list-container :listTitle="`シリーズ: ${seriesName}`">
+  <content-list-container :listTitle="`シリーズ: ${seriesName}`" :ready="completed">
     <article-list :articles="pages" />
   </content-list-container>
 </template>
@@ -18,7 +18,7 @@ export default defineComponent({
     useNuxt2Meta({ title: 'blog' });
     const route = useRoute();
     const seriesName = route.params.series;
-    const { pages: foundPages } = useSearchBlogContent(
+    const { pages: foundPages, completed } = useSearchBlogContent(
       new StaticParamBuilder({ series: seriesName })
     );
     const pages = computed(() => {
@@ -26,7 +26,7 @@ export default defineComponent({
         return p1.seriesIndex! - p2.seriesIndex!;
       });
     });
-    return { pages, seriesName };
+    return { pages, seriesName, completed };
   },
 });
 </script>

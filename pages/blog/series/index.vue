@@ -1,5 +1,5 @@
 <template>
-  <content-list-container listTitle="シリーズ一覧">
+  <content-list-container listTitle="シリーズ一覧" :ready="completed">
     <series-list :serieses="serieses" />
   </content-list-container>
 </template>
@@ -14,8 +14,8 @@ export default defineComponent({
   components: { ContentListContainer, SeriesList },
   setup() {
     useNuxt2Meta({ title: 'blog' });
-    const { serieses } = useBlogSeries();
-    return { serieses };
+    const { serieses, completed } = useBlogSeries();
+    return { serieses, completed };
   },
 });
 </script>

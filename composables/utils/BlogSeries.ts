@@ -6,6 +6,7 @@ import { ISeries } from '@/composables/stores/Series';
 export const useBlogSeries = () => {
   const serieses = ref<Array<ISeries>>([]);
   const { $content } = useNuxtApp();
+  const completed = ref(false);
 
   const fetchSerieses = async () => {
     const pages = (await $content(process.env.articlesPath!, {
@@ -37,12 +38,16 @@ export const useBlogSeries = () => {
   };
 
   useFetch(async () => {
+    completed.value = false;
     serieses.value = await fetchSerieses();
+    completed.value = true;
   });
 
   onMounted(async () => {
     window.$nuxt.$on('content:update', async () => {
+      completed.value = false;
       serieses.value = await fetchSerieses();
+      completed.value = true;
     });
   });
 
@@ -50,5 +55,5 @@ export const useBlogSeries = () => {
     window.$nuxt.$off('content:update');
   });
 
-  return { serieses };
+  return { serieses, completed };
 };
