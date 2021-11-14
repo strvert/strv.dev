@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/blog/series/Exampleなシリーズ", {data:[{}],fetch:{},mutations:void 0});
