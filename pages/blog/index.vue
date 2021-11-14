@@ -7,6 +7,7 @@
 <script lang="ts">
 import { defineComponent, useNuxt2Meta } from '#app';
 import ArticleList from '@/components/molecules/ArticleList.vue';
+import { StaticParamBuilder } from '@/composables/utils/SearchParamBuilder/StaticParamBuilder';
 // import {
 //   getDisplayNameOfArticalSortBy,
 //   ArticleSortBy,
@@ -19,7 +20,7 @@ export default defineComponent({
   components: { ContentListContainer, ArticleList },
   setup() {
     useNuxt2Meta({ title: '記事一覧' });
-    const { pages } = useSearchBlogContent();
+    const { pages } = useSearchBlogContent(new StaticParamBuilder({}));
     return { pages };
   },
 });

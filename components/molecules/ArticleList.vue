@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, PropType } from '#app';
+import { defineNuxtComponent, PropType, watch } from '#app';
 import ContentList from '@/components/atoms/ContentList.vue';
 import ArticleListEntry from '@/components/atoms/ArticleListEntry.vue';
 import { IArticle } from '@/composables/stores/Article';
@@ -19,7 +19,7 @@ export const getDisplayNameOfArticalSortBy = (sortBy: ArticleSortBy) => {
     ['postedDate', '投稿日時'],
     ['updatedDate', '更新日時'],
   ]);
-  return dict.has(sortBy) ? dict.get(sortBy) : "";
+  return dict.has(sortBy) ? dict.get(sortBy) : '';
 };
 
 export default defineNuxtComponent({
@@ -30,6 +30,6 @@ export default defineNuxtComponent({
       required: true,
     },
   },
-  setup() {},
+  setup(props) {},
 });
 </script>
