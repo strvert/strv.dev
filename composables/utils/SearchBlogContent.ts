@@ -1,5 +1,5 @@
-import { ref, Ref, useNuxtApp, onMounted, onBeforeUnmount, watch, Query } from '#app';
-import { useFetch, useAsync } from '@nuxtjs/composition-api';
+import { ref, Ref, useNuxtApp, onMounted, onBeforeUnmount, watch } from '#app';
+import { useAsync } from '@nuxtjs/composition-api';
 import { ParamBuilder } from '@/composables/utils/SearchParamBuilder/SearchParamBuilder';
 import { SearchParam } from '@/composables/utils/SearchParam';
 import { IArticle } from '@/composables/stores/Article';
