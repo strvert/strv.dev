@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/blog/series/undefined", {data:[{}],fetch:{"data-v-6170ea27:0":{pages:[],seriesName:"undefined"}},mutations:void 0});
