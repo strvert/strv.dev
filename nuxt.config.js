@@ -79,6 +79,7 @@ export default defineNuxtConfig({
   head: {
     htmlAttrs: {
       lang,
+      prefix: 'og: http://ogp.me/ns#',
     },
     titleTemplate: '%s - strv.dev',
     meta: [
@@ -205,9 +206,10 @@ export default defineNuxtConfig({
   content: {
     markdown: {},
   },
+  ssr: true,
   generate: {
     workers: 16,
-    interval: 2000,
+    interval: 1000,
     async routes() {
       return await collectBlogPostURIs();
     },
