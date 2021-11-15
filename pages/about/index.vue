@@ -18,7 +18,7 @@ export default defineNuxtComponent({
     const { $content } = useNuxtApp();
     const page = ref(undefined);
     const { makeBlogpostMeta } = useBlogpostMeta();
-    const { title, meta } = makeBlogpostMeta(page);
+    const { title, meta } = makeBlogpostMeta(page, 'main.png');
     useNuxt2Meta({ title, meta });
 
     useFetch(async () => {

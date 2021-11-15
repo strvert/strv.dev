@@ -3,12 +3,16 @@ import { IArticle } from '@/composables/stores/Article';
 import { pathToSlug } from '@/composables/utils/ConvertArticlePath';
 
 export const useBlogpostMeta = () => {
-  const makeBlogpostMeta = (article: ref<IArticle>) => {
+  const makeBlogpostMeta = (article: ref<IArticle>, ogpImage: String = '') => {
     const title = ref('');
     const meta = ref([]);
     watch(article, (value: IArticle) => {
       if (value !== undefined) {
         title.value = value.title;
+        const imagePath =
+          ogpImage !== ''
+            ? `${process.env.ogpImages}/${ogpImage}`
+            : `${process.env.ogpImages}/generated/${pathToSlug(value.path)}.png`;
         meta.value = [
           {
             hid: 'description',
@@ -35,7 +39,7 @@ export const useBlogpostMeta = () => {
           {
             hid: 'og:image',
             property: 'og:image',
-            content: `${process.env.ogpImages}/generated/${pathToSlug(value.path)}.png`,
+            content: imagePath,
           },
         ];
       }
