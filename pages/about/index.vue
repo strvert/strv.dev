@@ -1,5 +1,5 @@
 <template>
-  <blogpost-frame :page="page" :showComment="false">
+  <blogpost-frame v-if="page !== undefined" :page="page" :showComment="false">
     <nuxt-content :document="page" />
   </blogpost-frame>
 </template>

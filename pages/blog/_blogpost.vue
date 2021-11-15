@@ -1,11 +1,13 @@
 <template>
-  <blogpost-frame :page="page" :path="path">
-    <nuxt-content :document="page" />
-  </blogpost-frame>
+  <div>
+    <blogpost-frame v-if="page !== undefined" :page="page" :path="path">
+      <nuxt-content :document="page" />
+    </blogpost-frame>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, useRoute, useNuxt2Meta } from '#app';
+import { defineNuxtComponent, useRoute, useNuxt2Meta, watch } from '#app';
 import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
 import { useBlogContent } from '@/composables/utils/BlogContent';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';

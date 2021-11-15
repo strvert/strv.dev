@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, ref } from '#app';
+import { defineNuxtComponent, PropType, computed, ref } from '#app';
 import { Moment } from 'moment-timezone';
 
-export default defineComponent({
+export default defineNuxtComponent({
   props: {
     published: {
       type: Object as PropType<Moment>,

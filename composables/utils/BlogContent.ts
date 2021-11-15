@@ -1,12 +1,10 @@
-import { ref, useNuxtApp, onMounted, onBeforeUnmount } from '#app';
-import { useFetch } from '@nuxtjs/composition-api';
+import { ref, useNuxtApp, onMounted, onBeforeUnmount, computed } from '#app';
+import { useAsync } from '@nuxtjs/composition-api';
 import { slugToPath } from '@/composables/utils/ConvertArticlePath';
 import { IArticle } from '@/composables/stores/Article';
 
 export const useBlogContent = (slug: string) => {
   const page = ref<IArticle>();
-  const tags = ref<string[]>([]);
-  const series = ref<string>();
 
   const { $content } = useNuxtApp();
   const path = ref(slugToPath(slug));
@@ -18,25 +16,18 @@ export const useBlogContent = (slug: string) => {
     }
     return p;
   };
-  const updateTags = (page: IArticle) => {
-    if (page.tags !== undefined) {
-      tags.value = page.tags;
-    } else {
-      tags.value = [];
-    }
+
+  const fetch = async () => {
+    page.value = (await fetchPage()) as IArticle;
   };
 
-  useFetch(async () => {
-    page.value = (await fetchPage()) as IArticle;
-    series.value = page.value.series;
-    updateTags(page.value);
+  useAsync(async () => {
+    await fetch();
   });
 
   onMounted(async () => {
     window.$nuxt.$on('content:update', async () => {
-      page.value = (await fetchPage()) as IArticle;
-      series.value = page.value.series;
-      updateTags(page.value);
+      await fetch();
     });
   });
 
@@ -44,5 +35,5 @@ export const useBlogContent = (slug: string) => {
     window.$nuxt.$off('content:update');
   });
 
-  return { page, path, series, tags };
+  return { page, path };
 };
