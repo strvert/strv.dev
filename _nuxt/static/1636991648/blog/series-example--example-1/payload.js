@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/blog/series-example--example-1", (function(a){return {data:[{}],fetch:{"data-v-08b63208:0":{prevTitle:a,nextTitle:"Example実装まで その2",existPrev:false,existNext:true,prevSlug:a,nextSlug:"\u002Fblog\u002Fseries-example--example-2",seriesTitle:"Exampleなシリーズ",seriesPage:a}},mutations:void 0}}("")));

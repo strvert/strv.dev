@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/blog/page4", (function(a,b){return {data:[{}],fetch:{"data-v-08b63208:0":{prevTitle:a,nextTitle:a,existPrev:b,existNext:b,prevSlug:a,nextSlug:a,seriesPage:a}},mutations:void 0}}("",false)));
