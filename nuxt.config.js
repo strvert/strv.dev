@@ -86,26 +86,26 @@ export default defineNuxtConfig({
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'format-detection', content: 'telephone=no' },
-      // {
-      //   hid: 'description',
-      //   name: 'description',
-      //   content: siteDesc,
-      // },
+      {
+        hid: 'description',
+        name: 'description',
+        content: siteDesc,
+      },
       { hid: 'og:locale', property: 'og:locale', content: locale },
       { hid: 'og:site_name', property: 'og:site_name', content: siteName },
       { hid: 'og:type', property: 'og:type', content: 'article' },
-      // { hid: 'og:url', property: 'og:url', content: baseUrl },
-      // { hid: 'og:title', property: 'og:title', content: 'strv.dev' },
-      // {
-      //   hid: 'og:description',
-      //   property: 'og:description',
-      //   content: siteDesc,
-      // },
-      // {
-      //   hid: 'og:image',
-      //   property: 'og:image',
-      //   content: `${ogpImages}/main.png`,
-      // },
+      { hid: 'og:url', property: 'og:url', content: baseUrl },
+      { hid: 'og:title', property: 'og:title', content: 'strv.dev' },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: siteDesc,
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: `${ogpImages}/main.png`,
+      },
       {
         name: 'twitter:card',
         content: 'summary_large_image',
@@ -161,6 +161,7 @@ export default defineNuxtConfig({
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/google-gtag',
     'nuxt-content-git',
     '@nuxt/content',
     '@nuxtjs/sitemap',
@@ -217,5 +218,9 @@ export default defineNuxtConfig({
     routes: async () => {
       return await collectBlogPostURIs();
     },
+  },
+  'google-gtag': {
+    id: 'G-7CSGM5KZ9W',
+    debug: true,
   },
 });
