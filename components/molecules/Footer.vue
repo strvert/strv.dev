@@ -17,15 +17,19 @@
           </p>
         </address>
       </div>
-      <div class="copyright">© {{ copyright.year }} {{ copyright.rights }}.</div>
+      <div class="infos">
+        <p>
+          <span class="copyright">© {{ copyright.year }} {{ copyright.rights }}.</span>
+        </p>
+      </div>
     </footer>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api';
+import { defineNuxtComponent } from '#app';
 
-export default defineComponent({
+export default defineNuxtComponent({
   components: {},
   setup() {
     const copyright = process.env.copyright;
@@ -47,11 +51,24 @@ export default defineComponent({
     padding-block-end: 1rem;
     color: #000000bb;
 
-    .copyright {
-      bottom: 1em;
-      left: 0;
-      font-size: 0.9rem;
-      margin-block-start: 1em;
+    .infos {
+      display: flex;
+      justify-content: space-between;
+
+      @mixin info-text {
+        bottom: 1em;
+        left: 0;
+        font-size: 0.9rem;
+        margin-block-start: 1em;
+      }
+      .copyright,
+      .privacy {
+        @include info-text;
+      }
+    }
+
+    .im {
+      font-size: 1.5rem;
     }
 
     address {
@@ -68,9 +85,6 @@ export default defineComponent({
         margin: 0;
         font-size: 0.9rem;
       }
-      .im {
-        font-size: 1.5rem;
-      }
     }
     .repository {
       margin-block-start: 0.5rem;
@@ -80,9 +94,6 @@ export default defineComponent({
         align-content: center;
         align-items: center;
         margin: 0;
-      }
-      .im {
-        font-size: 1.5rem;
       }
     }
 

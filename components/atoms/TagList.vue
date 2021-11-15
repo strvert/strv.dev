@@ -1,5 +1,5 @@
 <template>
-  <div class="list-wrapper">
+  <div v-if="tags.length !== 0" class="list-wrapper">
     <span class="material-icons" :style="iconStyle">local_offer</span>
     <ul class="tag-list" :style="listStyle">
       <li v-for="tag in tags" :key="tag">

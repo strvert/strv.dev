@@ -1,6 +1,6 @@
 <template>
   <div class="frame">
-    <Header class="header exclude-transition" />
+    <Header class="header" />
     <main>
       <div class="content">
         <container>
