@@ -31,7 +31,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const isUpdated = ref(props.published.toString() === props.updated.toString());
+    const isUpdated = ref(props.published.toString() !== props.updated.toString());
 
     const pub = computed(() => {
       return props.published.format('YYYY.MM.DD');
