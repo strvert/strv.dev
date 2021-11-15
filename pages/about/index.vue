@@ -8,15 +8,18 @@
 import { defineNuxtComponent, useNuxtApp, useNuxt2Meta, ref } from '#app';
 import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
 import { useFetch } from '@nuxtjs/composition-api';
+import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 import { IArticle } from '@/composables/stores/Article';
 
 export default defineNuxtComponent({
   name: 'about',
   components: { BlogpostFrame },
   setup() {
-    useNuxt2Meta({ title: '当サイトについて' });
     const { $content } = useNuxtApp();
     const page = ref(undefined);
+    const { makeBlogpostMeta } = useBlogpostMeta();
+    const { title, meta } = makeBlogpostMeta(page);
+    useNuxt2Meta({ title, meta });
 
     useFetch(async () => {
       const p = await $content('about').fetch<IArticle[]>();
