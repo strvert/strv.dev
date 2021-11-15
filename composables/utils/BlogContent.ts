@@ -1,5 +1,5 @@
-import { ref, useNuxtApp, onMounted, onBeforeUnmount, computed } from '#app';
-import { useAsync } from '@nuxtjs/composition-api';
+import { ref, useNuxtApp, onMounted, onBeforeUnmount } from '#app';
+import { useFetch } from '@nuxtjs/composition-api';
 import { slugToPath } from '@/composables/utils/ConvertArticlePath';
 import { IArticle } from '@/composables/stores/Article';
 
@@ -21,7 +21,7 @@ export const useBlogContent = (slug: string) => {
     page.value = (await fetchPage()) as IArticle;
   };
 
-  useAsync(async () => {
+  useFetch(async () => {
     await fetch();
   });
 
