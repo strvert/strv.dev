@@ -25,6 +25,48 @@ const ogpImages = basePath + 'images/ogp';
 const articlesPath = 'articles';
 const articlesRoute = 'blog';
 
+const defaultMeta = [
+  { charset: 'utf-8' },
+  { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+  { name: 'format-detection', content: 'telephone=no' },
+  {
+    hid: 'description',
+    name: 'description',
+    content: siteDesc,
+  },
+  { hid: 'og:locale', property: 'og:locale', content: locale },
+  { hid: 'og:site_name', property: 'og:site_name', content: siteName },
+  { hid: 'og:type', property: 'og:type', content: 'article' },
+  { hid: 'og:url', property: 'og:url', content: baseUrl },
+  { hid: 'og:title', property: 'og:title', content: 'strv.dev' },
+  {
+    hid: 'og:description',
+    property: 'og:description',
+    content: siteDesc,
+  },
+  {
+    hid: 'og:image',
+    property: 'og:image',
+    content: `${ogpImages}/main.png`,
+  },
+  {
+    name: 'twitter:card',
+    content: 'summary_large_image',
+  },
+  { name: 'twitter:creator', content: '@strvert' },
+];
+
+const defaultLink = [
+  { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+  { rel: 'apple-touch-icon', type: 'image/png', href: '/apple-touch-icon-180x180.png' },
+  { rel: 'icon', type: 'image/png', href: '/icon-192x192.png' },
+  { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+  {
+    rel: 'stylesheet',
+    href: 'https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css',
+  },
+];
+
 const collectBlogPostURIs = async () => {
   const postsLoc = articlesPath;
   const posts = await $content(postsLoc, { deep: true }).only(['path']).fetch();
@@ -57,6 +99,8 @@ export default defineNuxtConfig({
     authorInfo,
     articlesPath,
     articlesRoute,
+    defaultMeta,
+    defaultLink,
   },
   router: {
     // base: baseDir
@@ -82,46 +126,6 @@ export default defineNuxtConfig({
       prefix: 'og: http://ogp.me/ns#',
     },
     titleTemplate: '%s - strv.dev',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { name: 'format-detection', content: 'telephone=no' },
-      {
-        hid: 'description',
-        name: 'description',
-        content: siteDesc,
-      },
-      { hid: 'og:locale', property: 'og:locale', content: locale },
-      { hid: 'og:site_name', property: 'og:site_name', content: siteName },
-      { hid: 'og:type', property: 'og:type', content: 'article' },
-      { hid: 'og:url', property: 'og:url', content: baseUrl },
-      { hid: 'og:title', property: 'og:title', content: 'strv.dev' },
-      {
-        hid: 'og:description',
-        property: 'og:description',
-        content: siteDesc,
-      },
-      {
-        hid: 'og:image',
-        property: 'og:image',
-        content: `${ogpImages}/main.png`,
-      },
-      {
-        name: 'twitter:card',
-        content: 'summary_large_image',
-      },
-      { name: 'twitter:creator', content: '@strvert' },
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'apple-touch-icon', type: 'image/png', href: '/apple-touch-icon-180x180.png' },
-      { rel: 'icon', type: 'image/png', href: '/icon-192x192.png' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
-      {
-        rel: 'stylesheet',
-        href: 'https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css',
-      },
-    ],
     script: [],
   },
 
