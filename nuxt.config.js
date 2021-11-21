@@ -154,8 +154,10 @@ export default defineNuxtConfig({
       '@nuxtjs/google-fonts',
       {
         families: {
+          'M PLUS 1': [200, 300, 400, 600],
           'M PLUS Rounded 1c': [300, 400, 500],
           'Source Code Pro': [300, 400],
+          'Sawarabi Gothic': [400],
         },
         display: 'swap',
       },
@@ -170,7 +172,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/sitemap',
     [
-      '~/modules/ogpImageGenerator',
+      './modules/ogpImageGenerator',
       {
         config: {
           output: {
@@ -213,7 +215,7 @@ export default defineNuxtConfig({
   ssr: true,
   generate: {
     workers: 16,
-    interval: 1000,
+    interval: 500,
     async routes() {
       return await collectBlogPostURIs();
     },

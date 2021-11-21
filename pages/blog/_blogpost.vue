@@ -7,7 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, useRoute, useNuxt2Meta } from '#app';
+import { defineNuxtComponent, useRoute } from '#app';
+import { useFetch } from '@nuxtjs/composition-api';
 import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
 import { useBlogContent } from '@/composables/utils/BlogContent';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
@@ -16,12 +17,13 @@ export default defineNuxtComponent({
   components: { BlogpostFrame },
   setup() {
     const route = useRoute();
-    const { page, path } = useBlogContent(route.params.blogpost);
+    const { page, path, fetch } = useBlogContent(route.params.blogpost, true);
 
-    const { makeBlogpostMeta } = useBlogpostMeta();
-    const { title, meta } = makeBlogpostMeta(page);
-
-    useNuxt2Meta({ title, meta });
+    const { setBlogpostMeta } = useBlogpostMeta();
+    useFetch(async () => {
+      await fetch();
+      setBlogpostMeta(page.value);
+    });
 
     return { page, path };
   },

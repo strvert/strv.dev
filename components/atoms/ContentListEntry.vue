@@ -59,6 +59,7 @@ article {
     }
     h1 {
       font-size: 1.3rem;
+      font-weight: 600;
       margin: 0;
       @media screen and (max-width: 500px) {
         font-size: 1.05em;
