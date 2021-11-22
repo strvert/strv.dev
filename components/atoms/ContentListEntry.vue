@@ -2,7 +2,9 @@
   <article>
     <div>
       <nuxt-link :to="uri">
-        <img class="tagicon" :src="iconPath" />
+        <div class="tagicon-wrapper">
+          <img class="tagicon" :src="iconPath" />
+        </div>
       </nuxt-link>
     </div>
     <header>
@@ -67,11 +69,16 @@ article {
     }
   }
 
-  .tagicon {
-    background-color: var(--strvdev-blogpost-code);
-    border-radius: 10px;
+  .tagicon-wrapper {
     block-size: 2.9rem;
+    inline-size: 2.9rem;
+    border-radius: 10px;
+    background-color: var(--strvdev-blogpost-code);
     padding: 5px;
+    .tagicon {
+      border-radius: 10px;
+      block-size: 100%;
+    }
   }
 }
 </style>
