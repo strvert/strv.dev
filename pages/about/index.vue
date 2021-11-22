@@ -20,9 +20,9 @@ export default defineNuxtComponent({
     const { setBlogpostMeta } = useBlogpostMeta();
 
     useFetch(async () => {
-      const p = await $content('about').fetch<IArticle[]>();
-      setBlogpostMeta(p, 'main.png');
-      page.value = p;
+      page.value = await $content('about').fetch<IArticle>();
+      setBlogpostMeta(page, 'main.png');
+      console.log(page.value.title);
     });
 
     return { page };

@@ -1,5 +1,4 @@
-import { ref, watch, useNuxt2Meta } from '#app';
-import { useMeta } from '@nuxtjs/composition-api';
+import { ref, Ref, watch, useNuxt2Meta } from '#app';
 import { IArticle } from '@/composables/stores/Article';
 import { pathToSlug } from '@/composables/utils/ConvertArticlePath';
 
@@ -7,8 +6,8 @@ export const useBlogpostMeta = () => {
   const title = ref('');
   const meta = ref([]);
   useNuxt2Meta({ title, meta });
-  const setBlogpostMeta = (article: IArticle, ogpImage: String = '') => {
-    // watch(article, (value: IArticle) => {
+  const update = (article: IArticle, ogpImage: String) => {
+    if (article === undefined) return;
     const imagePath =
       ogpImage !== ''
         ? `${process.env.ogpImages}/${ogpImage}`
@@ -40,10 +39,11 @@ export const useBlogpostMeta = () => {
         content: imagePath,
       },
     ];
-    // });
     title.value = article.title;
-
-    // return { title: article.title, meta };
+  };
+  const setBlogpostMeta = (article: Ref<IArticle>, ogpImage: String = '') => {
+    watch(article, (article: IArticle) => update(article, ogpImage));
+    update(article.value, ogpImage);
   };
   return { setBlogpostMeta };
 };

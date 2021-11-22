@@ -3,7 +3,7 @@ import { useFetch } from '@nuxtjs/composition-api';
 import { slugToPath } from '@/composables/utils/ConvertArticlePath';
 import { IArticle } from '@/composables/stores/Article';
 
-export const useBlogContent = (slug: string, setMeta: boolean = false) => {
+export const useBlogContent = (slug: string) => {
   const page = ref<IArticle>();
 
   const { $content } = useNuxtApp();
@@ -19,7 +19,6 @@ export const useBlogContent = (slug: string, setMeta: boolean = false) => {
 
   const fetch = async () => {
     page.value = (await fetchPage()) as IArticle;
-    return { page, path };
   };
 
   onMounted(async () => {
@@ -32,5 +31,9 @@ export const useBlogContent = (slug: string, setMeta: boolean = false) => {
     window.$nuxt.$off('content:update');
   });
 
-  return { page, path, fetch };
+  useFetch(async () => {
+    await fetch();
+  });
+
+  return { page, path };
 };
