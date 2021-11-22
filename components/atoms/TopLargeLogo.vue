@@ -3,33 +3,37 @@
     <div class="logo">
       <img src="~/assets/images/top/stonriver_1200.webp" />
       <header>
-        <p>Welcome to</p>
-        <!--<h1><strv-dev-logo :logoScale="90" /></h1>-->
-        <h1>strv.dev</h1>
+        <p>{{ message }}</p>
+        <h1><strv-dev-logo :logoScale="logoScale" /></h1>
+        <!--<h1>strv.dev</h1>-->
       </header>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, useNuxtApp, onMounted, onBeforeUnmount } from '#app';
+import { defineNuxtComponent, ref, onMounted, onBeforeUnmount } from '#app';
 import StrvDevLogo from '@/components/atoms/StrvdevLogo.vue';
 
 export default defineNuxtComponent({
   components: { StrvDevLogo },
   setup() {
-    const setFillHeight = () => {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    const message = ref('Welcome to');
+    const logoScale = ref(75);
+    const resized = () => {
+      const logoElm = document.querySelector('.logo') as HTMLDivElement;
+      logoScale.value = logoElm.clientWidth * 0.1;
     };
     onMounted(() => {
-      window.addEventListener('resize', setFillHeight);
-      setFillHeight();
+      window.addEventListener('resize', resized);
+      resized();
     });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('resize', setFillHeight);
+      window.removeEventListener('resize', resized);
     });
+
+    return { message, logoScale };
   },
 });
 </script>
@@ -45,14 +49,14 @@ export default defineNuxtComponent({
   .logo {
     --anim-duration: 1s;
     transition-duration: 0.2s;
-    transition-property: width inline-size;
-    padding-bottom: calc(8 * var(--vh));
+    transition-property: width inline-size font-size;
+    padding-bottom: 80px;
     margin: 0 auto;
     position: relative;
     display: grid;
     grid-template-areas: 'one';
     width: var(--logo-size);
-    height: calc(98 * var(--vh));
+    height: 98vh;
     img {
       grid-area: one;
       display: block;
@@ -84,38 +88,31 @@ export default defineNuxtComponent({
       }
       h1 {
         width: 100%;
-        position: absolute;
+        position: relative;
         margin: 0;
         left: 0;
-        top: -60px;
+        top: -20px;
         text-align: center;
         font-weight: 600;
       }
       p {
         width: 100%;
-        position: absolute;
+        position: relative;
         margin: 0;
         left: 0;
-        top: -80px;
+        top: -30px;
         text-align: center;
         font-weight: 500;
       }
 
       @media screen and (min-width: 800px) {
-        h1 {
-          font-size: 7rem;
-        }
         p {
           font-size: 3rem;
         }
       }
       @media screen and (max-width: 800px) {
-        top: calc(3 * var(--vh));
-        h1 {
-          font-size: 12vw;
-        }
         p {
-          font-size: 5.5vw;
+          font-size: 6.5vw;
         }
       }
     }

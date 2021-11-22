@@ -1,8 +1,9 @@
 <template>
   <div
     class="header-main"
-    @mouseenter="open"
-    @mouseleave="menuLeave"
+    @mouseenter="openPc"
+    @mousedown="openPc"
+    @mouseleave="menuLeavePc"
     :class="{ open: menuOpened }"
     :style="{
       '--header-row-height': `${rowHeight}px`,
@@ -10,7 +11,7 @@
     }"
   >
     <div class="site-content-list">
-      <nav class="sitenav">
+      <nav @click="menuLeavePc" class="sitenav">
         <site-content-list :wrap="siteContentWrap" row-height="44px" :contents="siteContent" />
       </nav>
     </div>
@@ -58,10 +59,15 @@ export default defineComponent({
     const rowHeight = 44; // px
 
     const menuOpened = ref<boolean>(false);
-    const open = () => {
+    const openPc = () => {
+      console.log('open');
       menuOpened.value = true;
     };
-    const menuLeave = () => {
+    const close = () => {
+      const headerElm = document.querySelector('header-main') as HTMLDivElement;
+    };
+    const menuLeavePc = () => {
+      console.log('leave');
       menuOpened.value = false;
     };
 
@@ -71,8 +77,8 @@ export default defineComponent({
       siteContent,
       rowHeight,
       siteContentWrap,
-      open,
-      menuLeave,
+      openPc,
+      menuLeavePc,
       menuOpened,
     };
   },

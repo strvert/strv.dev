@@ -13,6 +13,7 @@ import { useBlogContent } from '@/composables/utils/BlogContent';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 
 export default defineNuxtComponent({
+  name: '_blogpost',
   components: { BlogpostFrame },
   setup() {
     const route = useRoute();
