@@ -12,12 +12,25 @@
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent } from '#app';
+import { defineNuxtComponent, useNuxtApp, onMounted, onBeforeUnmount } from '#app';
 import StrvDevLogo from '@/components/atoms/StrvdevLogo.vue';
 
 export default defineNuxtComponent({
   components: { StrvDevLogo },
-  setup() {},
+  setup() {
+    const setFillHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    onMounted(() => {
+      window.addEventListener('resize', setFillHeight);
+      setFillHeight();
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', setFillHeight);
+    });
+  },
 });
 </script>
 
@@ -33,13 +46,13 @@ export default defineNuxtComponent({
     --anim-duration: 1s;
     transition-duration: 0.2s;
     transition-property: width inline-size;
-    padding-bottom: 8vh;
+    padding-bottom: calc(8 * var(--vh));
     margin: 0 auto;
     position: relative;
     display: grid;
     grid-template-areas: 'one';
     width: var(--logo-size);
-    height: 98vh;
+    height: calc(98 * var(--vh));
     img {
       grid-area: one;
       display: block;
@@ -97,7 +110,7 @@ export default defineNuxtComponent({
         }
       }
       @media screen and (max-width: 800px) {
-        top: 3vh;
+        top: calc(3 * var(--vh));
         h1 {
           font-size: 12vw;
         }
