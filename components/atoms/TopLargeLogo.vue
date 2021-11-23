@@ -22,6 +22,7 @@ export default defineNuxtComponent({
     const logoScale = ref(75);
     const resized = () => {
       const logoElm = document.querySelector('.logo') as HTMLDivElement;
+      logoElm.style.setProperty('--blur', `${logoElm.clientWidth * 0.01}px`);
       logoScale.value = logoElm.clientWidth * 0.1;
     };
     onMounted(() => {
@@ -46,7 +47,34 @@ export default defineNuxtComponent({
   @media screen and (max-width: 800px) {
     --logo-size: 90%;
   }
+
   .logo {
+    @keyframes top-text-in {
+      from {
+        filter: blur(var(--blur)) grayscale(20%);
+      }
+      50% {
+        filter: blur(var(--blur)) grayscale(20%);
+      }
+
+      to {
+        filter: blur(0) grayscale(0);
+      }
+    }
+
+    @keyframes logo-in {
+      from {
+        filter: blur(0) grayscale(0);
+      }
+      50% {
+        filter: blur(0) grayscale(0);
+      }
+
+      to {
+        filter: blur(var(--blur)) grayscale(20%);
+      }
+    }
+
     --anim-duration: 1s;
     transition-duration: 0.5s;
     transition-property: width inline-size font-size;
@@ -67,7 +95,6 @@ export default defineNuxtComponent({
         duration: var(--anim-duration);
         fill-mode: forwards;
       }
-      // filter: blur(10px) grayscale(20%);
       z-index: 0;
     }
     header {
@@ -124,31 +151,5 @@ export default defineNuxtComponent({
   //   block-size: 300px;
   //   width: 100%;
   // }
-}
-
-@keyframes top-text-in {
-  from {
-    filter: blur(8px) grayscale(20%);
-  }
-  50% {
-    filter: blur(8px) grayscale(20%);
-  }
-
-  to {
-    filter: blur(0) grayscale(0);
-  }
-}
-
-@keyframes logo-in {
-  from {
-    filter: blur(0) grayscale(0);
-  }
-  50% {
-    filter: blur(0) grayscale(0);
-  }
-
-  to {
-    filter: blur(8px) grayscale(20%);
-  }
 }
 </style>
