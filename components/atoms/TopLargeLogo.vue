@@ -48,7 +48,7 @@ export default defineNuxtComponent({
   }
   .logo {
     --anim-duration: 1s;
-    transition-duration: 0.2s;
+    transition-duration: 0.5s;
     transition-property: width inline-size font-size;
     padding-bottom: 80px;
     margin: 0 auto;

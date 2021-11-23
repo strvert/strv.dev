@@ -3,7 +3,7 @@
     <div>
       <nuxt-link :to="uri">
         <div class="tagicon-wrapper">
-          <img class="tagicon" :src="iconPath" />
+          <lazy-load-image class="tagicon" :src="iconPath" />
         </div>
       </nuxt-link>
     </div>
@@ -20,9 +20,10 @@
 import { defineComponent } from '@nuxtjs/composition-api';
 import TagList from '@/components/atoms/TagList.vue';
 import PublishTime from '@/components/atoms/PublishTime.vue';
+import LazyLoadImage from '@/components/atoms/LazyLoadImage.vue';
 
 export default defineComponent({
-  components: { TagList, PublishTime },
+  components: { TagList, PublishTime, LazyLoadImage },
   props: {
     title: {
       type: String,
