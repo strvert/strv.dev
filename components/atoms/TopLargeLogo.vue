@@ -2,10 +2,9 @@
   <section class="top">
     <div class="logo">
       <lazy-load-image :duration="0.3" src="/images/logo/stonriver_1200.webp" />
-      <header>
+      <header :class="{ unmounted: !mounted }">
         <p>{{ message }}</p>
         <h1><strv-dev-logo :logoScale="logoScale" /></h1>
-        <!--<h1>strv.dev</h1>-->
       </header>
     </div>
   </section>
@@ -26,16 +25,18 @@ export default defineNuxtComponent({
       logoElm.style.setProperty('--blur', `${logoElm.clientWidth * 0.01}px`);
       logoScale.value = logoElm.clientWidth * 0.1;
     };
+    const mounted = ref(false);
     onMounted(() => {
       window.addEventListener('resize', resized);
       resized();
+      mounted.value = true;
     });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', resized);
     });
 
-    return { message, logoScale };
+    return { message, logoScale, mounted };
   },
 });
 </script>
@@ -79,7 +80,7 @@ export default defineNuxtComponent({
 
     --anim-duration: 1s;
     transition-duration: 0.5s;
-    transition-property: width inline-size font-size;
+    transition-property: width inline-size font-size opacity;
     padding-bottom: 80px;
     margin: 0 auto;
     position: relative;
@@ -132,6 +133,10 @@ export default defineNuxtComponent({
         top: -30px;
         text-align: center;
         font-weight: 500;
+      }
+
+      &.unmounted {
+        opacity: 0;
       }
 
       @media screen and (min-width: 800px) {
