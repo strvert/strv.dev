@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, ref } from '#app';
+import { defineNuxtComponent, ref, onMounted } from '#app';
 
 export default defineNuxtComponent({
   props: {
@@ -11,12 +11,21 @@ export default defineNuxtComponent({
       type: String,
       default: '',
     },
+    duration: {
+      type: Number,
+      default: 0.2,
+    },
   },
-  setup() {
+  setup(props) {
     const loaded = ref(false);
     const loadFinished = () => {
       loaded.value = true;
     };
+
+    onMounted(() => {
+      const elm = document.querySelector('img') as HTMLImageElement;
+      elm.style.setProperty('--duration', `${props.duration}s`);
+    });
 
     return { loadFinished, loaded };
   },
@@ -27,7 +36,7 @@ export default defineNuxtComponent({
 img {
   transition: {
     property: opacity;
-    duration: 0.2s;
+    duration: var(--duration);
   }
 }
 

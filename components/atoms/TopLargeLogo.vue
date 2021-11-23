@@ -1,7 +1,7 @@
 <template>
   <section class="top">
     <div class="logo">
-      <img src="~/assets/images/top/stonriver_1200.webp" />
+      <lazy-load-image :duration="0.3" src="/images/logo/stonriver_1200.webp" />
       <header>
         <p>{{ message }}</p>
         <h1><strv-dev-logo :logoScale="logoScale" /></h1>
@@ -14,9 +14,10 @@
 <script lang="ts">
 import { defineNuxtComponent, ref, onMounted, onBeforeUnmount } from '#app';
 import StrvDevLogo from '@/components/atoms/StrvdevLogo.vue';
+import LazyLoadImage from '@/components/atoms/LazyLoadImage.vue';
 
 export default defineNuxtComponent({
-  components: { StrvDevLogo },
+  components: { StrvDevLogo, LazyLoadImage },
   setup() {
     const message = ref('Welcome to');
     const logoScale = ref(75);
@@ -49,6 +50,7 @@ export default defineNuxtComponent({
   }
 
   .logo {
+    --blur: 8px;
     @keyframes top-text-in {
       from {
         filter: blur(var(--blur)) grayscale(20%);
