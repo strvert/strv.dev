@@ -1,9 +1,9 @@
 <template>
   <div
     class="header-main"
-    @mouseenter="openPc"
-    @mousedown="openPc"
-    @mouseleave="menuLeavePc"
+    @mouseenter="open"
+    @mousedown="open"
+    @mouseleave="menuLeave"
     :class="{ open: menuOpened }"
     :style="{
       '--header-row-height': `${rowHeight}px`,
@@ -11,7 +11,7 @@
     }"
   >
     <div class="site-content-list">
-      <nav @click="menuLeavePc" class="sitenav">
+      <nav @click="menuLeave" class="sitenav">
         <site-content-list :wrap="siteContentWrap" row-height="44px" :contents="siteContent" />
       </nav>
     </div>
@@ -28,13 +28,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useNuxtApp, ref, computed } from '#app';
+import { defineNuxtComponent, useNuxtApp, ref, computed } from '#app';
 import StrvdevLogo from '@/components/atoms/StrvdevLogo.vue';
 import SiteContentList from '@/components/atoms/SiteContentList.vue';
 import { useScrollDirectionEvent } from '@/composables/utils/ScrollEvents';
 import { useResizeEvent } from '@/composables/utils/ResizeEvent';
 
-export default defineComponent({
+export default defineNuxtComponent({
   components: { StrvdevLogo, SiteContentList },
   setup() {
     const logoAnimEffectTiming: EffectTiming = {
@@ -59,15 +59,10 @@ export default defineComponent({
     const rowHeight = 44; // px
 
     const menuOpened = ref<boolean>(false);
-    const openPc = () => {
-      console.log('open');
+    const open = () => {
       menuOpened.value = true;
     };
-    const close = () => {
-      const headerElm = document.querySelector('header-main') as HTMLDivElement;
-    };
-    const menuLeavePc = () => {
-      console.log('leave');
+    const menuLeave = () => {
       menuOpened.value = false;
     };
 
@@ -77,8 +72,8 @@ export default defineComponent({
       siteContent,
       rowHeight,
       siteContentWrap,
-      openPc,
-      menuLeavePc,
+      open,
+      menuLeave,
       menuOpened,
     };
   },
