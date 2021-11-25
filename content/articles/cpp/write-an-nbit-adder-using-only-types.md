@@ -11,8 +11,6 @@ tags:
     - C++20
 ---
 
-[すばらしいてきす](#/hogehoge.txt)
-
 最近、Twitterで以下の記事を見かけました。
 
 https://qiita.com/Kuniwak/items/983ba68fcf68d915b07d
