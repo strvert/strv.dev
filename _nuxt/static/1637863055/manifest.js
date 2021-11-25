@@ -1,0 +1,1 @@
+__NUXT_JSONP__("manifest.js", {routes:["\u002Fabout","\u002Fblog","\u002Fblog\u002Fsearch","\u002Fblog\u002Fseries","\u002F","blog\u002Fcpp--write-an-nbit-adder-using-only-types","\u002Fblog\u002Fseries\u002Fundefined","\u002Fblog\u002Fcpp--write-an-nbit-adder-using-only-types"]})
