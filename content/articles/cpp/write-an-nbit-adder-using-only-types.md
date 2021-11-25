@@ -1,8 +1,8 @@
 ---
 title: "[C++]型だけでN bit加算器を書こう"
 description: "C++の型システムだけで、組み合わせ論理回路であるN-bit加算器を実装してみる。"
-createdAt: 2021/6/17
-updatedAt: 2021/6/17
+enforceCreatedAt: 2021/6/17
+enforceUpdatedAt: 2021/6/17
 tags:
     - C++
     - metaprogramming

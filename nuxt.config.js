@@ -142,7 +142,7 @@ export default defineNuxtConfig({
   layoutTransition: 'layout',
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/RepositoryFactory'],
+  plugins: ['~/plugins/RepositoryFactory', '~/plugins/dayjs/dayjs'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -168,7 +168,14 @@ export default defineNuxtConfig({
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/google-gtag',
-    'nuxt-content-git',
+    [
+      'nuxt-content-git',
+      {
+        createdAtName: 'gitCreatedAt',
+        updatedAtName: 'gitUpdatedAt',
+      },
+    ],
+    './modules/timestampSelector',
     [
       './modules/articleAssetsResolver',
       {

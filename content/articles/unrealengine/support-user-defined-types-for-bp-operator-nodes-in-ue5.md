@@ -1,12 +1,12 @@
 ---
 title: "UE5のBP演算子ノードにユーザー定義型を対応させる"
 description: "UE5で追加されたType promotion機能付き演算子ノードに、ユーザー定義型サポートを追加する方法について"
-createdAt: 2021/6/8
-updatedAt: 2021/6/8
+enforceCreatedAt: 2021/6/8
+enforceUpdatedAt: 2021/6/8
 tags:
     - Unreal Engine
     - Blueprint
-    - Unreal C+++
+    - Unreal C++
     - Unreal Engine 5
 ---
 

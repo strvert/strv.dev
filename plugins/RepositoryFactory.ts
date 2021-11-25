@@ -1,5 +1,4 @@
 import { Inject, NuxtApp } from '@nuxt/types/app';
-import { Plugin } from '@nuxt/types';
 
 import {
   NavContentRepositroyInterface,
