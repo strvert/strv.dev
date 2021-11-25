@@ -170,10 +170,10 @@ export default defineNuxtConfig({
     '@nuxtjs/google-gtag',
     'nuxt-content-git',
     [
-      './modules/mdImageResolver',
+      './modules/articleAssetsResolver',
       {
         articleRoot: 'articles',
-        articleImgRoot: '/images/articles',
+        articleAssetsRoot: '/article-assets',
       },
     ],
     '@nuxt/content',
