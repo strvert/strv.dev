@@ -17,7 +17,6 @@
     "core-js": "^3.15.1",
     "dayjs": "^1.10.7",
     "iframe-resizer": "^4.3.2",
-    "moment-timezone": "^0.5.33",
     "nuxt": "^2.15.8",
     "nuxt-edge": "^2.16.0-27276495.ab1c6cb4",
     "remark-code-titles": "^0.1.2",
