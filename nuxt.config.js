@@ -170,6 +170,13 @@ export default defineNuxtConfig({
     '@nuxtjs/google-gtag',
     'nuxt-content-git',
     '@nuxt/content',
+    [
+      './modules/mdImageResolver',
+      {
+        articleRoot: 'articles',
+        articleImgRoot: '/images/articles',
+      },
+    ],
     '@nuxtjs/sitemap',
     [
       './modules/ogpImageGenerator',

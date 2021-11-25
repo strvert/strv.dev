@@ -8,7 +8,7 @@ export const correntDuplicatePaths = (path: string) => {
 };
 
 export const slugToPath = (slug: string, basedir: string = articles_dir) => {
-  return correntDuplicatePaths('/' + basedir + '/' + slug.replace('--', '/'));
+  return correntDuplicatePaths(`/${basedir}/${slug.replace('--', '/')}`);
 };
 
 export const pathToSlug = (path: string, basedir: string = articles_dir) => {
