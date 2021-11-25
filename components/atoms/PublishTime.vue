@@ -13,16 +13,16 @@
 
 <script lang="ts">
 import { defineNuxtComponent, PropType, computed, ref } from '#app';
-import { Moment } from 'moment-timezone';
+import { Dayjs } from 'dayjs';
 
 export default defineNuxtComponent({
   props: {
     published: {
-      type: Object as PropType<Moment>,
+      type: Object as PropType<Dayjs>,
       required: true,
     },
     updated: {
-      type: Object as PropType<Moment>,
+      type: Object as PropType<Dayjs>,
       required: true,
     },
     iconStyle: {

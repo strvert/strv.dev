@@ -1,8 +1,9 @@
-import * as moment from 'moment-timezone';
 import { IContentDocument } from '@nuxt/content/types/content';
+import { useNuxtApp } from '#app';
 
-export const readDateInfos = (content: IContentDocument, timezone: string = 'Asia/Tokyo') => {
-  const createdAt = moment.tz(content.createdAt, timezone);
-  const updatedAt = moment.tz(content.updatedAt, timezone);
+export const readDateInfos = (content: IContentDocument) => {
+  const { $dayjs } = useNuxtApp();
+  const createdAt = $dayjs(content.createdAt);
+  const updatedAt = $dayjs(content.updatedAt);
   return { createdAt, updatedAt };
 };
