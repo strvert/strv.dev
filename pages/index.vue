@@ -51,6 +51,7 @@ article {
     position: relative;
     .jump {
       color: black;
+      filter: drop-shadow(0px 0px 3px white);
       opacity: 0.6;
       i {
         font-size: 4em;
@@ -66,7 +67,7 @@ article {
       }
       display: block;
       position: absolute;
-      bottom: 15vh;
+      bottom: 23vh;
       left: 50%;
       transform: translateX(-50%);
     }
