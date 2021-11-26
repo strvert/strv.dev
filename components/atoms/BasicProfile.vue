@@ -1,13 +1,13 @@
 <template>
   <section>
     <div class="basic-profiles">
-      <div class="icon">
+      <header class="icon">
         <lazy-load-image
           class="icon-img"
           src="/images/logo/stonriver_1200.webp"
           alt="すとんりばーのアイコン"
         />
-      </div>
+      </header>
       <div class="profile-infos">
         <object-table class="table" :data="basicProfileData" />
       </div>
@@ -35,18 +35,23 @@ export default defineNuxtComponent({
 .basic-profiles {
   display: flex;
   align-items: center;
+  justify-content: center;
+
   gap: 1em;
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+
   margin: 1em 0;
   .icon {
     flex: 1;
-
     .icon-img {
-      block-size: 100%;
+      display: block;
+      margin: 0 auto;
       inline-size: 100%;
-    }
-
-    @media screen and (max-width: 800px) {
-      display: none;
+      @media screen and (max-width: 800px) {
+        inline-size: 40%;
+      }
     }
   }
 
