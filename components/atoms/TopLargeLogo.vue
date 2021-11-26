@@ -1,7 +1,7 @@
 <template>
   <section class="top">
     <div class="logo">
-      <lazy-load-image :duration="0.3" src="/images/logo/stonriver_1200.webp" />
+      <lazy-load-image :duration="0.3" alt="大きなすとんりばーのアイコン" src="/images/logo/stonriver_1200.webp" />
       <header :class="{ unmounted: !mounted }">
         <p>{{ message }}</p>
         <h1><strv-dev-logo :logoScale="logoScale" /></h1>
