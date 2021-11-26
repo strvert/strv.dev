@@ -1,7 +1,10 @@
 <template>
   <article>
-    <top-large-logo />
-    <h1>{{ first ? 'はじめまして！' : 'また会いましたね！' }}</h1>
+    <div class="logos">
+      <top-large-logo />
+      <nuxt-link class="jump" to="#main-message"><i class="im im-eject"></i></nuxt-link>
+    </div>
+    <h1 id="main-message">{{ first ? 'はじめまして！' : 'また会いましたね！' }}</h1>
     <div class="content">
       <p>私は<strong>すとんりばー</strong>です。すこしだけ自己紹介を見ていってください。</p>
       <basic-profile />
@@ -39,6 +42,35 @@ export default defineNuxtComponent({
 article {
   transition-property: font-size;
   transition-duration: 0.2s;
+  #main-message {
+    padding-top: 44px;
+    margin-top: -44px;
+  }
+
+  .logos {
+    position: relative;
+    .jump {
+      color: black;
+      opacity: 0.6;
+      i {
+        font-size: 4em;
+        font-weight: 700;
+        animation: {
+          name: updown-shake;
+          duration: 0.9s;
+          fill-mode: forwards;
+          iteration-count: infinite;
+          direction: alternate;
+          timing-function: cubic-bezier();
+        }
+      }
+      display: block;
+      position: absolute;
+      bottom: 15vh;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 
   .content {
     min-block-size: 100vh;
@@ -54,6 +86,16 @@ article {
     font-weight: 700;
     @media screen and (max-width: 800px) {
       font-size: 2.4rem;
+    }
+  }
+
+  @keyframes updown-shake {
+    from {
+      transform: translateY(-10px) rotateZ(180deg);
+    }
+
+    to {
+      transform: translateY(10px) rotateZ(180deg);
     }
   }
 }

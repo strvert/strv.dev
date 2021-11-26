@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, ref } from '#app';
+import { defineNuxtComponent } from '#app';
 import LazyLoadImage from '@/components/atoms/LazyLoadImage.vue';
 import ObjectTable from '@/components/atoms/ObjectTable.vue';
 

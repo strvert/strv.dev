@@ -1,7 +1,7 @@
 <template>
   <section class="top">
     <div class="logo">
-      <lazy-load-image :duration="0.3" alt="大きなすとんりばーのアイコン" src="/images/logo/stonriver_1200.webp" />
+      <lazy-load-image class="large-icon" :duration="3" alt="大きなすとんりばーのアイコン" src="/images/logo/stonriver_1200.webp" />
       <header :class="{ unmounted: !mounted }">
         <p>{{ message }}</p>
         <h1><strv-dev-logo :logoScale="logoScale" /></h1>
@@ -25,11 +25,15 @@ export default defineNuxtComponent({
       logoElm.style.setProperty('--blur', `${logoElm.clientWidth * 0.01}px`);
       logoScale.value = logoElm.clientWidth * 0.1;
     };
+
     const mounted = ref(false);
     onMounted(() => {
       window.addEventListener('resize', resized);
       resized();
       mounted.value = true;
+
+      const elm = document.querySelector('.large-icon') as HTMLImageElement;
+      elm.style.setProperty('animation-name', '');
     });
 
     onBeforeUnmount(() => {
@@ -65,20 +69,23 @@ export default defineNuxtComponent({
       }
     }
 
-    @keyframes logo-in {
+    @keyframes logo-in-1 {
       from {
         filter: blur(0) grayscale(0);
+        transform: none;
       }
       50% {
         filter: blur(0) grayscale(0);
+        transform: none;
       }
 
       to {
         filter: blur(var(--blur)) grayscale(20%);
+        transform: rotateZ(360deg);
       }
     }
 
-    --anim-duration: 1s;
+    --anim-duration: 2s;
     transition-duration: 0.5s;
     transition-property: width inline-size font-size opacity;
     padding-bottom: 80px;
@@ -94,7 +101,7 @@ export default defineNuxtComponent({
       width: 100%;
       margin: auto 0;
       animation: {
-        name: logo-in;
+        name: logo-in-1;
         duration: var(--anim-duration);
         fill-mode: forwards;
       }
