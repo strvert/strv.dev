@@ -75,6 +75,14 @@ const collectBlogPostURIs = async () => {
   });
 };
 
+const collectSitemapURIs = async () => {
+  const postsLoc = articlesPath;
+  const posts = await $content(postsLoc, { deep: true }).only(['path', 'updatedAt']).fetch();
+  return posts.map((post) => {
+    return { url: `${articlesRoute}/${pathToSlug(post.path, articlesPath)}`, lastmod: post.updatedAt };
+  });
+};
+
 export default defineNuxtConfig({
   bridge: {
     nitro: false,
@@ -236,8 +244,17 @@ export default defineNuxtConfig({
   },
   sitemap: {
     hostname: baseUrl,
+    defaults: {
+      priority: 0.5,
+    },
     routes: async () => {
-      return await collectBlogPostURIs();
+      const uris = await collectSitemapURIs();
+      uris.push({ url: '/', priority: 1 });
+      uris.push({ url: '/blog', priority: 0.8 });
+      uris.push({ url: '/blog/series', priority: 0.4 });
+      uris.push({ url: '/blog/search', priority: 0.4 });
+      uris.push({ url: '/blog/about', priority: 0.3 });
+      return uris;
     },
   },
   'google-gtag': {
