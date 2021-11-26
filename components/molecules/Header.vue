@@ -16,7 +16,7 @@
       </nav>
     </div>
     <div class="header-grid">
-      <button class="strvdevlogo" name="show-navcontent">
+      <button class="strvdevlogo" name="show-navcontent" aria-label="show navigation menu content">
         <strvdev-logo
           :transformed="logoTransformed"
           :logoScale="33"

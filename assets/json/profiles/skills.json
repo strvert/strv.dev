@@ -1,0 +1,179 @@
+[
+  {
+    "category": "ゲーム開発・3DCG系",
+    "skills": [
+      {
+        "name": "Unreal Engine",
+        "icon": "/images/skills/unrealengine.webp",
+        "content": "エンジン改造とかプラグイン・ツール開発とかばっかりやってます。一応コントリビューター。"
+      },
+      {
+        "name": "Unity",
+        "icon": "/images/skills/unity.webp",
+        "content": "かなり前に触っていました。業務でもすこしだけ。最近のことはよくわかりません。"
+      },
+      {
+        "name": "Houdini",
+        "icon": "/images/skills/houdini.webp",
+        "content": "Houdini Engine を使って、 Unreal Engine と一緒に楽しんでいます。"
+      },
+      {
+        "name": "Blender",
+        "icon": "/images/skills/blender.webp",
+        "content": "最低限触れます。有機体・生命体みたいな美的センスを求まれるポリゴンモデリングは苦手。"
+      },
+      {
+        "name": "DirectX 12",
+        "icon": "/images/skills/directx12.webp",
+        "content": "すこしだけ。勉強中。                                                                "
+      }
+    ]
+  },
+  {
+    "category": "バックエンド・アプリケーション系",
+    "skills": [
+      {
+        "name": "C++",
+        "icon": "/images/skills/c++.webp",
+        "content": "出来るとは(怖くて)言えませんが、一番得意で好きな言語です。一番書いてる言語でもあります。"
+      },
+      {
+        "name": "C",
+        "icon": "/images/skills/c.webp",
+        "content": "低レイヤなコーディングも結構好きなので、Cも好きです。業務経験もあり。"
+      },
+      {
+        "name": "Go",
+        "icon": "/images/skills/go.webp",
+        "content": "一時期ハマってました。業務経験もあり。"
+      },
+      {
+        "name": "Rust",
+        "icon": "/images/skills/rust.webp",
+        "content": "とにかくカッコよくて好きです。最近ハマっています。UEでRustが使えたらいいのにとか思っています。"
+      },
+      {
+        "name": "Python",
+        "icon": "/images/skills/python.webp",
+        "content": "静的型付けの素晴らしさに気づくまでは結構書いてました。今でもスクリプト用途でよく書きます。"
+      },
+      {
+        "name": "Java",
+        "icon": "/images/skills/java.webp",
+        "content": "MinecraftのModを書くためだけに書いていました。趣味です。"
+      },
+      {
+        "name": "C#",
+        "icon": "/images/skills/csharp.webp",
+        "content": "UnityやWindows Application、UE4のビルドツール周りなどで触れましたが、詳しくはありません。"
+      }
+    ]
+  },
+  {
+    "category": "フロントエンド系",
+    "skills": [
+      { "name": "HTML", "icon": "/images/skills/html.webp", "content": "黙々と書きます。" },
+      {
+        "name": "JavaScript",
+        "icon": "/images/skills/javascript.webp",
+        "content": "まあ書ける程度に書けます。"
+      },
+      {
+        "name": "TypeScript",
+        "icon": "/images/skills/typescript.webp",
+        "content": "JSと同じく、まあ書ける程度に書けます。もっぱらJSではなくTSを使って書きます。"
+      },
+      {
+        "name": "Vue.js",
+        "icon": "/images/skills/vuejs.webp",
+        "content": "個人制作のための周辺アプリケーションをいくつかVue.jsを用いて作成しています。"
+      },
+      {
+        "name": "Nuxt.js",
+        "icon": "/images/skills/nuxtjs.webp",
+        "content": "物が作れる程度には使えます。このサイトもNuxt.jsで作られています。"
+      },
+      {
+        "name": "CSS",
+        "icon": "/images/skills/css.webp",
+        "content": "昔はめちゃくちゃ嫌いでしたが、今は結構楽しく書きます(SCSSを使って)。"
+      },
+      {
+        "name": "SASS/SCSS",
+        "icon": "/images/skills/sassscss.webp",
+        "content": "基本的人権です。CSSを書くならこれがないと途中で泣き始めます。楽しく書きます。"
+      }
+    ]
+  },
+  {
+    "category": "インフラ系",
+    "skills": [
+      {
+        "name": "Docker / Docker compose",
+        "icon": "/images/skills/dockerdockercompose.webp",
+        "content": "便利な道具として使っています。"
+      },
+      {
+        "name": "AWS",
+        "icon": "/images/skills/aws.webp",
+        "content": "AWS(超絶ざっくり)。EC2,Lambda,S3,ECS,API Gateway等々のような、頻繁に使われるサービスは業務や個人活動の過程で利用してきました。"
+      },
+      {
+        "name": "Nginx",
+        "icon": "/images/skills/nginx.webp",
+        "content": "基礎的な構築・設定程度はできます。チューニングとかになると経験不足感。"
+      },
+      {
+        "name": "自宅サーバー",
+        "icon": "/images/skills/server.webp",
+        "content": "(雑な)運用五年目くらい。"
+      }
+    ]
+  },
+  {
+    "category": "創作・芸術系",
+    "skills": [
+      {
+        "name": "シナリオ執筆",
+        "icon": "/images/skills/scenario.webp",
+        "content": "個人的な活動として、シナリオ執筆を行っています。世界観の考案や、ストーリーとのすり合わせなど、大好きな作業です。"
+      },
+      {
+        "name": "小説執筆",
+        "icon": "/images/skills/novel.webp",
+        "content": "稀ですが、文字も書きます。SFな作品が得意です。とある選考でいいところまで行ったことがあったり……？"
+      },
+      {
+        "name": "音楽",
+        "icon": "/images/skills/music.webp",
+        "content": "うまくないですが、ピアノを弾きます。作曲はまだできませんが、しょぼい音感を頼りに簡単な採譜をしたりして遊んでいます。"
+      }
+    ]
+  },
+  {
+    "category": "分類なし・好み",
+    "skills": [
+      {
+        "name": "Git / GitHub",
+        "icon": "/images/skills/gitgithub.webp",
+        "content": "普通に開発できる程度に使えます。"
+      },
+      {
+        "name": "Vim / NeoVim",
+        "icon": "/images/skills/vimneovim.webp",
+        "content": "宗教です。ほぼすべての開発でNeoVimを使っている。ただしUnreal Engineは例外。"
+      },
+      {
+        "name": "Arch Linux",
+        "icon": "/images/skills/archlinux.webp",
+        "content": "Arch Linuxが好きです。他のディストロも触りますが、やはり安住の地はArchです。"
+      },
+      {
+        "name": "Rider for Unreal Engine",
+        "icon": "/images/skills/riderforunrealengine.webp",
+        "content": "Unreal Engineでの開発をするときにはこいつを使います。優秀なので気に入っています。"
+      }
+    ]
+  }
+]
+
