@@ -28,6 +28,9 @@ export default defineNuxtComponent({
     useNuxt2Meta({ titleTemplate: 'strv.dev' });
     const first = ref(true);
     onMounted(() => {
+      const initialVh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--initial-vh', `${initialVh}px`);
+
       const v = localStorage.getItem('visited');
       if (v === 'true') {
         first.value = false;
@@ -76,7 +79,7 @@ article {
       }
       display: block;
       position: absolute;
-      bottom: 23vh;
+      top: calc(70 * var(--initial-vh));
       left: 50%;
       transform: translateX(-50%);
       cursor: pointer;
