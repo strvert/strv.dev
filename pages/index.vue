@@ -2,7 +2,9 @@
   <article>
     <div class="logos">
       <top-large-logo />
-      <nuxt-link class="jump" to="#main-message"><i class="im im-eject"></i></nuxt-link>
+      <button @click="scroll('#main-message')" class="jump" href="#main-message">
+        <i class="im im-eject"></i>
+      </button>
     </div>
     <h1 id="main-message">{{ first ? 'はじめまして！' : 'また会いましたね！' }}</h1>
     <div class="content">
@@ -33,7 +35,12 @@ export default defineNuxtComponent({
         localStorage.setItem('visited', 'true');
       }
     });
-    return { first };
+
+    const scroll = (selector: string) => {
+      document.querySelector(selector)?.scrollIntoView(true);
+    };
+
+    return { first, scroll };
   },
 });
 </script>
@@ -50,6 +57,8 @@ article {
   .logos {
     position: relative;
     .jump {
+      border-style: none;
+      background-color: rgba(0, 0, 0, 0);
       color: black;
       filter: drop-shadow(0px 0px 3px white);
       opacity: 0.6;
