@@ -79,6 +79,7 @@ article {
       bottom: 23vh;
       left: 50%;
       transform: translateX(-50%);
+      cursor: pointer;
     }
   }
 
