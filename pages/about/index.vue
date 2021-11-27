@@ -1,19 +1,24 @@
 <template>
-  <blogpost-frame v-if="page !== undefined" :page="page" :showComment="false">
-    <nuxt-content :document="page" />
-  </blogpost-frame>
+  <div>
+    <blogpost-frame v-if="page !== undefined" :page="page" :showComment="false">
+      <nuxt-content :document="page" />
+    </blogpost-frame>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineNuxtComponent, useNuxtApp, ref } from '#app';
-import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
-import { useFetch, useAsync } from '@nuxtjs/composition-api';
+
+import { useAsync } from '@nuxtjs/composition-api';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
 import { IArticle } from '@/composables/stores/Article';
 
+import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
+import TopLargeLogo from '@/components/atoms/TopLargeLogo.vue';
+
 export default defineNuxtComponent({
   name: 'about',
-  components: { BlogpostFrame },
+  components: { TopLargeLogo, BlogpostFrame },
   setup() {
     const { $content } = useNuxtApp();
     const page = ref(undefined);

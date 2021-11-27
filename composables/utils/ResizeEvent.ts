@@ -1,4 +1,4 @@
-import { ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api';
+import { ref, onMounted, onBeforeUnmount } from '#app';
 
 export const useResizeEvent = () => {
   const width = ref<number>();

@@ -1,14 +1,14 @@
 <template>
   <div>
-    <content-list-container listTitle="検索結果" :ready="completed">
+    <content-list-frame listTitle="検索結果" :ready="completed">
       <article-list :articles="pages" />
-    </content-list-container>
+    </content-list-frame>
   </div>
 </template>
 
 <script lang="ts">
 import { defineNuxtComponent, useNuxt2Meta } from '#app';
-import ContentListContainer from '@/components/molecules/ContentListContainer.vue';
+import ContentListFrame from '@/components/molecules/ContentListFrame.vue';
 import ArticleList from '@/components/molecules/ArticleList.vue';
 import { useSearchBlogContent } from '@/composables/utils/SearchBlogContent';
 import { URLParamBuilder } from '@/composables/utils/SearchParamBuilder/URLParamBuilder';
@@ -16,7 +16,7 @@ import { URLParamBuilder } from '@/composables/utils/SearchParamBuilder/URLParam
 export default defineNuxtComponent({
   name: 'search',
   components: {
-    ContentListContainer,
+    ContentListFrame,
     ArticleList,
   },
   setup() {

@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <article>
     <header>
       <h1>{{ listTitle }}</h1>
     </header>
@@ -9,7 +9,7 @@
         <slot />
       </div>
     </transition>
-  </section>
+  </article>
 </template>
 
 <script lang="ts">
@@ -18,6 +18,7 @@ import SeriesList from '@/components/molecules/SeriesList.vue';
 import DropDownMenu from '@/components/atoms/DropDownMenu.vue';
 
 export default defineNuxtComponent({
+  name: 'content-list-frame',
   components: { SeriesList, DropDownMenu },
   props: {
     listTitle: {
@@ -33,6 +34,10 @@ export default defineNuxtComponent({
 </script>
 
 <style lang="scss" scoped>
+article {
+  margin-block-start: var(--default-margin-block-start);
+}
+
 h1 {
   @media screen and (max-width: 800px) {
     font-size: 1.4em;

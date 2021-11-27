@@ -6,6 +6,6 @@
 
 <style lang="scss" scoped>
 .container-base {
-  margin-block-start: 80px;
+  margin-block-start: var(--default-margin-block-start);
 }
 </style>

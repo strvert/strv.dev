@@ -3,9 +3,7 @@
     <Header class="header" />
     <main>
       <div class="content">
-        <container>
-          <slot />
-        </container>
+        <slot />
       </div>
     </main>
     <Footer />
@@ -15,12 +13,11 @@
 <script lang="ts">
 import { defineNuxtComponent } from '#app';
 
-import Container from '@/components/atoms/Container.vue';
 import Header from '@/components/molecules/Header.vue';
 import Footer from '@/components/molecules/Footer.vue';
 
 export default defineNuxtComponent({
-  components: { Container, Header, Footer },
+  components: { Header, Footer },
 });
 </script>
 

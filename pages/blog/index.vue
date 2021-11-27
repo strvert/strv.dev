@@ -1,19 +1,21 @@
 <template>
-  <content-list-container listTitle="記事一覧" :ready="completed">
+  <content-list-frame listTitle="記事一覧" :ready="completed">
     <article-list :articles="pages" />
-  </content-list-container>
+  </content-list-frame>
 </template>
 
 <script lang="ts">
 import { defineNuxtComponent, useNuxt2Meta } from '#app';
+
 import ArticleList from '@/components/molecules/ArticleList.vue';
+import ContentListFrame from '@/components/molecules/ContentListFrame.vue';
+
 import { StaticParamBuilder } from '@/composables/utils/SearchParamBuilder/StaticParamBuilder';
-import ContentListContainer from '@/components/molecules/ContentListContainer.vue';
 import { useSearchBlogContent } from '@/composables/utils/SearchBlogContent';
 
 export default defineNuxtComponent({
   name: 'blog',
-  components: { ContentListContainer, ArticleList },
+  components: { ContentListFrame, ArticleList },
   setup() {
     useNuxt2Meta({ title: '記事一覧' });
     const { pages, completed } = useSearchBlogContent(new StaticParamBuilder({}));

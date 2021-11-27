@@ -2,7 +2,7 @@
   <div>
     <header class="redirect-message">
       <div class="wrapper">
-        <h1 class="rounded-font">
+        <h1>
           <slot name="message" :remaining="remaining" />
         </h1>
         <p class="message">

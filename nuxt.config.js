@@ -79,7 +79,10 @@ const collectSitemapURIs = async () => {
   const postsLoc = articlesPath;
   const posts = await $content(postsLoc, { deep: true }).only(['path', 'updatedAt']).fetch();
   return posts.map((post) => {
-    return { url: `${articlesRoute}/${pathToSlug(post.path, articlesPath)}`, lastmod: post.updatedAt };
+    return {
+      url: `${articlesRoute}/${pathToSlug(post.path, articlesPath)}`,
+      lastmod: post.updatedAt,
+    };
   });
 };
 
@@ -163,9 +166,7 @@ export default defineNuxtConfig({
       {
         families: {
           'M PLUS 1': [200, 300, 400, 600],
-          'M PLUS Rounded 1c': [300, 400, 500],
           'Source Code Pro': [300, 400],
-          'Sawarabi Gothic': [400],
         },
         display: 'swap',
       },

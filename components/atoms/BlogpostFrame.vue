@@ -1,32 +1,34 @@
 <template>
   <div>
-    <article>
-      <div class="blogpost">
-        <header>
-          <h1 class="post-title">{{ page !== undefined ? page.title : '' }}</h1>
-          <div class="post-info-wrapper">
-            <div class="tag-list">
-              <tag-list :tags="page !== undefined ? page.tags : []" />
+    <container>
+      <article>
+        <div class="blogpost">
+          <header>
+            <h1 class="post-title">{{ page !== undefined ? page.title : '' }}</h1>
+            <div class="post-info-wrapper">
+              <div class="tag-list">
+                <tag-list :tags="page !== undefined ? page.tags : []" />
+              </div>
+              <p class="publish-time">
+                <time :datetime="dateString">{{ dateString }}</time
+                >に{{ pubStatus }}
+              </p>
             </div>
-            <p class="publish-time">
-              <time :datetime="dateString">{{ dateString }}</time
-              >に{{ pubStatus }}
-            </p>
-          </div>
-        </header>
-        <slot />
+          </header>
+          <slot />
+        </div>
+      </article>
+      <div class="surround-menu">
+        <surround-article-menu
+          :path="path"
+          :useSeries="true"
+          :series="page !== undefined ? page.series : ''"
+        />
       </div>
-    </article>
-    <div class="surround-menu">
-      <surround-article-menu
-        :path="path"
-        :useSeries="true"
-        :series="page !== undefined ? page.series : ''"
-      />
-    </div>
-    <article v-if="showComment" class="giscus-wrapper">
-      <giscus />
-    </article>
+      <article v-if="showComment" class="giscus-wrapper">
+        <giscus />
+      </article>
+    </container>
   </div>
 </template>
 
@@ -35,11 +37,12 @@ import { defineNuxtComponent, PropType, computed } from '#app';
 import { IArticle } from '@/composables/stores/Article';
 import TagList from '@/components/atoms/TagList.vue';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
+import Container from '@/components/atoms/Container.vue';
 import Giscus from '@/components/atoms/Giscus.vue';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
 
 export default defineNuxtComponent({
-  components: { Giscus, TagList, SurroundArticleMenu },
+  components: { Container, Giscus, TagList, SurroundArticleMenu },
   props: {
     page: {
       type: Object as PropType<IArticle>,
@@ -58,7 +61,7 @@ export default defineNuxtComponent({
     showComment: {
       type: Boolean,
       default: true,
-   }
+    },
   },
   setup(props) {
     const dateString = computed(() => {

@@ -2,6 +2,8 @@ html {
   font-family: 'M PLUS 1', -apple-system, 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
     'Hiragino Sans', Meiryo, sans-serif, 'Segoe UI Emoji';
   font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   word-wrap: break-word;
   word-break: break-word;
   color: var(--strvdev-text-color);
@@ -27,11 +29,6 @@ a {
       style: dashed;
     }
   }
-}
-
-.rounded-font {
-  font-weight: 500;
-  font-family: 'M PLUS Rounded 1c', sans-serif;
 }
 
 ::-webkit-scrollbar {

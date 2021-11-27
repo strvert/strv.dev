@@ -1,11 +1,11 @@
 <template>
   <article>
     <div class="logos">
-      <top-large-logo />
-      <button @click="scroll('#main-message')" class="jump" href="#main-message">
-        <i class="im im-eject"></i>
-      </button>
+      <top-large-logo class="logo" />
     </div>
+    <button @click="scroll('#main-message')" class="jump" href="#main-message">
+      <i class="im im-eject"></i>
+    </button>
     <h1 id="main-message">{{ first ? 'はじめまして！' : 'また会いましたね！' }}</h1>
     <div class="content">
       <p>私は<strong>すとんりばー</strong>です。すこしだけ自己紹介を見ていってください。</p>
@@ -59,30 +59,44 @@ article {
 
   .logos {
     position: relative;
-    .jump {
-      border-style: none;
-      background-color: rgba(0, 0, 0, 0);
-      color: black;
-      filter: drop-shadow(0px 0px 3px white);
-      opacity: 0.6;
-      i {
-        font-size: 4em;
-        font-weight: 700;
-        animation: {
-          name: updown-shake;
-          duration: 0.9s;
-          fill-mode: forwards;
-          iteration-count: infinite;
-          direction: alternate;
-          timing-function: cubic-bezier();
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    .logo {
+      width: 80%;
+    }
+  }
+
+  .jump {
+    display: block;
+    position: relative;
+    // top: calc(70 * var(--initial-vh));
+    @media screen and (max-width: 800px) {
+      bottom: 25vh;
+    }
+    @media screen and (min-width: 800px) {
+      bottom: 10vh;
+    }
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    border-style: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: black;
+    filter: drop-shadow(0px 0px 3px white);
+    opacity: 0.6;
+    i {
+      font-size: 4em;
+      font-weight: 700;
+      animation: {
+        name: updown-shake;
+        duration: 0.9s;
+        fill-mode: forwards;
+        iteration-count: infinite;
+        direction: alternate;
+        timing-function: cubic-bezier();
       }
-      display: block;
-      position: absolute;
-      top: calc(70 * var(--initial-vh));
-      left: 50%;
-      transform: translateX(-50%);
-      cursor: pointer;
     }
   }
 

@@ -1,17 +1,17 @@
 <template>
-  <content-list-container listTitle="シリーズ一覧" :ready="completed">
+  <content-list-frame listTitle="シリーズ一覧" :ready="completed">
     <series-list :serieses="serieses" />
-  </content-list-container>
+  </content-list-frame>
 </template>
 
 <script lang="ts">
 import { defineComponent, useNuxt2Meta } from '#app';
 import SeriesList from '@/components/molecules/SeriesList.vue';
-import ContentListContainer from '@/components/molecules/ContentListContainer.vue';
+import ContentListFrame from '@/components/molecules/ContentListFrame.vue';
 import { useBlogSeries } from '@/composables/utils/BlogSeries';
 
 export default defineComponent({
-  components: { ContentListContainer, SeriesList },
+  components: { ContentListFrame, SeriesList },
   setup() {
     useNuxt2Meta({ title: 'blog' });
     const { serieses, completed } = useBlogSeries();
