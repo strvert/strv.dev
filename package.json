@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS=--openssl-legacy-provider nuxt dev",
+    "export": "NODE_OPTIONS=--openssl-legacy-provider nuxt export",
     "build": "NODE_OPTIONS=--openssl-legacy-provider BASE_URL=https://strv.dev nuxt build",
     "analyze": "NODE_OPTIONS=--openssl-legacy-provider BASE_URL=https://strv.dev nuxt build --analyze",
     "start": "NODE_OPTIONS=--openssl-legacy-provider nuxt start",

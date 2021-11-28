@@ -8,7 +8,11 @@
     </button>
     <h1 id="main-message">{{ first ? 'はじめまして！' : 'また会いましたね！' }}</h1>
     <div class="content">
-      <p>私は<strong>すとんりばー</strong>です。すこしだけ自己紹介を見ていってください。</p>
+      <p>
+        ここは<strong>すとんりばー</strong>のポートフォリオ兼<nuxt-link to="/blog"
+          ><strong>ブログ</strong></nuxt-link
+        >サイトです。すこしだけ自己紹介を見ていってください。
+      </p>
       <basic-profile />
       <skill-profile />
     </div>
@@ -72,6 +76,8 @@ article {
     display: block;
     position: relative;
     // top: calc(70 * var(--initial-vh));
+    transition-property: bottom;
+    transition-duration: 0.2s;
     @media screen and (max-width: 800px) {
       bottom: 25vh;
     }

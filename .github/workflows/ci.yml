@@ -45,14 +45,14 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies 👨🏻‍💻
-        run: yarn
-
+        run:
+          yarn
 
           # - name: Run tests 🧪
           #   run: yarn test
 
       - name: Page Generation
-        run: yarn run generate
+        run: yarn run build & yarn run export
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
