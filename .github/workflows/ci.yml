@@ -52,7 +52,7 @@ jobs:
           #   run: yarn test
 
       - name: Page Generation
-        run: yarn run build & yarn run export
+        run: yarn run generate
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
