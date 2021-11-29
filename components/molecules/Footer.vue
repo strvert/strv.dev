@@ -1,22 +1,7 @@
 <template>
   <div class="footer-wrapper">
     <footer class="footer-main">
-      <div class="links">
-        <address>
-          <p>
-            <i class="im im-github"></i>
-            <a :href="`https://github.com/${authorInfo.github}`">{{ authorInfo.github }}</a>
-          </p>
-          <p>
-            <i class="im im-twitter"></i>
-            <a :href="`https://twitter.com/${authorInfo.twitter}`">@{{ authorInfo.twitter }}</a>
-          </p>
-          <p>
-            <i class="im im-book"></i>
-            <a href="https://github.com/strvert/strv.dev">strvert/strv.dev</a>
-          </p>
-        </address>
-      </div>
+      <contanct-profile class="contact" />
       <div class="infos">
         <p>
           <span class="copyright">© {{ copyright.year }} {{ copyright.rights }}.</span>
@@ -28,13 +13,13 @@
 
 <script lang="ts">
 import { defineNuxtComponent } from '#app';
+import ContanctProfile from '@/components/atoms/ContanctProfile.vue';
 
 export default defineNuxtComponent({
-  components: {},
+  components: { ContanctProfile },
   setup() {
     const copyright = process.env.copyright;
-    const authorInfo = process.env.authorInfo;
-    return { copyright, authorInfo };
+    return { copyright };
   },
 });
 </script>
@@ -67,33 +52,11 @@ export default defineNuxtComponent({
       }
     }
 
-    .im {
-      font-size: 1.5rem;
-    }
-
-    address {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      font-style: normal;
-      p {
-        display: flex;
-        gap: 0.6rem;
-        align-content: center;
-        align-items: center;
-        margin: 0;
-        font-size: 0.9rem;
-      }
-    }
-    .repository {
-      margin-block-start: 0.5rem;
-      p {
-        display: flex;
-        gap: 0.6rem;
-        align-content: center;
-        align-items: center;
-        margin: 0;
+    @media screen and (min-width: 800px) {
+      .contact {
+        position: relative;
+        left: -1.2em;
+        inline-size: 50%;
       }
     }
 

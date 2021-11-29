@@ -42,7 +42,6 @@ export default defineNuxtComponent({
     flex-direction: column;
   }
 
-  margin: 1em 0;
   .icon {
     flex: 1;
     .icon-img {
@@ -59,12 +58,8 @@ export default defineNuxtComponent({
     flex: 3;
 
     .table {
-      font-size: 1.24em;
       block-size: 98%;
       margin: auto;
-      @media screen and (max-width: 800px) {
-        font-size: 3.8vw;
-      }
     }
   }
 }

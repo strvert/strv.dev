@@ -13,8 +13,8 @@
           ><strong>ブログ</strong></nuxt-link
         >サイトです。すこしだけ自己紹介を見ていってください。
       </p>
-      <basic-profile />
-      <contact-profile />
+      <basic-profile class="b-profile" />
+      <contact-profile class="c-profile" />
       <skill-profile />
     </div>
   </article>
@@ -24,7 +24,7 @@
 import { defineNuxtComponent, ref, useNuxt2Meta, onMounted } from '#app';
 import TopLargeLogo from '@/components/atoms/TopLargeLogo.vue';
 import BasicProfile from '@/components/atoms/BasicProfile.vue';
-import ContactProfile from '@/components/atoms/ContanctProfile.vue'
+import ContactProfile from '@/components/atoms/ContanctProfile.vue';
 import SkillProfile from '@/components/atoms/SkillProfile.vue';
 
 export default defineNuxtComponent({
@@ -111,8 +111,23 @@ article {
   .content {
     min-block-size: 100vh;
     font-size: 1.3rem;
-    @media screen and (max-width: 800px) {
-      font-size: 1.1rem;
+
+    %font-size-adjust {
+      font-size: 1.6rem;
+      @media screen and (max-width: 800px) {
+        font-size: calc(100vw / 26);
+      }
+    }
+
+    .b-profile {
+      margin: 0.3em 0;
+      @extend %font-size-adjust;
+      @media screen and (max-width: 800px) {
+        margin: 0.1em 0;
+      }
+    }
+    .c-profile {
+      @extend %font-size-adjust;
     }
   }
 

@@ -1,0 +1,26 @@
+[
+  {
+    "serviceName": "github",
+    "type": "link",
+    "displayName": "GitHub",
+    "iconmonstr": "&#xe0b6",
+    "display": "strvert",
+    "link": "https://github.com/strvert"
+  },
+  {
+    "serviceName": "twitter",
+    "type": "link",
+    "displayName": "Twitter",
+    "iconmonstr": "&#xe0a7",
+    "display": "@strvert",
+    "link": "https://twitter.com/strvert"
+  },
+  {
+    "serviceName": "email",
+    "type": "email",
+    "displayName": "Email",
+    "iconmonstr": "&#xe047",
+    "display": "strv<at>strv.dev",
+    "link": ""
+  }
+]

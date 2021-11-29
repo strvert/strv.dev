@@ -16,11 +16,6 @@ const copyright = {
   year: '2021',
 };
 
-const authorInfo = {
-  twitter: 'strvert',
-  github: 'strvert',
-};
-
 const ogpImages = basePath + 'images/ogp';
 const articlesPath = 'articles';
 const articlesRoute = 'blog';
@@ -107,7 +102,6 @@ export default defineNuxtConfig({
     lang,
     locale,
     copyright,
-    authorInfo,
     articlesPath,
     articlesRoute,
     defaultMeta,
