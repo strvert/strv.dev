@@ -110,7 +110,7 @@ article {
 
   .content {
     min-block-size: 100vh;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 
     %font-size-adjust {
       font-size: 1.6rem;
