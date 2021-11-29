@@ -4,7 +4,7 @@
       <header class="icon">
         <lazy-load-image
           class="icon-img"
-          src="/images/logo/stonriver_1200.webp"
+          src="/images/logo/stonriver_640.webp"
           alt="すとんりばーのアイコン"
         />
       </header>

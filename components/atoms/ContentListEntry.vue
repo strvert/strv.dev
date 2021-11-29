@@ -79,6 +79,7 @@ article {
     .tagicon {
       border-radius: 10px;
       block-size: 100%;
+      inline-size: 100%;
     }
   }
 }

@@ -238,7 +238,7 @@ export default defineNuxtConfig({
   ssr: true,
   generate: {
     workers: 16,
-    interval: 500,
+    interval: 300,
     async routes() {
       return await collectBlogPostURIs();
     },

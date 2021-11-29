@@ -4,7 +4,7 @@
         class="large-icon"
         :duration="3"
         alt="大きなすとんりばーのアイコン"
-        src="/images/logo/stonriver_1200.webp"
+        src="/images/logo/stonriver_640.webp"
       />
       <header :class="{ unmounted: !mounted }">
         <p>{{ message }}</p>
