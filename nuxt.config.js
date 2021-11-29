@@ -115,8 +115,8 @@ export default defineNuxtConfig({
     host: '0.0.0.0',
     port: '3000',
     https: {
-      key: fs.readFileSync(path.resolve('./certs/172.21.77.8-key.pem')),
-      cert: fs.readFileSync(path.resolve('./certs/172.21.77.8.pem')),
+      key: fs.readFileSync(path.resolve('./devcerts/172.21.77.8-key.pem')),
+      cert: fs.readFileSync(path.resolve('./devcerts/172.21.77.8.pem')),
     },
   },
   // Target: https://go.nuxtjs.dev/config-target
