@@ -52,7 +52,8 @@ article {
     justify-content: center;
     .img {
       display: block;
-      inline-size: 30%;
+      inline-size: 60%;
+      margin: 0 auto;
       margin-block-end: 0.5em;
     }
   }
