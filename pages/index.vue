@@ -14,6 +14,7 @@
         >サイトです。すこしだけ自己紹介を見ていってください。
       </p>
       <basic-profile />
+      <contact-profile />
       <skill-profile />
     </div>
   </article>
@@ -23,11 +24,12 @@
 import { defineNuxtComponent, ref, useNuxt2Meta, onMounted } from '#app';
 import TopLargeLogo from '@/components/atoms/TopLargeLogo.vue';
 import BasicProfile from '@/components/atoms/BasicProfile.vue';
+import ContactProfile from '@/components/atoms/ContanctProfile.vue'
 import SkillProfile from '@/components/atoms/SkillProfile.vue';
 
 export default defineNuxtComponent({
   name: 'top',
-  components: { TopLargeLogo, BasicProfile, SkillProfile },
+  components: { TopLargeLogo, BasicProfile, ContactProfile, SkillProfile },
   setup() {
     useNuxt2Meta({ titleTemplate: 'strv.dev' });
     const first = ref(true);

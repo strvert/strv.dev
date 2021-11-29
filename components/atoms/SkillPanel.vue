@@ -46,14 +46,13 @@ article {
   display: relative;
 
   header {
-    block-size: 70px;
+    block-size: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
     .img {
       display: block;
-      inline-size: 60%;
-      margin: 0 auto;
+      inline-size: 3.8em;
       margin-block-end: 0.5em;
     }
   }
