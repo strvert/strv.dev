@@ -1,5 +1,6 @@
 import { defineNuxtConfig } from '@nuxt/bridge';
 import path from 'path';
+import fs from 'fs';
 import { $content } from '@nuxt/content';
 import { pathToSlug } from './composables/utils/ConvertArticlePath.ts';
 
@@ -113,6 +114,10 @@ export default defineNuxtConfig({
   server: {
     host: '0.0.0.0',
     port: '3000',
+    https: {
+      key: fs.readFileSync(path.resolve('./certs/172.21.77.8-key.pem')),
+      cert: fs.readFileSync(path.resolve('./certs/172.21.77.8.pem')),
+    },
   },
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
