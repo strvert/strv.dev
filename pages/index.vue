@@ -15,7 +15,7 @@
       </p>
       <basic-profile class="b-profile" />
       <contact-profile class="c-profile" />
-      <skill-profile />
+      <skill-profile class="s-profile" />
     </div>
   </article>
 </template>

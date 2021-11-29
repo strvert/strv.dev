@@ -71,7 +71,7 @@ article {
     }
 
     .comment {
-      font-size: 0.8em;
+      font-size: 0.82em;
       margin-block-end: 0.3em;
       word-break: break-all;
       text-align: justify;
