@@ -232,7 +232,9 @@ export default defineNuxtConfig({
     hardSource: true,
   },
   content: {
-    markdown: {},
+    markdown: {
+      remarkPlugins: ['remark-prism'],
+    },
   },
   ssr: true,
   generate: {

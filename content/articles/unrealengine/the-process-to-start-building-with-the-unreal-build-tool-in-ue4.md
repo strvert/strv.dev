@@ -60,7 +60,7 @@ UBT のエントリーポイントは、UBT のコードがあるディレクト
 それなりに長いので、ビルドに直接関係しそうなところだけ抜き出して、コメントを翻訳・追記してみます。
 かなり削っているので、いろんなオプション機能や例外処理、パフォーマンス計測用のコードが消えています。ご注意ください。
 
-```csharp[UnreaalBuildTool.csのMain関数]
+```csharp:UnreaalBuildTool.csのMain関数
 		private static int Main(string[] ArgumentsArray)
 		{
 			// Mutex保持用変数
@@ -154,7 +154,7 @@ UBT のエントリーポイントは、UBT のコードがあるディレクト
 
 まず、コマンドライン引数のパース部です。ここに関してはやってることはそのままですね。
 
-```csharp
+```csharp:
        // コマンドライン引数をパース
        CommandLineArguments Arguments = new CommandLineArguments(ArgumentsArray);
 
@@ -165,7 +165,7 @@ UBT のエントリーポイントは、UBT のコードがあるディレクト
 `CommandLineArguments`という便利なクラスが`Engine/Source/Programs/DotNETCommon/DotNETUtilities/CommandLineArguments.cs`に定義されていて、こいつにコマンドラインから受け取った引数配列を渡すだけでいい感じにしてくれているようです。
 そして、いい感じの形にしたコマンドライン引数の情報を、これまた`GlobalOptions`という便利なクラスに渡しています。こちらは Main と同じ`UnrealBuildTool.cs`内にいます。`GlobalOptions`はその名の通り設定情報を保持するクラスなのですが、そのコンストラクタは引数として`CommandLineArguments`を受け取る仕様になっています。該当コンストラクタを抜き出してきました。
 
-```csharp[UnreaalBuildTool.csのGlobalOptionsのコンストラクタ]
+```csharp:UnreaalBuildTool.csのGlobalOptionsのコンストラクタ
 	public GlobalOptions(CommandLineArguments Arguments)
 	{
 		Arguments.ApplyTo(this);
@@ -185,7 +185,7 @@ UBT のエントリーポイントは、UBT のコードがあるディレクト
 個人的にここの処理がモダンな言語の暴力といった感じで好きです。
 ここでは指定された動作モードに対応するクラスを取得してくる処理をしているわけなんですが、なかなかアクロバティックです。
 
-```csharp
+```csharp:
 //初期値としてビルド設定とビルド管理を保持するクラスの型情報を取得
 Type ModeType = typeof(BuildMode);
 
@@ -227,7 +227,7 @@ Modes/
 これらのファイルにはすべて、`ToolMode`という抽象クラスを継承した各モードのクラスの実装が行われています。そして、これらのクラスは当然、C#で記述されたビルドツールがコンパイルされるときにビルドツール自体のバイナリの中に取り込まれます。
 これを念頭に置いて、上記の処理からモードの探索部分を改めてみてみます。
 
-```csharp
+```csharp:
 // すべての有効なモードを探索
 Dictionary<string, Type> ModeNameToType = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 foreach(Type Type in Assembly.GetExecutingAssembly().GetTypes())
@@ -245,7 +245,7 @@ foreach(Type Type in Assembly.GetExecutingAssembly().GetTypes())
 
 クラスの属性については、以下のように各モードクラスの頭に宣言されています。僕はあまり C#を書かないので、C#にこんな属性の記法があることを初めて知りました。UnrealC++の記法ってやっぱり C#リスペクトあるんですかね。
 
-```csharp
+```csharp:
 [ToolMode("Build", ToolModeOptions.XmlConfig | ToolModeOptions.BuildPlatforms | ToolModeOptions.SingleInstance | ToolModeOptions.StartPrefetchingEngine | ToolModeOptions.ShowExecutionTime)]
 class BuildMode : ToolMode
 {
@@ -257,7 +257,7 @@ class BuildMode : ToolMode
 
 最後に、コマンドライン引数で指定されたモードに該当するモードが探索結果のディクショナリにあったら ModeType に参照渡しで設定して完璧です。
 
-```csharp
+```csharp:
 // モードの設定を行う
 ModeNameToType.TryGetValue(Options.Mode, out ModeType)
 ```
@@ -266,7 +266,7 @@ ModeNameToType.TryGetValue(Options.Mode, out ModeType)
 
 ここでは、ここまでに取得した情報から各種設定を行っています。やっているだけな感じの処理が大半なので、コードは冒頭のみにします。前述の全文の方を御覧ください。
 
-```csharp
+```csharp:
 // ビルドモードクラスの属性に設定されているオプションを取得
 ToolModeOptions ModeOptions = ModeType.GetCustomAttribute<ToolModeAttribute>().Options;
 
@@ -289,7 +289,7 @@ if((ModeOptions & ToolModeOptions.StartPrefetchingEngine) != 0)
 
 いよいよ情報が揃ったので、実行箇所です。
 
-```csharp
+```csharp:
 // 設定されたモードから適切なハンドラを生成
 ToolMode Mode = (ToolMode)Activator.CreateInstance(ModeType);
 
@@ -299,7 +299,7 @@ int Result = Mode.Execute(Arguments);
 
 モードに合わせたクラスの型情報を持っている`ModeType`をもとにインスタンスを作成し、抽象クラスである`ToolMode`にアップキャストしてハンドラ用の`Mode`変数に格納しています。今更ですが、抽象クラス`ToolMode`の中身はこんな感じです。
 
-```csharp[ToolMode.csのToolModeクラス]
+```csharp:ToolMode.csのToolModeクラス
 abstract class ToolMode
 {
 	public abstract int Execute(CommandLineArguments Arguments);

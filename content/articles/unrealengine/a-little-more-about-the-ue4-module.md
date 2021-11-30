@@ -77,7 +77,7 @@ C++プロジェクトを作成すると、Source以下はこんな構成にな�
 
 では、デフォルトで生成されている`MyProject.Build.cs`を覗いてみましょう。
 
-```csharp[MyProject.Build.cs]
+```csharp:MyProject.Build.cs
 // Fill out your copyright notice in the Description page of Project Settings.
 
 using UnrealBuildTool;
@@ -128,7 +128,7 @@ https://api.unrealengine.com/JPN/Programming/UnrealBuildSystem/IWYUReferenceGuid
 `MyProjectEditor.Target.cs`に設定したモジュールはEditorビルド時にビルド対象となり、`MyProject.Target.cs`に設定したモジュールはGameビルド時にビルド対象となるといったように、使い分けることができます。
 試しに、`MyProject.Target.cs`の方を見てみます。
 
-```csharp[MyProject.Target.cs]
+```csharp:MyProject.Target.cs
 // Fill out your copyright notice in the Description page of Project Settings.
 
 using UnrealBuildTool;
@@ -148,7 +148,7 @@ public class MyProjectTarget : TargetRules
 
 まず、`Type`という変数にこの`MyProject.Target.cs`によって行われるビルドの種類を指定しています。ちなみに、ビルドツールのコードではこの`TargetType`という型は以下のように列挙型として定義されています。
 
-```csharp[ビルドツールより抜粋(TargetRules.cs)]
+```csharp:ビルドツールより抜粋(TargetRules.cs)
 	public enum TargetType
 	{
 		Game,
@@ -186,7 +186,7 @@ IDEなどからビルドを行う際には、ターゲットファイルのク�
 UE4のプロジェクト直下に生成される`.uproject`ファイルにもモジュールに関する設定項目が存在します。
 今回生成された`MyProject.uproject`を覗いてみます。
 
-```json[MyProject.uproject]
+```json:MyProject.uproject
 {
 	"FileVersion": 3,
 	"EngineAssociation": "4.22",
@@ -235,7 +235,7 @@ UE4のプロジェクト直下に生成される`.uproject`ファイルにもモ
 
 なお、モジュールを追加する際には以下のようにします。
 
-```json[MyProject.uproject]
+```json:MyProject.uproject
 {
 	"FileVersion": 3,
 	"EngineAssociation": "4.22",
@@ -293,7 +293,7 @@ C#のファイルたちは皆設定を行うファイルだったので、モジ
 
 とりあえず、デフォルトの状態のこの2つのファイルを見てみましょう。
 
-```cpp[MyProject.h]
+```cpp:MyProject.h
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
@@ -301,7 +301,7 @@ C#のファイルたちは皆設定を行うファイルだったので、モジ
 #include "CoreMinimal.h"
 ```
 
-```cpp[MyProject.cpp]
+```cpp:MyProject.cpp
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyProject.h"
@@ -318,7 +318,7 @@ IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, MyProject, "MyProject" );
 これはたった今登場した、プライマリゲームモジュール実装のためのマクロです。
 プライマリゲームモジュールはプロジェクト上に1つしか実装できないため、必然的にこのマクロもプロジェクトを通して1つのモジュールにしか書くことはありません。逆に、これがないとShippingビルドなどのモノリシックビルド時にビルドが通らないんじゃないかと思います。(試してないです)
 
-```cpp
+```cpp:
 IMPLEMENT_PRIMARY_GAME_MODULE(ModuleImplClass, ModuleName, GameName)
 ```
 このマクロは、第一引数に**モジュールを実装したクラス**、第二引数に**モジュール名**、第三引数に**ゲーム(プロジェクト)名**を取ります。
@@ -333,7 +333,7 @@ IMPLEMENT_PRIMARY_GAME_MODULE(ModuleImplClass, ModuleName, GameName)
 ## IMPLEMENT_GAME_MODULE
 こちらはゲームモジュールを実装するためのマクロです。ゲームモジュールはプライマリゲームモジュールと異なり、プロジェクト上に複数個実装することが可能なため、このマクロも複数のモジュールに書くことができます。ゲームコードを含むモジュールはこれで実装しましょう。
 
-```cpp
+```cpp:
 IMPLEMENT_GAME_MODULE(ModuleImplClass, ModuleName)
 ```
 
@@ -343,7 +343,7 @@ IMPLEMENT_GAME_MODULE(ModuleImplClass, ModuleName)
 ## IMPLEMENT_MODULE
 こちらはシンプルなモジュールを実装するためのマクロです。ゲームコードを含まないモジュールはこのマクロで実装されます。
 
-```cpp
+```cpp:
 IMPLEMENT_MODULE(ModuleImplClass, ModuleName)
 ```
 渡している引数は`IMPLEMENT_GAME_MODULE`と同様です。
@@ -366,7 +366,7 @@ IMPLEMENT_MODULE(ModuleImplClass, ModuleName)
 
 一方Monolithic時の実装は`IMPLEMENT_PRIMARY_GAME_MODULE`が独自の複雑な処理に変わったり、`IMPLEMENT_MODULE`の処理からホットリロードの処理が外されたりしています。しかし、実装を見る限りでは`IMPLEMENT_MODULE`と`IMPLEMENT_GAME_MODULE`の間にはこちらでも差異は見られない気がします……。というか、`IMPLEMENT_GAME_MODULE`の実装は常に以下になっています。
 
-```cpp[ModuleManager.hより抜粋]
+```cpp:ModuleManager.hより抜粋
 #define IMPLEMENT_GAME_MODULE( ModuleImplClass, ModuleName ) \
 	IMPLEMENT_MODULE( ModuleImplClass, ModuleName )
 ```
@@ -377,7 +377,7 @@ IMPLEMENT_MODULE(ModuleImplClass, ModuleName)
 ここでは、モジュール実装マクロに渡すモジュールクラスについて触れます。
 例として、デフォルトで生成された`IMPLEMENT_PRIMARY_GAME_MODULE`に渡されていた`FDefaultGameModuleImpl`クラスの実装に注目しましょう。
 
-```cpp[ModuleManager.hより抜粋]
+```cpp:ModuleManager.hより抜粋
 class FDefaultModuleImpl
 	: public IModuleInterface
 { };
@@ -418,7 +418,7 @@ https://api.unrealengine.com/INT/API/Runtime/Core/Modules/IModuleInterface/index
 
 この4つのメソッドを以下のような実装でオーバーライドしてビルドの上、ホットリロードが行われた場合の出力を確認してみます。
 
-```cpp[実装例.cpp]
+```cpp:実装例.cpp
 
 /*
 ** このコードは単体では動作しません。また、ShutdownModuleとPreUnloadCallbackについては
@@ -451,9 +451,9 @@ public:
 
 IMPLEMENT_PRIMARY_GAME_MODULE(FMyProjectModule, MyProjectModule, "MyProject")
 
-````
+```
 
-```[ホットリロード時の出力]
+```:ホットリロード時の出力
 LogTemp: PreUnloadCallback
 LogTemp: ShutdonwModule
 LogTemp: StartupModule
