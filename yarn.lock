@@ -12291,6 +12291,18 @@ remark-autolink-headings@^6.0.1:
     unified "^9.0.0"
     unist-util-visit "^2.0.0"
 
+remark-code-blocks@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/remark-code-blocks/-/remark-code-blocks-2.0.1.tgz#582205e01bb4aa8249db652939846b962740fedb"
+  integrity sha512-eZ6vfhv6Sv4TNbNYG6kG3ApQp6MRYc9fT4NT9QBPkuYQf51+TAbuMqApZdJdrsjeI9O8TP7noZF1KbadbLk5Lg==
+
+remark-code-extra@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/remark-code-extra/-/remark-code-extra-1.0.1.tgz#661fcf0159e83a86982484312fe6cbfafeb395ee"
+  integrity sha512-MHKTd2zsKc9ayrLBaUzyiIw7rNY4Q/aNSx1L1xss7ZthQ/oSEoMvtA5wpXALVKTWOL5JQXDf/Q9lP8IWbP3cig==
+  dependencies:
+    unist-util-visit "^1.4.1"
+
 remark-code-titles@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/remark-code-titles/-/remark-code-titles-0.1.2.tgz#ae41b47c517eae4084c761a59a60df5f0bd54aa8"
@@ -14131,7 +14143,7 @@ unist-util-visit-parents@^3.0.0:
     "@types/unist" "^2.0.0"
     unist-util-is "^4.0.0"
 
-unist-util-visit@^1.4.0:
+unist-util-visit@^1.4.0, unist-util-visit@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/unist-util-visit/-/unist-util-visit-1.4.1.tgz#4724aaa8486e6ee6e26d7ff3c8685960d560b1e3"
   integrity sha512-AvGNk7Bb//EmJZyhtRUnNMEpId/AZ5Ph/KUpTI09WHQuDZHKovQ1oEv3mfmKpWKtoMzyMC4GLBm1Zy5k12fjIw==

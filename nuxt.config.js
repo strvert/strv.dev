@@ -4,6 +4,8 @@ import fs from 'fs';
 import { $content } from '@nuxt/content';
 import { pathToSlug } from './composables/utils/ConvertArticlePath.ts';
 
+import remarkCodeExtraConfig from './remark_code_extra.config';
+
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 const baseDir = process.env.BASE_DIR || '/';
 const basePath = baseUrl + baseDir;
@@ -236,7 +238,7 @@ export default defineNuxtConfig({
       prism: {
         theme: 'prism-themes/themes/prism-one-light.css',
       },
-      remarkPlugins: ['remark-code-titles', 'remark-prism'],
+      remarkPlugins: [['remark-code-extra', remarkCodeExtraConfig], 'remark-prism'],
       rehypePlugins: [],
     },
   },
