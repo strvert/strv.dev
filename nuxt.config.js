@@ -152,7 +152,7 @@ export default defineNuxtConfig({
   layoutTransition: 'layout',
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/RepositoryFactory', '~/plugins/dayjs/dayjs'],
+  plugins: ['~/plugins/RepositoryFactory', '~/plugins/dayjs/dayjs', '~/plugins/prism'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -233,7 +233,11 @@ export default defineNuxtConfig({
   },
   content: {
     markdown: {
-      remarkPlugins: ['remark-prism'],
+      prism: {
+        theme: 'prism-themes/themes/prism-one-light.css',
+      },
+      remarkPlugins: [],
+      rehypePlugins: [],
     },
   },
   ssr: true,

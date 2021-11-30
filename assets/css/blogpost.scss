@@ -55,9 +55,6 @@
     }
 
     p {
-      @media screen and (min-width: 800px) {
-        text-align: justify;
-      }
       font-size: 1.08rem;
       letter-spacing: 0.03em;
       line-height: 3ex;
@@ -95,16 +92,18 @@
 
     .filename {
       position: absolute;
-      right: 7px;
-      transform: translateY(7px);
+      left: 0px;
 
       font-size: 0.85rem;
-      padding-left: 5px;
-      padding-right: 4px;
+      padding-left: 8px;
+      padding-right: 6px;
+      padding-top: 4px;
+      padding-bottom: 4px;
       border-radius: 4px;
       background-color: #0000000a;
 
       font-family: var(--source-code-font);
+      z-index: 50;
     }
 
     img {
