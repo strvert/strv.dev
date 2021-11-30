@@ -37,7 +37,7 @@ https://qiita.com/Kuniwak/items/983ba68fcf68d915b07d
 # バイナリ型を定義する
 先駆者様に倣って、0 or 1の保持にも型を利用していこうと思います。ここは複雑ではありませんので、全体のコードをいきなり提示します。
 
-```cpp[binary.h]
+```cpp:binary.h
 #pragma once
 #include <type_traits>
 
@@ -63,7 +63,7 @@ namespace Binary {
 ## 最低限の出力処理を用意しておく
 この後論理ゲートを実装していきますが、結果が確認できないと困ります。予め最低限の出力処理を用意しておくことにします。レギュレーションより、ここでは自由な値の利用が許可されます。
 
-```cpp[最低限の出力処理]
+```cpp:最低限の出力処理
 using Binary::O;
 using Binary::I;
 
@@ -96,7 +96,7 @@ static void printTruthTable() {
 ## NANDゲート型
 NANDゲートの実装は以下のようなものにしました。
 
-```cpp[basic_gates.h(NAND部)]
+```cpp:basic_gates.h(NAND部)
     template <Binary::IsBinary A, Binary::IsBinary B>
     struct NAND  {};
     template <Binary::IsZero A, Binary::IsZero B>
@@ -115,7 +115,7 @@ C++20のコンセプト万々歳です。とても楽にテンプレートパラ
 
 動作しているかどうか、先程用意した出力処理を利用して検証してみます。
 
-```cpp[NAND出力テスト]
+```cpp:NAND出力テスト
 int main()
 {
     printTruthTable<Gates::NANDv>();
@@ -133,7 +133,7 @@ int main()
 ## その他のゲートの型を用意する
 先述したとおり、あらゆる論理ゲートはNANDゲートを用いて表現することが出来ます。つまりは、NAND型を組み合わせるだけで他のゲートの型は用意できるわけです。一気にやってしまいましょう。
 
-```cpp[basic_gates.h(その他のゲート達)]
+```cpp:basic_gates.h(その他のゲート達)
     template <Binary::IsBinary A>
     using NOT = NAND<A, A>;
     template <Binary::IsBinary A>
@@ -164,7 +164,7 @@ int main()
 
 一応、出力を確認しておきましょう。
 
-```cpp[出力テスト]
+```cpp:出力テスト
 int main()
 {
     printTruthTable<Gates::ANDv>("NAND");
@@ -202,7 +202,7 @@ int main()
 ### 基本論理ゲートのソースコード
 基本論理ゲートの実装全体を以下に示しておきます。
 
-```cpp[basic_gates.h]
+```cpp:basic_gates.h
 #pragma once
 
 #include "binary.h"
@@ -258,7 +258,7 @@ namespace Gates {
 ![image.png](#/half-adder.png)
 半加算器は出力が複数あるため、これまでのように基本論理ゲートのエイリアステンプレートで定義することは出来ません。構造体を使って独自の型として実現していきましょう。
 
-```cpp[basic_adders.h(HalfAdder部)]
+```cpp:basic_adders.h(HalfAdder部)
     template <Binary::IsBinary A, Binary::IsBinary B>
     struct HalfAdder {
         using X = Gates::XORv<A, B>;
@@ -268,7 +268,7 @@ namespace Gates {
 
 以上です。なんと容易いのでしょうか。`XOR`が既に存在するおかげで、半加算器はたったこれだけのコードで実現できました。動作を確認します。出力が増えたため、新たな出力関数を定義しています。
 
-```cpp[出力テスト]
+```cpp:出力テスト
 template <template <typename, typename> typename Gate>
 static void printTruthTable2_2(const std::string& title) {
     fmt::print("[{}]\n", title);
@@ -300,7 +300,7 @@ A B | Y X
 ![image.png](#/full-adder.png)
 半加算器と全く同じです。違いを上げるとすれば、可読性のために構造体内部で型エイリアスを利用しているくらいです。
 
-```cpp[basic_adders.h(FullAdder部)]
+```cpp:basic_adders.h(FullAdder部)
     template <Binary::IsBinary A, Binary::IsBinary B, Binary::IsBinary C>
     class FullAdder {
         using HA1 = HalfAdder<A, B>;
@@ -313,7 +313,7 @@ A B | Y X
 
 早速出力を見てみましょう。今度は入力が増えたので、再び新たな出力関数を定義しています。
 
-```cpp[出力テスト]
+```cpp:出力テスト
 template <template <typename, typename, typename> typename Gate>
 void printTruthTable3_2(const std::string& title)
 {
@@ -369,7 +369,7 @@ A B C | Y X
 ### バイナリ型シーケンスの作成
 N bitの加算器を作成するにあたっては、その加算対象となる値や得られる結果をバイナリ型のシーケンスとして扱いたくなります。型のシーケンスなんて作れるのかと思うかもしれませんが、それほど難しくありません。以下を`binary.h`に追記します。
 
-```cpp[binary.h]
+```cpp:binary.h
     template <typename T>
     struct IType {
         using type = T;
@@ -416,7 +416,7 @@ N bitの加算器を作成するにあたっては、その加算対象となる
 #### `BinarySeq`を出力可能にする
 バイナリ型を任意の長さのシーケンスとして保持できるようになったのは良いですが、これは値ではなく型テンプレートパラメータとして保持されているに過ぎません。これを我々の確認できる形で出力することは、以下のような実装で実現することが出来ます。
 
-```cpp[BinarySeqの出力実装]
+```cpp:BinarySeqの出力実装
 template <typename Bs>
 struct BinarySeqPrintHelper;
 
@@ -432,7 +432,7 @@ struct BinarySeqPrintHelper<Binary::BinarySeq<S...>> {
 #### `BinarySeq`を使ってみる
 言葉で言われてもわかりにくいかと思いますので、実際の`BinarySeq`の動作を示すサンプルを提示します。
 
-```cpp[BinarySeqのサンプルコード]
+```cpp:BinarySeqのサンプルコード
 int main()
 {
     using Seq1 = Binary::BinarySeq<I, I, I, O, O, I, O, I>;
@@ -475,7 +475,7 @@ int main()
 ### N bit加算器本体
 ここまでで、すべての準備は整いました。あとはこれらを利用してN bit加算器を実装するだけです。もったいぶっても仕方ないので(小出しにして詳細に説明するのが面倒なので)実装を貼ります。
 
-```cpp[n_bit_adder.h]
+```cpp:n_bit_adder.h
 #pragma once
 
 #include <tuple>
@@ -524,7 +524,7 @@ namespace Circuits {
 
 ここで例によって、結果を見える形にするための出力処理を実装しておきます。
 
-```cpp[NbitAdderprintHelper]
+```cpp:NbitAdderprintHelper
 template <typename Bs>
 struct NbitAdderPrintHelper;
 
@@ -545,7 +545,7 @@ struct NbitAdderPrintHelper<Circuits::NbitAdder<Binary::BinarySeq<S1...>, Binary
 
 特筆すべきところは特にありませんね。では結果を確認していきましょう！
 
-```cpp[Nbit加算器動作確認]
+```cpp:Nbit加算器動作確認
 int main()
 {
     using ASeq = Binary::BinarySeq<I, I, I, O, O, I, O, I, O, O, I, I, O, I, I, O>;
@@ -565,13 +565,13 @@ int main()
 # おわりに
 ここまで記事を読んでくださった方に朗報があります。C++には**+演算子**と呼ばれる演算子が存在しており、以下のように記述することで加算を行うことが出来ます。
 
-```cpp[add]
+```cpp:add
 1 + 2 // → 3
 ```
 
 また、このようにコンパイル時に値が確定するリテラルとして表記された値は、コンパイラの最適化によってコンパイル時に演算結果の値へと置き換えられることが殆どであり、実行時コストを考える必要もありません。2進数以外読めないという方も安心してください。C++14からのC++は2進数リテラルを持っています。
 
-```cpp[bin_add]
+```cpp:bin_add
 0b1 + 0b10 // → 0b11 (3)
 ```
 

@@ -236,7 +236,7 @@ export default defineNuxtConfig({
       prism: {
         theme: 'prism-themes/themes/prism-one-light.css',
       },
-      remarkPlugins: [],
+      remarkPlugins: ['remark-code-titles', 'remark-prism'],
       rehypePlugins: [],
     },
   },
