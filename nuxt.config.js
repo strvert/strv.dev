@@ -138,7 +138,6 @@ export default defineNuxtConfig({
       prefix: 'og: http://ogp.me/ns#',
     },
     titleTemplate: '%s - strv.dev',
-    script: [],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -228,6 +227,7 @@ export default defineNuxtConfig({
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    standalone: true,
     analyze: true,
     cache: true,
     parallel: true,
@@ -242,7 +242,7 @@ export default defineNuxtConfig({
       rehypePlugins: [],
     },
   },
-  ssr: true,
+  ssr: false,
   generate: {
     workers: 16,
     interval: 300,

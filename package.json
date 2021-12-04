@@ -2,6 +2,7 @@
   "name": "strv.dev",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "NODE_OPTIONS=--openssl-legacy-provider nuxt dev",
     "export": "NODE_OPTIONS=--openssl-legacy-provider BASE_URL=https://strv.dev nuxt export",
@@ -16,6 +17,7 @@
     "@nuxt/content": "^1.14.0",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/google-gtag": "^1.0.4",
+    "blueprint-web-renderer": "0.0.14",
     "core-js": "^3.15.1",
     "dayjs": "^1.10.7",
     "iframe-resizer": "^4.3.2",
