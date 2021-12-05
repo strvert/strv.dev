@@ -1,15 +1,13 @@
 <template>
   <div class="outer">
     <blogpost-frame v-if="page !== undefined" :page="page" :path="path">
-      <blueprint-graph />
-      <blueprint-graph />
       <nuxt-content :document="page" />
     </blogpost-frame>
   </div>
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, useRoute, onMounted } from '#app';
+import { defineNuxtComponent, useRoute } from '#app';
 import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
 import BlueprintGraph from '@/components/atoms/BlueprintGraph.vue';
 import { useBlogContent } from '@/composables/utils/BlogContent';
