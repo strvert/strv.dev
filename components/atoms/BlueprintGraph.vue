@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineNuxtComponent, ref, onMounted } from '#app';
-import { Graph } from 'blueprint-web-renderer';
+import { Graph } from 'blueprint-renderer';
 import { useScrollSwitcher } from '@/composables/utils/ScrollSwitcher';
 
 export default defineNuxtComponent({

@@ -7,3 +7,13 @@ tags:
   - Unreal Engine
   - Unreal C++
 ---
+
+ほげほげ
+
+:::blueprint-renderer{src="/call_function.bp"}
+:::
+
+:::blueprint-renderer{src="/call_function.bp"}
+:::
+
+ふがふが
