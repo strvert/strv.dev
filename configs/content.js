@@ -9,7 +9,7 @@ const content = {
       'remark-directive',
       [
         'remark-directive-webcomponents',
-        [['blueprint-renderer', { class: 'blueprint-renderer' }]],
+        [['blueprint-renderer', { class: 'blueprint-renderer', 'scroll-disabled': true }]],
       ],
       ['remark-code-extra', remarkCodeExtraConfig],
       'remark-prism',

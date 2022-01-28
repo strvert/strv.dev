@@ -18,7 +18,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/google-gtag": "^1.0.4",
     "blueprint-renderer": "^0.0.18",
-    "blueprint-renderer-webcomponents": "^0.0.3",
+    "blueprint-renderer-webcomponents": "^0.0.5",
     "core-js": "^3.15.1",
     "dayjs": "^1.10.7",
     "iframe-resizer": "^4.3.2",

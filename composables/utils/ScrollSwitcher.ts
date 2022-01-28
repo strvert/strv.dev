@@ -24,3 +24,4 @@ export const useScrollSwitcher = () => {
   };
   return { disable, enable, toggle, disabled };
 };
+

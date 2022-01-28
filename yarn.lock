@@ -4248,10 +4248,10 @@ bluebird@^3.1.1, bluebird@^3.5.1, bluebird@^3.5.5, bluebird@^3.7.2:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
-blueprint-renderer-webcomponents@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/blueprint-renderer-webcomponents/-/blueprint-renderer-webcomponents-0.0.3.tgz#41265120552869f9cf065cd023a95bc157f11aae"
-  integrity sha512-7EARDjG5W+zgqCKt4Xd5lomlFZzMQVnwFNflUX6jUh7LNQqc1XIW+Km4CoxemYjrpD1Yyxz/Ds5HXG/YB/I2ig==
+blueprint-renderer-webcomponents@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/blueprint-renderer-webcomponents/-/blueprint-renderer-webcomponents-0.0.5.tgz#d05e331d9020657bbd6548e9ac30af5c6a281396"
+  integrity sha512-JGUG3biiA63fsiJNLwSCE/oQC344NBNTlRkii/d3rlB1Hg2+LwWjf1FDnvA068Nmqeaer0cGEPnvFM0ehXXcMQ==
   dependencies:
     "@swc/helpers" "^0.2.14"
     blueprint-renderer "^0.0.18"
