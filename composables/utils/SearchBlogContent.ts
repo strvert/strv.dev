@@ -4,14 +4,33 @@ import { ParamBuilder } from '@/composables/utils/SearchParamBuilder/SearchParam
 import { SearchParam } from '@/composables/utils/SearchParam';
 import { IArticle } from '@/composables/stores/Article';
 
-interface sortProp {
+interface SortProp {
   by: string;
   direction: 'asc' | 'desc';
 }
 
+const makeWhereParam = (param: SearchParam) => {
+  return {
+    tags: (() => {
+      if (param.tags !== undefined) {
+        return { $contains: param.tags };
+      } else {
+        return undefined;
+      }
+    })(),
+    series: (() => {
+      if (param.series !== undefined) {
+        return { $eq: param.series };
+      } else {
+        return undefined;
+      }
+    })(),
+  };
+};
+
 export const useSearchBlogContent = (
   paramBuilder: ParamBuilder,
-  sort: sortProp = { by: 'createdAt', direction: 'desc' }
+  sort: SortProp = { by: 'createdAt', direction: 'desc' }
 ) => {
   const { $content } = useNuxtApp();
   const pages: Ref<IArticle[]> = ref<IArticle[]>([]);
@@ -22,29 +41,10 @@ export const useSearchBlogContent = (
     param.value = paramBuilder.update();
   };
 
-  const makeWhereParam = () => {
-    return {
-      tags: (() => {
-        if (param.value.tags !== undefined) {
-          return { $contains: param.value.tags };
-        } else {
-          return undefined;
-        }
-      })(),
-      series: (() => {
-        if (param.value.series !== undefined) {
-          return { $eq: param.value.series };
-        } else {
-          return undefined;
-        }
-      })(),
-    };
-  };
-
-  const fetchPages = async () => {
+  const fetchPages = async (param: SearchParam, sort: SortProp) => {
     const pages = (await $content(process.env.articlesPath!, { deep: true })
       .sortBy(sort.by, sort.direction)
-      .where(makeWhereParam())
+      .where(makeWhereParam(param))
       .fetch<IArticle>()) as IArticle[];
     if (Array.isArray(pages)) {
       return pages;
@@ -54,7 +54,7 @@ export const useSearchBlogContent = (
 
   const fetch = async () => {
     updateParameter();
-    pages.value = await fetchPages();
+    pages.value = await fetchPages(param.value, sort);
     completed.value = true;
   };
 
@@ -80,4 +80,19 @@ export const useSearchBlogContent = (
   });
 
   return { pages, completed };
+};
+
+export const searchContentLegacy = async (
+  paramBuilder: ParamBuilder,
+  $content: any,
+  sort: SortProp = { by: 'createdAt', direction: 'desc' }
+) => {
+  const param: SearchParam = paramBuilder.update();
+  const pages = (await $content(process.env.articlesPath!, { deep: true })
+    .sortBy(sort.by, sort.direction)
+    .where(makeWhereParam(param))
+    .fetch<IArticle>()) as IArticle[];
+  console.log(pages);
+
+  return { pages: ref(Array.isArray(pages) ? pages : []), computed: ref(true) };
 };
