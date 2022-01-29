@@ -47,3 +47,47 @@ export const useBlogpostMeta = () => {
   };
   return { setBlogpostMeta };
 };
+
+export const buildHead = (article: IArticle, ogpImage: String = '') => {
+  return {
+    get title() {
+      return article.title;
+    },
+    get meta() {
+      if (article === undefined) return;
+      const imagePath =
+        ogpImage !== ''
+          ? `${process.env.ogpImages}/${ogpImage}`
+          : `${process.env.ogpImages}/generated/${pathToSlug(article.path)}.png`;
+      return [
+        {
+          hid: 'description',
+          name: 'description',
+          content: article.description,
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: article.description,
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${process.env.baseUrl}/${process.env.articlesRoute}/${pathToSlug(
+            article.path
+          )}`,
+        },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: `${article.title} - ${process.env.siteName}`,
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: imagePath,
+        },
+      ];
+    },
+  };
+};
