@@ -107,10 +107,20 @@
 
     img {
       display: block;
-      margin: 0 auto;
-      max-inline-size: 100%;
-      min-inline-size: 70%;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      max-inline-size: 70%;
       border-radius: 4px;
+      &:hover {
+        max-inline-size: 85vw;
+        z-index: 11;
+      }
+      z-index: 10;
+      transition: {
+        property: max-inline-size position;
+        duration: 0.5s;
+      }
       @extend %panel-shadow;
     }
 
