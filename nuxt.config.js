@@ -31,6 +31,10 @@ const defaultLink = [
     rel: 'stylesheet',
     href: 'https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css',
   },
+  {
+    rel: 'stylesheet',
+    href: 'https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css',
+  },
 ];
 
 export default defineNuxtConfig({

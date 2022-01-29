@@ -92,7 +92,6 @@ export const searchContentLegacy = async (
     .sortBy(sort.by, sort.direction)
     .where(makeWhereParam(param))
     .fetch<IArticle>()) as IArticle[];
-  console.log(pages);
 
   return { pages: ref(Array.isArray(pages) ? pages : []), computed: ref(true) };
 };

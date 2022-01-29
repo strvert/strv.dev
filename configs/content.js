@@ -6,6 +6,7 @@ const content = {
       theme: 'prism-themes/themes/prism-one-light.css',
     },
     remarkPlugins: [
+      'remark-math',
       'remark-directive',
       [
         'remark-directive-webcomponents',
@@ -16,7 +17,7 @@ const content = {
       ['remark-code-extra', remarkCodeExtraConfig],
       'remark-prism',
     ],
-    rehypePlugins: [],
+    rehypePlugins: ['rehype-katex'],
   },
 };
 

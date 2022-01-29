@@ -51,7 +51,7 @@ export const useBlogpostMeta = () => {
 export const buildHead = (article: IArticle, ogpImage: String = '') => {
   return {
     get title() {
-      return article.title;
+      return article === undefined ? '' : article.title;
     },
     get meta() {
       if (article === undefined) return;
