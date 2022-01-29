@@ -8,6 +8,7 @@ tags:
     - Blueprint
     - Unreal C++
     - Unreal Engine 5
+assets: '/article-assets/unrealengine/support-user-defined-types-for-bp-operator-nodes-in-ue5'
 ---
 
 # まえがき
@@ -31,7 +32,7 @@ C++を用いてワイルドカードを入力として持つBPノードを実装
 ## 対象とするデータ型
 実装例を提示するため、以下のようなサンプルのデータ型を定義しました。このデータ型を複素数型と見做して、UE5の演算子ノードで複素数に定義されるいくつかの演算を実装してみます。
 
-```cpp[ComplexNumber.h]
+```cpp title=ComplexNumber.h
 #pragma once
 #include "ComplexNumber.generated.h"
 
@@ -54,7 +55,7 @@ struct FComplexNumber
 ## 実装例
 詳細な説明に先んじて、実装例を提示します。
 
-```cpp[ComplexNumberBlueprintLibrary.h]
+```cpp title=ComplexNumberBlueprintLibrary.h
 #pragma once
 
 #include "CoreMinimal.h"
@@ -144,7 +145,7 @@ public:
 ## どうやって実装を収集しているのか
 実装を覗くと、この部分はなかなかのパワー的処理によって実現されています。以下はエンジンのソースコードからの抜粋です。
 
-```cpp[BlueprintTypePromotion.cpp(抜粋)]
+```cpp title=BlueprintTypePromotion.cpp(抜粋)
 void FTypePromotion::CreateOpTable()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(FTypePromotion::CreateOpTable);
@@ -197,7 +198,7 @@ void FTypePromotion::CreateOpTable()
 
 これは、以下の部分のエンジンコードを見るとわかります。このメソッドは長いため、今回の内容にとって重要ではない場所は省いています。
 
-```cpp[BlueprintFunctionNodeSpawner.cpp]
+```cpp title=BlueprintFunctionNodeSpawner.cpp
 UBlueprintFunctionNodeSpawner* UBlueprintFunctionNodeSpawner::Create(UFunction const* const Function, UObject* Outer/* = nullptr*/)
 {
     // 略

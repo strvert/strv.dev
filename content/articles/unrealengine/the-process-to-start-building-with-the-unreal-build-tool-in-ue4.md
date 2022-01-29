@@ -37,7 +37,7 @@ Engine\Source\Programs\UnrealBuildTool
 
 と辿っていくと見つかります。ここには何やらいろんなディレクトリがあり、それぞれの中にも大量のコードがあります。
 
-```
+```treeview
 UnrealBuildTool
 |-- Configuration
 |-- DotNetCore
@@ -60,7 +60,7 @@ UBT のエントリーポイントは、UBT のコードがあるディレクト
 それなりに長いので、ビルドに直接関係しそうなところだけ抜き出して、コメントを翻訳・追記してみます。
 かなり削っているので、いろんなオプション機能や例外処理、パフォーマンス計測用のコードが消えています。ご注意ください。
 
-```csharp[UnreaalBuildTool.csのMain関数]
+```csharp title=UnreaalBuildTool.csのMain関数
 		private static int Main(string[] ArgumentsArray)
 		{
 			// Mutex保持用変数
@@ -165,7 +165,7 @@ UBT のエントリーポイントは、UBT のコードがあるディレクト
 `CommandLineArguments`という便利なクラスが`Engine/Source/Programs/DotNETCommon/DotNETUtilities/CommandLineArguments.cs`に定義されていて、こいつにコマンドラインから受け取った引数配列を渡すだけでいい感じにしてくれているようです。
 そして、いい感じの形にしたコマンドライン引数の情報を、これまた`GlobalOptions`という便利なクラスに渡しています。こちらは Main と同じ`UnrealBuildTool.cs`内にいます。`GlobalOptions`はその名の通り設定情報を保持するクラスなのですが、そのコンストラクタは引数として`CommandLineArguments`を受け取る仕様になっています。該当コンストラクタを抜き出してきました。
 
-```csharp[UnreaalBuildTool.csのGlobalOptionsのコンストラクタ]
+```csharp title=UnreaalBuildTool.csのGlobalOptionsのコンストラクタ
 	public GlobalOptions(CommandLineArguments Arguments)
 	{
 		Arguments.ApplyTo(this);
@@ -211,7 +211,7 @@ if(Options.Mode != null)
 まず、Type 型(型情報を持つやつ)の ModeType 変数を宣言しています。初期値はビルドモードを保持する`BuildMode`クラスです。
 `BuildMode`クラスは`Engine/Source/Programs/UnrealBuildTool/Modes`にある`BuoldMode.cs`に宣言されているクラスなのですが、`Engine/Source/Programs/UnrealBuildTool/Modes`には他にも似たようなファイルがあります。
 
-```
+```treeview
 Modes/
 |-- BuildMode.cs
 |-- CleanMode.cs
@@ -299,7 +299,7 @@ int Result = Mode.Execute(Arguments);
 
 モードに合わせたクラスの型情報を持っている`ModeType`をもとにインスタンスを作成し、抽象クラスである`ToolMode`にアップキャストしてハンドラ用の`Mode`変数に格納しています。今更ですが、抽象クラス`ToolMode`の中身はこんな感じです。
 
-```csharp[ToolMode.csのToolModeクラス]
+```csharp title=ToolMode.csのToolModeクラス
 abstract class ToolMode
 {
 	public abstract int Execute(CommandLineArguments Arguments);

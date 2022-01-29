@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>blueprintUE | PasteBin For Unreal Engine 4</title>
+
+        <meta content="blueprintUE&#x20;is&#x20;a&#x20;tool&#x20;for&#x20;sharing,&#x20;rendering&#x20;and&#x20;rating&#x20;blueprints&#x20;for&#x20;Unreal&#x20;Engine&#x20;4.&#x20;UE4&#x20;is&#x20;a&#x20;game&#x20;engine&#x20;which&#x20;use&#x20;visual&#x20;scripting&#x20;called&#x20;blueprint." name="description">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0" name="viewport">
+    <link href="/site.css" rel="stylesheet">
+
+    <!--[if IE]>
+    <meta HTTP-EQUIV="REFRESH" content="0; url=/ie.html">
+    <![endif]-->
+
+    <!-- favicons -->
+    <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link crossorigin="use-credentials" href="/site.webmanifest" rel="manifest">
+    <meta content="#1a1c1f" name="msapplication-TileColor">
+    <meta content="#ffffff" name="theme-color">
+
+    <meta property="og:url" content="https&#x3A;&#x2F;&#x2F;blueprintue.com&#x2F;">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="blueprintUE&#x20;&#x7C;&#x20;PasteBin&#x20;For&#x20;Unreal&#x20;Engine&#x20;4">
+	<meta property="og:description" content="blueprintUE&#x20;is&#x20;a&#x20;tool&#x20;for&#x20;sharing,&#x20;rendering&#x20;and&#x20;rating&#x20;blueprints&#x20;for&#x20;Unreal&#x20;Engine&#x20;4.&#x20;UE4&#x20;is&#x20;a&#x20;game&#x20;engine&#x20;which&#x20;use&#x20;visual&#x20;scripting&#x20;called&#x20;blueprint.">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:image" content="https&#x3A;&#x2F;&#x2F;blueprintue.com&#x2F;blueprintue_full-logo.png">
+	<meta property="twitter:card" content="summary">
+	<meta property="twitter:url" content="https&#x3A;&#x2F;&#x2F;blueprintue.com&#x2F;">
+	<meta property="twitter:title" content="blueprintUE&#x20;&#x7C;&#x20;PasteBin&#x20;For&#x20;Unreal&#x20;Engine&#x20;4">
+	<meta property="twitter:description" content="blueprintUE&#x20;is&#x20;a&#x20;tool&#x20;for&#x20;sharing,&#x20;rendering&#x20;and&#x20;rating&#x20;blueprints&#x20;for&#x20;Unreal&#x20;Engine&#x20;4.&#x20;UE4&#x20;is&#x20;a&#x20;game&#x20;engine&#x20;which&#x20;use&#x20;visual&#x20;scripting&#x20;called&#x20;blueprint.">
+	<meta property="twitter:site" content="&#x40;blueprintue">
+	<meta property="twitter:image" content="https&#x3A;&#x2F;&#x2F;blueprintue.com&#x2F;blueprintue_full-logo.png">
+    <!-- http://humanstxt.org -->
+    <link type="text/plain" rel="author" href="/humans.txt">
+</head><body>
+    <div class="background"></div>
+    <header>
+                <nav class="nav">
+    <div class="nav__container" id="nav__container">
+        <div class="nav__left-side-container">
+            <a aria-label="Home of blueprintUE" href="/">
+                <svg aria-hidden="true" class="nav__logo-svg">
+                    <use href="/sprite/sprite.svg#logo-blueprintue"></use>
+                </svg>
+            </a>
+            <button aria-expanded="false" aria-label="Toggle navigation" class="nav__toggle" id="nav__toggle" type="button">
+                <span class="nav__toggle-inner"></span>
+            </button>
+        </div>
+        <ul class="nav__center-side-container" id="nav__center-side-container">
+            <li>
+                <a class="nav__link nav__link--add-margin-right nav__link--active" href="/">Create your pastebin</a>
+            </li>
+            <li>
+                <a class="nav__link nav__link--add-margin-right" href="/blog/page/1/">Developer blog</a>
+            </li>
+            <li>
+                <a class="nav__link" href="/type/blueprint/">Blueprints</a>
+            </li>
+        </ul>
+        <div class="nav__right-side-container" id="nav__right-side-container">
+            <div class="nav__search-container" id="nav__search-container" role="search">
+                <button aria-label="Open search" class="nav__search-open" id="nav__search-open" type="button">
+                    <svg aria-hidden="true" class="nav__search-open-svg">
+                        <use href="/sprite/sprite.svg#icon-search"></use>
+                    </svg>
+                </button>
+                <form action="/search/" class="nav__search-form" id="nav__search-form">
+                    <input aria-label="Type your search here" class="nav__search-input" name="query" type="text" value="">
+                </form>
+                <button aria-label="Close search" class="nav__search-close" id="nav__search-close" type="button">
+                    <svg aria-hidden="true" class="nav__search-close-svg">
+                        <use href="/sprite/sprite.svg#icon-close"></use>
+                    </svg>
+                </button>
+            </div>
+            <div class="nav__user-container">
+                                <a class="nav__user-button nav__user-button--left" href="#popin-login">Login</a>
+                <a class="nav__user-button nav__user-button--right" href="#popin-register">Register</a>
+                            </div>
+        </div>
+    </div>
+</nav>        <div class="jumbotron__container">
+            <span class="jumbotron__question">What is it?</span>
+            <h1 class="jumbotron__answer">blueprintUE is an unofficial tool with the intent<br /><strong class="jumbotron__answer--strong">of helping Unreal Engine developers</strong></h1>
+            <a class="jumbotron__link" href="#popin-discover" id="discover-blueprintue">Watch a demo</a>
+        </div>
+    </header>
+    <main class="main">
+        <div class="block__container block__container--first">
+            <div class="block__element">
+                <h2 class="block__title">Paste your <span class="block__title--emphasis">blueprint</span></h2>
+                <h3 class="block__subtitle">Copy and paste your blueprint in the form below and click on "Create your blueprint" to share your blueprint in new visual way!</h3>
+                <hr class="block__hr"/>
+
+                
+                
+                <form action="/" data-form-speak-error="Form is invalid:" id="form-add_blueprint" method="post">
+                    <div class="home__form">
+                        <div class="form__element home__form--title">
+                            <label class="form__label" for="form-add_blueprint-input-title" id="form-add_blueprint-label-title">Title <span class="form__label--info">(required)</span></label>
+                            <div class="form__container">
+                                <input aria-invalid="false" aria-labelledby="form-add_blueprint-label-title" aria-required="true" class="form__input form__input--invisible" data-form-error-required="Title is required" data-form-has-container data-form-rules="required" id="form-add_blueprint-input-title" name="form-add_blueprint-input-title" type="text" value=""/>
+                                <span class="form__feedback"></span>
+                            </div>
+                                                    </div>
+
+                        <div class="form__element home__form--selectors">
+                            <label class="form__label" for="form-add_blueprint-select-exposure" id="form-add_blueprint-label-exposure">Exposure</label>
+                            <div class="form__container form__container--select">
+                                <select aria-invalid="false" aria-labelledby="form-add_blueprint-label-exposure" aria-required="true" class="form__input form__input--select" id="form-add_blueprint-select-exposure" name="form-add_blueprint-select-exposure">
+                                    <option value="public" selected="selected">Public</option>
+                                    <option value="unlisted">Unlisted</option>
+                                                                        <option value="private" disabled>Private (member only)</option>
+                                                                    </select>
+                            </div>
+                                                    </div>
+
+                        <div class="form__element home__form--selectors">
+                            <label class="form__label" for="form-add_blueprint-select-expiration" id="form-add_blueprint-label-expiration">Expiration</label>
+                            <div class="form__container form__container--select">
+                                <select aria-invalid="false" aria-labelledby="form-add_blueprint-label-expiration" aria-required="true" class="form__input form__input--select" id="form-add_blueprint-select-expiration" name="form-add_blueprint-select-expiration">
+                                    <option value="never" selected="selected">Never</option>
+                                    <option value="1h">1 hour</option>
+                                    <option value="1d">1 day</option>
+                                    <option value="1w">1 week</option>
+                                </select>
+                            </div>
+                                                    </div>
+
+                        <div class="form__element home__form--selectors">
+                            <label class="form__label" for="form-add_blueprint-select-ue_version" id="form-add_blueprint-label-ue_version">UE version</label>
+                            <div class="form__container form__container--select">
+                                <select aria-invalid="false" aria-labelledby="form-add_blueprint-label-ue_version" aria-required="true" class="form__input form__input--select" id="form-add_blueprint-select-ue_version" name="form-add_blueprint-select-ue_version">
+                                                                        <option value="5.00">5.00</option>
+                                                                        <option value="4.27" selected="selected">4.27</option>
+                                                                        <option value="4.26">4.26</option>
+                                                                        <option value="4.25">4.25</option>
+                                                                        <option value="4.24">4.24</option>
+                                                                        <option value="4.23">4.23</option>
+                                                                        <option value="4.22">4.22</option>
+                                                                        <option value="4.21">4.21</option>
+                                                                        <option value="4.20">4.20</option>
+                                                                        <option value="4.19">4.19</option>
+                                                                        <option value="4.18">4.18</option>
+                                                                        <option value="4.17">4.17</option>
+                                                                        <option value="4.16">4.16</option>
+                                                                        <option value="4.15">4.15</option>
+                                                                        <option value="4.14">4.14</option>
+                                                                        <option value="4.13">4.13</option>
+                                                                        <option value="4.12">4.12</option>
+                                                                        <option value="4.11">4.11</option>
+                                                                        <option value="4.10">4.10</option>
+                                                                        <option value="4.9">4.9</option>
+                                                                        <option value="4.8">4.8</option>
+                                                                        <option value="4.7">4.7</option>
+                                                                        <option value="4.6">4.6</option>
+                                                                        <option value="4.5">4.5</option>
+                                                                        <option value="4.4">4.4</option>
+                                                                        <option value="4.3">4.3</option>
+                                                                        <option value="4.2">4.2</option>
+                                                                        <option value="4.1">4.1</option>
+                                                                        <option value="4.0">4.0</option>
+                                                                    </select>
+                            </div>
+                                                    </div>
+                    </div>
+                    <div class="form__element">
+                        <label class="form__label" for="form-add_blueprint-textarea-blueprint" id="form-add_blueprint-label-blueprint">Blueprint <span class="form__label--info">(required)</span></label>
+                        <div class="form__container form__container--blueprint form__container--textarea">
+                            <textarea aria-invalid="false" aria-labelledby="form-add_blueprint-label-blueprint" aria-required="true" class="form__input form__input--textarea form__input--invisible form__input--blueprint" data-form-error-required="Blueprint is required" data-form-has-container data-form-rules="required" id="form-add_blueprint-textarea-blueprint" name="form-add_blueprint-textarea-blueprint"></textarea>
+                            <span class="form__feedback"></span>
+                        </div>
+                                            </div>
+                    <input name="form-add_blueprint-hidden-csrf" type="hidden" value="&#x7D;TBjrd&#x5D;c,i9&#x7D;&#x7B;emJaa.&#x7B;&#x5E;3&#x3B;&#x60;&#x5E;E&amp;yCiQ&#x21;GlyK&#x28;&#x5C;P_Ttn.&#x3D;H&#x2B;pdDj_iKvpU&#x3A;&#x29;Nn&amp;m&#x2B;"/>
+                    <input class="form__button form__button--primary" id="form-add_blueprint-submit" name="form-add_blueprint-submit" type="submit" value="Create your blueprint"/>
+                </form>
+            </div>
+        </div>
+        <div class="block__container block__container--last block__container--white-grey block__container--shadow-top">
+            <div class="block__element block__element--home">
+                <h2 class="block__title">Last public pasted <span class="block__title--emphasis">blueprints</span></h2>
+                <div>
+                    <a class="block__link block__link--home" href="/last-blueprints/">Last pastebins</a>
+                    <a class="block__link block__link--home" href="/search/">Advanced Search</a>
+                    <a class="block__link block__link--home" href="/most-discussed-blueprints/">Most discussed</a>
+                    <a class="block__link block__link--home" href="/type/material/">Material blueprint</a>
+                    <a class="block__link block__link--home-last" href="/tags/">Tags</a>
+                </div>
+                <hr class="block__hr block__hr--small"/>
+            </div>
+            <div class="block__element">
+        <ul class="list">
+        <li class="list__row list__row--header">
+            <div class="list__col list__col--header list__col--first">Image</div>
+            <div class="list__col list__col--header">Type</div>
+            <div class="list__col list__col--header">UE4 Version</div>
+            <div class="list__col list__col--header">Title</div>
+            <div class="list__col list__col--header">Author</div>
+            <div class="list__col list__col--header">Date</div>
+        </li>
+                <li class="list__row list__row--data">
+            <div class="list__col list__col--first" data-name="Image">
+                <a class="list__link-on-placeholder" href="&#x2F;blueprint&#x2F;eh3dhoj7&#x2F;">
+                                            <svg aria-label="Blueprint thumbnail" class="list__thumbnail list__thumbnail--placeholder">
+                            <use href="/sprite/sprite.svg#blueprint-placeholder"></use>
+                        </svg>
+                                    </a>
+            </div>
+            <div class="list__col" data-name="Type">blueprint</div>
+            <div class="list__col" data-name="UE4 Version">5.00</div>
+            <div class="list__col" data-name="Title"><a class="list__link" href="&#x2F;blueprint&#x2F;eh3dhoj7&#x2F;">test</a></div>
+            <div class="list__col" data-name="Author"><a class="list__link" href="&#x2F;profile&#x2F;anonymous&#x2F;">anonymous</a></div>
+            <div class="list__col" data-name="Date">14 mins ago</div>
+        </li>
+                <li class="list__row list__row--data">
+            <div class="list__col list__col--first" data-name="Image">
+                <a class="list__link-on-placeholder" href="&#x2F;blueprint&#x2F;v5_826z8&#x2F;">
+                                            <svg aria-label="Blueprint thumbnail" class="list__thumbnail list__thumbnail--placeholder">
+                            <use href="/sprite/sprite.svg#blueprint-placeholder"></use>
+                        </svg>
+                                    </a>
+            </div>
+            <div class="list__col" data-name="Type">blueprint</div>
+            <div class="list__col" data-name="UE4 Version">5.00</div>
+            <div class="list__col" data-name="Title"><a class="list__link" href="&#x2F;blueprint&#x2F;v5_826z8&#x2F;">test</a></div>
+            <div class="list__col" data-name="Author"><a class="list__link" href="&#x2F;profile&#x2F;anonymous&#x2F;">anonymous</a></div>
+            <div class="list__col" data-name="Date">18 mins ago</div>
+        </li>
+                <li class="list__row list__row--data">
+            <div class="list__col list__col--first" data-name="Image">
+                <a class="list__link-on-placeholder" href="&#x2F;blueprint&#x2F;fvi89b-g&#x2F;">
+                                            <svg aria-label="Blueprint thumbnail" class="list__thumbnail list__thumbnail--placeholder">
+                            <use href="/sprite/sprite.svg#blueprint-placeholder"></use>
+                        </svg>
+                                    </a>
+            </div>
+            <div class="list__col" data-name="Type">material</div>
+            <div class="list__col" data-name="UE4 Version">4.27</div>
+            <div class="list__col" data-name="Title"><a class="list__link" href="&#x2F;blueprint&#x2F;fvi89b-g&#x2F;">blendAndTesselation</a></div>
+            <div class="list__col" data-name="Author"><a class="list__link" href="&#x2F;profile&#x2F;felixb&#x2F;">felixB</a></div>
+            <div class="list__col" data-name="Date">1 hours ago</div>
+        </li>
+                <li class="list__row list__row--data">
+            <div class="list__col list__col--first" data-name="Image">
+                <a class="list__link-on-placeholder" href="&#x2F;blueprint&#x2F;q3d4m793&#x2F;">
+                                            <svg aria-label="Blueprint thumbnail" class="list__thumbnail list__thumbnail--placeholder">
+                            <use href="/sprite/sprite.svg#blueprint-placeholder"></use>
+                        </svg>
+                                    </a>
+            </div>
+            <div class="list__col" data-name="Type">blueprint</div>
+            <div class="list__col" data-name="UE4 Version">4.27</div>
+            <div class="list__col" data-name="Title"><a class="list__link" href="&#x2F;blueprint&#x2F;q3d4m793&#x2F;">Paint eye tracking</a></div>
+            <div class="list__col" data-name="Author"><a class="list__link" href="&#x2F;profile&#x2F;anonymous&#x2F;">anonymous</a></div>
+            <div class="list__col" data-name="Date">1 hours ago</div>
+        </li>
+                <li class="list__row list__row--data">
+            <div class="list__col list__col--first" data-name="Image">
+                <a class="list__link-on-placeholder" href="&#x2F;blueprint&#x2F;857fa9ni&#x2F;">
+                                            <svg aria-label="Blueprint thumbnail" class="list__thumbnail list__thumbnail--placeholder">
+                            <use href="/sprite/sprite.svg#blueprint-placeholder"></use>
+                        </svg>
+                                    </a>
+            </div>
+            <div class="list__col" data-name="Type">blueprint</div>
+            <div class="list__col" data-name="UE4 Version">4.27</div>
+            <div class="list__col" data-name="Title"><a class="list__link" href="&#x2F;blueprint&#x2F;857fa9ni&#x2F;">Container Base</a></div>
+            <div class="list__col" data-name="Author"><a class="list__link" href="&#x2F;profile&#x2F;anonymous&#x2F;">anonymous</a></div>
+            <div class="list__col" data-name="Date">2 hours ago</div>
+        </li>
+            </ul>
+    </div>        </div>
+    </main>
+
+    <div aria-labelledby="popin-discover-h2" class="popin" id="popin-discover" role="dialog">
+        <div class="popin__mask">
+            <a class="popin__back" href="#" tabindex="-1"></a>
+            <div class="popin__container popin__container--discover">
+                <div class="popin__body">
+                    <div class="popin__header">
+                        <h2 class="popin__title" id="popin-discover-h2"><span class="popin__title--span">Discover</span></h2>
+                    </div>
+                    <div class="popin__content">
+                        <div class="blueprint__video"
+                             data-video-iframe
+                             data-video-iframe-button-id="popin-discover-video-button"
+                             data-video-iframe-class="blueprint__iframe"
+                             data-video-iframe-loading-class="blueprint__video--loading"
+                             data-video-iframe-url="https://www.youtube.com/watch?v=DH6cR9b3m04">
+                            <p>This video is provided by Youtube using cookies.<br/>
+                                <a class="blueprint__video--policy" href="https://policies.google.com/privacy" rel="noopener noreferrer nofollow" target="_blank">See their privacy page.</a></p>
+                            <button class="form__button form__button--primary" id="popin-discover-video-button">Accept Youtube cookies</button>
+                        </div>
+                    </div>
+                </div>
+
+                <a aria-label="Close" class="popin__close" href="#">
+                    <svg aria-hidden="true" class="popin__close-svg">
+                        <use href="/sprite/sprite.svg#icon-close"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="footer__container">
+        <div class="footer__logo">
+            <a aria-label="Home of blueprintUE" href="/" title="Home of blueprintUE">
+                <svg aria-hidden="true" class="nav__logo-svg">
+                    <use href="/sprite/sprite.svg#logo-blueprintue"></use>
+                </svg>
+            </a>
+        </div>
+
+        <div class="footer__legals">
+            <p>
+                Portions of the materials used are trademarks and/or copyrighted works of Epic Games, Inc. All rights reserved by Epic. This material is not official and is not endorsed by Epic.<br />
+                Unreal, Unreal Engine, the circle-U logo and the Powered by Unreal Engine logo are trademarks or registered trademarks of Epic Games, Inc. in the United States and elsewhere.
+            </p>
+        </div>
+
+        <ul class="footer__links" id="footer__links">
+            <li class="footer__link-container">
+                <a class="footer__link" href="/contact/">Contact</a>
+            </li>
+            <li class="footer__link-container">
+                <a class="footer__link" href="/terms-of-service/">Terms of service</a>
+            </li>
+            <li class="footer__link-container">
+                <a class="footer__link" href="/privacy-policy/">Privacy policy</a>
+            </li>
+            <li class="footer__link-container">
+                <a class="footer__link" href="/conditions-generales-dutilisation/">Conditions Générales d’Utilisation</a>
+            </li>
+            <li class="footer__link-container">
+                <a class="footer__link" href="https://github.com/orgs/blueprintue/projects/1" rel="noopener noreferrer nofollow" target="_blank">Roadmap</a>
+            </li>
+            <li class="footer__link-container">
+                <a class="footer__link" href="https://github.com/blueprintue/feedback/issues" rel="noopener noreferrer nofollow" target="_blank">Feedback</a>
+            </li>
+            <li class="footer__link-container">
+                <a class="footer__link" href="https://discord.gg/VTHz4pU" rel="noopener noreferrer nofollow" target="_blank">Discord</a>
+            </li>
+            <li class="footer__link-container">
+                <a class="footer__link" href="https://twitter.com/rancoud" rel="noopener noreferrer nofollow" target="_blank">@Rancoud</a>
+            </li>
+        </ul>
+    </div>
+</footer>
+        <div aria-labelledby="popin-login-h2" class="popin" id="popin-login" role="dialog">
+        <div class="popin__mask">
+            <a class="popin__back" href="#" tabindex="-1"></a>
+            <div class="popin__container">
+                <div class="popin__body">
+                    <div class="popin__header">
+                        <h2 class="popin__title" id="popin-login-h2">Log in to <span class="popin__title--span">blueprintUE</span></h2>
+                    </div>
+                    <div class="popin__content">
+                                                <ul class="social__buttons">
+                                                        <li class="social__button social__button--facebook">
+                                <a class="social__link" href="/oauth/facebook/">
+                                    <div class="social__icon-facebook">
+                                        <svg color="#FFFFFF" viewBox="0 0 216 216" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M204.1 0H11.9C5.3 0 0 5.3 0 11.9v192.2c0 6.6 5.3 11.9 11.9 11.9h103.5v-83.6H87.2V99.8h28.1v-24c0-27.9 17-43.1 41.9-43.1 11.9 0 22.2.9 25.2 1.3v29.2h-17.3c-13.5 0-16.2 6.4-16.2 15.9v20.8h32.3l-4.2 32.6h-28V216h55c6.6 0 11.9-5.3 11.9-11.9V11.9C216 5.3 210.7 0 204.1 0z" fill="#FFFFFF"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="social__text">
+                                        <span>Continue with Facebook</span>
+                                    </div>
+                                </a>
+                            </li>
+                                                                                    <li class="social__button social__button--google">
+                                <a class="social__link" href="/oauth/google/">
+                                    <div class="social__icon-google">
+                                        <svg aria-hidden="true" class="social__svg social__svg--google">
+                                            <use href="/sprite/sprite.svg#icon-google"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="social__text">
+                                        <span>Continue with Google</span>
+                                    </div>
+                                </a>
+                            </li>
+                                                                                    <li class="social__button social__button--twitter">
+                                <a class="social__link" href="/oauth/twitter/">
+                                    <div class="social__icon-twitter">
+                                        <svg aria-hidden="true" class="social__svg social__svg--twitter">
+                                            <use href="/sprite/sprite.svg#icon-twitter"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="social__text">
+                                        <span>Continue with Twitter</span>
+                                    </div>
+                                </a>
+                            </li>
+                                                    </ul>
+
+
+                        <div class="social__separator">
+                            <div class="social__separator-side"></div>
+                            <div class="social__separator-middle">OR</div>
+                            <div class="social__separator-side"></div>
+                        </div>
+                        
+                                                                        <form action="#popin-login" data-form-speak-error="Form is invalid:" id="form-login" method="post">
+                            <div class="form__element">
+                                <label class="form__label" for="form-login-input-username" id="form-login-label-username">Username</label>
+                                <div class="form__container">
+                                    <input aria-invalid="false" aria-labelledby="form-login-label-username" aria-required="true" autocomplete="username" class="form__input form__input--invisible" data-form-error-required="Username is required" data-form-has-container data-form-rules="required" id="form-login-input-username" name="form-login-input-username" type="text"/>
+                                    <span class="form__feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form__element">
+                                <label class="form__label" for="form-login-input-password" id="form-login-label-password">Password</label>
+                                <a class="popin__link popin__link--right" href="#popin-forgot_password">Forgot your password?</a>
+                                <div class="form__container">
+                                    <input aria-invalid="false" aria-labelledby="form-login-label-password" aria-required="true" autocomplete="current-password" class="form__input form__input--invisible" data-form-error-required="Password is required" data-form-has-container data-form-rules="required" id="form-login-input-password" name="form-login-input-password" type="password"/>
+                                    <span class="form__feedback"></span>
+                                </div>
+                            </div>
+
+                            <div class="form__element">
+                                <input class="form__input form__input--checkbox" id="form-login-checkbox-remember" name="form-login-checkbox-remember" type="checkbox" value="remember">
+                                <label class="form__label form__label--checkbox" for="form-login-checkbox-remember">
+                                <span aria-hidden="true" class="form__fake-checkbox">
+                                    <svg class="form__fake-checkbox-svg" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="form__fake-checkbox-path" d="M461.6,109.6l-54.9-43.3c-1.7-1.4-3.8-2.4-6.2-2.4c-2.4,0-4.6,1-6.3,2.5L194.5,323c0,0-78.5-75.5-80.7-77.7  c-2.2-2.2-5.1-5.9-9.5-5.9c-4.4,0-6.4,3.1-8.7,5.4c-1.7,1.8-29.7,31.2-43.5,45.8c-0.8,0.9-1.3,1.4-2,2.1c-1.2,1.7-2,3.6-2,5.7  c0,2.2,0.8,4,2,5.7l2.8,2.6c0,0,139.3,133.8,141.6,136.1c2.3,2.3,5.1,5.2,9.2,5.2c4,0,7.3-4.3,9.2-6.2L462,121.8  c1.2-1.7,2-3.6,2-5.8C464,113.5,463,111.4,461.6,109.6z"></path>
+                                    </svg>
+                                </span>
+                                    Remember Me
+                                </label>
+                            </div>
+                            <input name="form-login-hidden-csrf" type="hidden" value="&#x7D;TBjrd&#x5D;c,i9&#x7D;&#x7B;emJaa.&#x7B;&#x5E;3&#x3B;&#x60;&#x5E;E&amp;yCiQ&#x21;GlyK&#x28;&#x5C;P_Ttn.&#x3D;H&#x2B;pdDj_iKvpU&#x3A;&#x29;Nn&amp;m&#x2B;"/>
+                            <input class="form__button form__button--large form__button--primary" id="form-login-submit" name="form-login-submit" type="submit" value="Log in"/>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="popin__body popin__body--bottom popin__body--bg-grey">
+                    <p>New to blueprintUE? <a class="popin__link" href="#popin-register">Create your account</a></p>
+                </div>
+
+                <a aria-label="Close" class="popin__close" href="#">
+                    <svg aria-hidden="true" class="popin__close-svg">
+                        <use href="/sprite/sprite.svg#icon-close"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div aria-labelledby="popin-register-h2" class="popin" id="popin-register" role="dialog">
+        <div class="popin__mask">
+            <a class="popin__back" href="#" tabindex="-1"></a>
+            <div class="popin__container">
+                <div class="popin__body">
+                    <div class="popin__header">
+                        <h2 class="popin__title" id="popin-register-h2">Join <span class="popin__title--span">blueprintUE</span></h2>
+                        <h3 class="popin__subtitle">share your blueprint in new visual way!</h3>
+                    </div>
+                    <div class="popin__content">
+                                                <ul class="social__buttons">
+                                                        <li class="social__button social__button--facebook">
+                                <a class="social__link" href="/oauth/facebook/">
+                                    <div class="social__icon-facebook">
+                                        <svg color="#FFFFFF" viewBox="0 0 216 216" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M204.1 0H11.9C5.3 0 0 5.3 0 11.9v192.2c0 6.6 5.3 11.9 11.9 11.9h103.5v-83.6H87.2V99.8h28.1v-24c0-27.9 17-43.1 41.9-43.1 11.9 0 22.2.9 25.2 1.3v29.2h-17.3c-13.5 0-16.2 6.4-16.2 15.9v20.8h32.3l-4.2 32.6h-28V216h55c6.6 0 11.9-5.3 11.9-11.9V11.9C216 5.3 210.7 0 204.1 0z" fill="#FFFFFF"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="social__text">
+                                        <span>Continue with Facebook</span>
+                                    </div>
+                                </a>
+                            </li>
+                                                                                    <li class="social__button social__button--google">
+                                <a class="social__link" href="/oauth/google/">
+                                    <div class="social__icon-google">
+                                        <svg aria-hidden="true" class="social__svg social__svg--google">
+                                            <use href="/sprite/sprite.svg#icon-google"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="social__text">
+                                        <span>Continue with Google</span>
+                                    </div>
+                                </a>
+                            </li>
+                                                                                    <li class="social__button social__button--twitter">
+                                <a class="social__link" href="/oauth/twitter/">
+                                    <div class="social__icon-twitter">
+                                        <svg aria-hidden="true" class="social__svg social__svg--twitter">
+                                            <use href="/sprite/sprite.svg#icon-twitter"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="social__text">
+                                        <span>Continue with Twitter</span>
+                                    </div>
+                                </a>
+                            </li>
+                                                    </ul>
+
+                        <div class="social__separator">
+                            <div class="social__separator-side"></div>
+                            <div class="social__separator-middle">OR</div>
+                            <div class="social__separator-side"></div>
+                        </div>
+                        
+                                                                        <form action="#popin-register" data-form-speak-error="Form is invalid:" id="form-register" method="post">
+                            <div class="form__element">
+                                <label class="form__label" for="form-register-input-username" id="form-register-label-username">Username</label>
+                                <div class="form__container">
+                                    <input aria-invalid="false" aria-labelledby="form-register-label-username" aria-required="true" autocomplete="username" class="form__input form__input--invisible" data-form-error-regex="Expected username containing: digits, letters, symbols: - _ ." data-form-error-required="Username is required" data-form-has-container data-form-rules="required|regex:^[a-zA-Z0-9._ -]*$" id="form-register-input-username" name="form-register-input-username" type="text" value=""/>
+                                    <span class="form__feedback"></span>
+                                </div>
+                                                            </div>
+                            <div class="form__element">
+                                <label class="form__label" for="form-register-input-email" id="form-register-label-email">Email</label>
+                                <div class="form__container">
+                                    <input aria-invalid="false" aria-labelledby="form-register-label-email" aria-required="true" autocomplete="email" class="form__input form__input--invisible" data-form-error-email="Email is invalid" data-form-has-container data-form-rules="email" id="form-register-input-email" name="form-register-input-email" type="text" value=""/>
+                                    <span class="form__feedback"></span>
+                                </div>
+                                                            </div>
+                            <div class="form__element">
+                                <label class="form__label" for="form-register-input-password" id="form-register-label-password">Password</label>
+                                <div class="form__container">
+                                    <input aria-describedby="form-register-span-password" aria-invalid="false" aria-labelledby="form-register-label-password" aria-required="true" autocomplete="new-password" class="form__input form__input--invisible" data-form-error-min="Password must be at least 8 characters in length" data-form-has-container data-form-rules="min:8" id="form-register-input-password" name="form-register-input-password" type="password"/>
+                                    <span class="form__feedback"></span>
+                                </div>
+                                                                <span class="form__help" id="form-register-span-password">Minimum of 8 characters</span>
+                            </div>
+                            <div class="form__element">
+                                <label class="form__label" for="form-register-input-password_confirm" id="form-register-label-password_confirm">Confirm Password</label>
+                                <div class="form__container">
+                                    <input aria-invalid="false" aria-labelledby="form-register-label-password_confirm" aria-required="true" autocomplete="new-password" class="form__input form__input--invisible" data-form-error-equal_field="Confirm Password must be the same as Password" data-form-error-required="Confirm Password is required" data-form-has-container data-form-rules="required|equal_field:form-register-input-password" id="form-register-input-password_confirm" name="form-register-input-password_confirm" type="password"/>
+                                    <span class="form__feedback"></span>
+                                </div>
+                                                            </div>
+                            <div class="form__element">
+                                <p>By clicking on "Create an account" below, you are agreeing to the <a class="popin__link" href="/terms-of-service/" target="_blank">Terms of Service</a> and the <a class="popin__link" href="/privacy-policy/" target="_blank">Privacy Policy</a>.</p>
+                            </div>
+                            <input name="form-register-hidden-csrf" type="hidden" value="&#x7D;TBjrd&#x5D;c,i9&#x7D;&#x7B;emJaa.&#x7B;&#x5E;3&#x3B;&#x60;&#x5E;E&amp;yCiQ&#x21;GlyK&#x28;&#x5C;P_Ttn.&#x3D;H&#x2B;pdDj_iKvpU&#x3A;&#x29;Nn&amp;m&#x2B;"/>
+                            <input class="form__button form__button--large form__button--primary" id="form-register-submit" name="form-register-submit" type="submit" value="Create an account"/>
+                        </form>
+                    </div>
+                </div>
+
+                <a aria-label="Close" class="popin__close" href="#">
+                    <svg aria-hidden="true" class="popin__close-svg">
+                        <use href="/sprite/sprite.svg#icon-close"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div aria-labelledby="popin-forgot_password-h2" class="popin" id="popin-forgot_password" role="dialog">
+        <div class="popin__mask">
+            <a class="popin__back" href="#" tabindex="-1"></a>
+            <div class="popin__container">
+                <div class="popin__body">
+                    <div class="popin__header">
+                        <h2 class="popin__title" id="popin-forgot_password-h2">Reset your <span class="popin__title--span">password</span></h2>
+                    </div>
+                    <div class="popin__content">
+
+                                                                        <form action="#popin-forgot_password" data-form-speak-error="Form is invalid:" id="form-forgot_password" method="post">
+                            <div class="form__element">
+                                <label class="form__label" for="form-forgot_password-input-email" id="form-forgot_password-label-email">Enter your email address and we will send you a link to reset your password.</label>
+                                <div class="form__container">
+                                    <input aria-invalid="false" aria-labelledby="form-forgot_password-label-email" aria-required="true" autocomplete="email" class="form__input form__input--invisible" data-form-error-email="Email is invalid" data-form-has-container data-form-rules="email" id="form-forgot_password-input-email" name="form-forgot_password-input-email" placeholder="your@email.com" type="text" value=""/>
+                                    <span class="form__feedback"></span>
+                                </div>
+                                                            </div>
+                            <input name="form-forgot_password-hidden-csrf" type="hidden" value="&#x7D;TBjrd&#x5D;c,i9&#x7D;&#x7B;emJaa.&#x7B;&#x5E;3&#x3B;&#x60;&#x5E;E&amp;yCiQ&#x21;GlyK&#x28;&#x5C;P_Ttn.&#x3D;H&#x2B;pdDj_iKvpU&#x3A;&#x29;Nn&amp;m&#x2B;"/>
+                            <input class="form__button form__button--large form__button--primary" id="form-forgot_password-submit" name="form-forgot_password-submit" type="submit" value="Send link"/>
+                        </form>
+                    </div>
+                </div>
+
+                <a aria-label="Close" class="popin__close" href="#">
+                    <svg aria-hidden="true" class="popin__close-svg">
+                        <use href="/sprite/sprite.svg#icon-close"></use>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/site.js"></script>
+</body></html>

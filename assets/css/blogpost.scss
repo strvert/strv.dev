@@ -55,9 +55,6 @@
     }
 
     p {
-      @media screen and (min-width: 800px) {
-        text-align: justify;
-      }
       font-size: 1.08rem;
       letter-spacing: 0.03em;
       line-height: 3ex;
@@ -71,13 +68,13 @@
       }
     }
 
-    .panel-shadow {
+    %panel-shadow {
       box-shadow: 5px 5px 7px 2px #0000000a;
     }
 
     pre {
       margin: 0;
-      @extend .panel-shadow;
+      @extend %panel-shadow;
       border-radius: 5px;
       border-style: solid;
       border-width: 2px;
@@ -95,16 +92,17 @@
 
     .filename {
       position: absolute;
-      right: 7px;
-      transform: translateY(7px);
 
       font-size: 0.85rem;
-      padding-left: 5px;
-      padding-right: 4px;
+      padding-left: 8px;
+      padding-right: 6px;
+      padding-top: 4px;
+      padding-bottom: 4px;
       border-radius: 4px;
       background-color: #0000000a;
 
       font-family: var(--source-code-font);
+      z-index: 50;
     }
 
     img {
@@ -113,11 +111,20 @@
       max-inline-size: 100%;
       min-inline-size: 70%;
       border-radius: 4px;
-      @extend .panel-shadow;
+      @extend %panel-shadow;
+    }
+
+    video {
+      display: block;
+      margin: 0 auto;
+      max-inline-size: 100%;
+      min-inline-size: 70%;
+      border-radius: 4px;
+      @extend %panel-shadow;
     }
 
     table {
-      @extend .panel-shadow;
+      @extend %panel-shadow;
       inline-size: 100%;
       thead {
         border-radius: 40px;
@@ -133,6 +140,16 @@
           padding: 0.5em;
         }
       }
+    }
+
+    .blueprint-renderer {
+      display: block;
+      @extend %panel-shadow;
+      inline-size: 100%;
+      block-size: 500px;
+      border-radius: 4px;
+      margin-top: 15px;
+      margin-bottom: 15px;
     }
 
     .footnotes {

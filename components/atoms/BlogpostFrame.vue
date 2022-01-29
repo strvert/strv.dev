@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineNuxtComponent, PropType, computed } from '#app';
+import { defineNuxtComponent, PropType, computed, onMounted, useNuxtApp } from '#app';
 import { IArticle } from '@/composables/stores/Article';
 import TagList from '@/components/atoms/TagList.vue';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
@@ -80,6 +80,11 @@ export default defineNuxtComponent({
       } else {
         return '';
       }
+    });
+
+    const { $prism } = useNuxtApp();
+    onMounted(() => {
+      $prism.highlightAll();
     });
 
     return { dateString, pubStatus };

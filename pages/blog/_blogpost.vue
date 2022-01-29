@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="outer">
     <blogpost-frame v-if="page !== undefined" :page="page" :path="path">
       <nuxt-content :document="page" />
     </blogpost-frame>
@@ -9,8 +9,10 @@
 <script lang="ts">
 import { defineNuxtComponent, useRoute } from '#app';
 import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
+// import BlueprintGraph from '@/components/atoms/BlueprintGraph.vue';
 import { useBlogContent } from '@/composables/utils/BlogContent';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
+// import 'blueprint-renderer-webcomponents';
 
 export default defineNuxtComponent({
   name: 'blogpost-content',
