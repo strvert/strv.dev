@@ -125,7 +125,7 @@ export default defineNuxtConfig({
   content: content,
   ssr: false,
   generate: generate(articlesRoute, articlesPath),
-  sitemap: sitemap(baseUrl, articlesRoute),
+  sitemap: sitemap(baseUrl, articlesRoute, articlesPath),
   'google-gtag': {
     id: 'G-7CSGM5KZ9W',
     debug: true,

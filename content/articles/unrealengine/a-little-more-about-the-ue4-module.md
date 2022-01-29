@@ -6,6 +6,7 @@ enforceUpdatedAt: 2019/10/29
 tags:
   - Unreal Engine
   - Unreal C++
+assets: '/article-assets/unrealengine/a-little-more-about-the-ue4-module'
 ---
 
 # 趣旨

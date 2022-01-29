@@ -10,13 +10,6 @@ const modules = [
     },
   ],
   './modules/timestampSelector',
-  [
-    './modules/articleAssetsResolver',
-    {
-      articleRoot: 'articles',
-      articleAssetsRoot: '/article-assets',
-    },
-  ],
   '@nuxt/content',
   '@nuxtjs/sitemap',
   [

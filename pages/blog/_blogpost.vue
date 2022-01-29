@@ -9,14 +9,14 @@
 <script lang="ts">
 import { defineNuxtComponent, useRoute } from '#app';
 import BlogpostFrame from '@/components/atoms/BlogpostFrame.vue';
-import BlueprintGraph from '@/components/atoms/BlueprintGraph.vue';
+// import BlueprintGraph from '@/components/atoms/BlueprintGraph.vue';
 import { useBlogContent } from '@/composables/utils/BlogContent';
 import { useBlogpostMeta } from '@/composables/utils/BlogpostMeta';
-import 'blueprint-renderer-webcomponents';
+// import 'blueprint-renderer-webcomponents';
 
 export default defineNuxtComponent({
   name: 'blogpost-content',
-  components: { BlogpostFrame, BlueprintGraph },
+  components: { BlogpostFrame },
   setup() {
     const route = useRoute();
     const { page, path } = useBlogContent(route.params.blogpost);

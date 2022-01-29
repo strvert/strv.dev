@@ -11,6 +11,7 @@ const content = {
         'remark-directive-webcomponents',
         [['blueprint-renderer', { class: 'blueprint-renderer', 'scroll-disabled': true }]],
       ],
+      ['remark-article-assets-path', {}],
       ['remark-code-extra', remarkCodeExtraConfig],
       'remark-prism',
     ],

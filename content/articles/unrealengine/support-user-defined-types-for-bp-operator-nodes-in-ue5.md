@@ -8,6 +8,7 @@ tags:
     - Blueprint
     - Unreal C++
     - Unreal Engine 5
+assets: '/article-assets/unrealengine/support-user-defined-types-for-bp-operator-nodes-in-ue5'
 ---
 
 # まえがき

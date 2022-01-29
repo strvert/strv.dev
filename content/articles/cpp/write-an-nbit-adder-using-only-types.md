@@ -9,7 +9,10 @@ tags:
   - 静的型付け
   - concept
   - C++20
+assets: '/article-assets/cpp/write-an-nbit-adder-using-only-types'
 ---
+
+[hoge](#/hogehoge.txt)
 
 最近、Twitter で以下の記事を見かけました。
 
