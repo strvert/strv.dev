@@ -11,7 +11,7 @@ assets: '/article-assets/unrealengine/draw-rectangles-lines-on-uv-coords'
 
 UV 座標空間に長方形とかの図形を描くマテリアルを遊びで作ったのでメモとして記事にしておきます。以下のようなことになります。
 
-::vl[draw-rect-mask-internal]{src=#/rectangles.mp4}
+::v[draw-rect-mask-internal]{src=#/rectangles.mp4}
 
 # 環境
 
