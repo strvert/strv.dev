@@ -24,10 +24,16 @@ const directiveArticleAssetsPath = (options) => {
     if (vfile.data.assets === undefined) {
       return;
     }
-    visit(tree, ['image', 'link'], (node) => {
-      const src = node.url;
+    visit(tree, ['image', 'link', 'video', 'leafDirective'], (node) => {
+      const is_leaf = node.type === 'leafDirective';
+      const src = is_leaf ? node.attributes.src : node.url;
       if (src.startsWith('#/')) {
-        node.url = `${vfile.data.assets}/${src.substr(1)}`;
+        if (is_leaf) {
+          const data = node.data || (node.data = {});
+          data.hProperties.src = `${vfile.data.assets}/${src.substr(1)}`;
+        } else {
+          node.url = `${vfile.data.assets}/${src.substr(1)}`;
+        }
       }
     });
   };

@@ -45,6 +45,7 @@
     "remark-directive": "1.0.1",
     "remark-directive-webcomponents": "./remarks/remark-directive-webcomponents",
     "remark-prism": "^1.3.6",
+    "remark-video": "./remarks/remark-video",
     "sass": "^1.39.2",
     "sass-loader": "10",
     "sharp": "^0.29.1",
