@@ -123,7 +123,7 @@ export default defineNuxtConfig({
     hardSource: true,
   },
   content: content,
-  ssr: false,
+  ssr: true,
   generate: generate(articlesRoute, articlesPath),
   sitemap: sitemap(baseUrl, articlesRoute, articlesPath),
   'google-gtag': {
