@@ -6,9 +6,9 @@
       border-bottom-style: solid;
       border-bottom-width: 2px;
     }
-    .headers-margin {
+    @mixin headers-margin($offset) {
       padding-block-start: var(--header-height);
-      margin-block-start: calc(-1 * var(--header-height) + 1.7rem);
+      margin-block-start: calc(-1 * var(--header-height) + $offset);
     }
     @mixin headers-link-mark($mark) {
       content: $mark;
@@ -30,11 +30,6 @@
       }
     }
 
-    h1 {
-      font-size: 1.7rem;
-      @extend .headers-border;
-    }
-
     h1,
     h2,
     h3,
@@ -42,8 +37,17 @@
     h5,
     h6 {
       position: relative;
-      @extend .headers-margin;
+      @include headers-margin(0px);
       @include headers-link('§');
+    }
+
+    h1 {
+      font-size: 1.7rem;
+      @extend .headers-border;
+    }
+
+    h4 {
+      font-size: 1.04rem;
     }
 
     .inline-code {
@@ -72,37 +76,40 @@
       box-shadow: 5px 5px 7px 2px #0000000a;
     }
 
-    pre {
-      margin: 0;
-      @extend %panel-shadow;
-      border-radius: 5px;
-      border-style: solid;
-      border-width: 2px;
-      border-color: #00000022;
-      padding-block-start: 2rem;
-      padding-block-end: 2rem;
-      code {
-        font-family: var(--source-code-font);
+    .code-extra {
+      margin-block-end: 1.5rem;
+      pre {
+        margin: 0;
+        @extend %panel-shadow;
+        border-radius: 5px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: #00000022;
+        padding-block-start: 2rem;
+        padding-block-end: 1rem;
+        code {
+          font-family: var(--source-code-font);
+        }
       }
-    }
 
-    .nuxt-content-highlight {
-      position: relative;
-    }
+      .nuxt-content-highlight {
+        position: relative;
+      }
 
-    .filename {
-      position: absolute;
+      .filename {
+        position: absolute;
 
-      font-size: 0.85rem;
-      padding-left: 8px;
-      padding-right: 6px;
-      padding-top: 4px;
-      padding-bottom: 4px;
-      border-radius: 4px;
-      background-color: #0000000a;
+        font-size: 0.85rem;
+        padding-left: 8px;
+        padding-right: 6px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        border-radius: 4px;
+        background-color: #0000000a;
 
-      font-family: var(--source-code-font);
-      z-index: 50;
+        font-family: var(--source-code-font);
+        z-index: 50;
+      }
     }
 
     img {
@@ -169,6 +176,8 @@
       }
     }
 
-    .katex { font-size: 1.3em; }
+    .katex {
+      font-size: 1.3em;
+    }
   }
 }
