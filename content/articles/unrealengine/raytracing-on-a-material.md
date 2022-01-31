@@ -225,7 +225,7 @@ float D = pow(B, 2) - A*C;
 
 if (D >= 0) {
   float curT = (-B - sqrt(D)) / A;
-  if (curT < TMax) {
+  if (curT > 0 && curT < TMax) {
     T = curT;
     return 1;
   }
