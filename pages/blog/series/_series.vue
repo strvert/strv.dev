@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useNuxt2Meta, useRoute } from '#app';
+import { defineComponent, computed, ref, useNuxt2Meta, useRoute } from '#app';
 
 import ArticleList from '@/components/molecules/ArticleList.vue';
 import ContentListFrame from '@/components/molecules/ContentListFrame.vue';
@@ -17,9 +17,11 @@ import { IArticle } from '@/composables/stores/Article';
 export default defineComponent({
   components: { ContentListFrame, ArticleList },
   setup() {
-    useNuxt2Meta({ title: 'blog' });
+    const title = ref('シリーズ: ');
+    useNuxt2Meta({ title });
     const route = useRoute();
     const seriesName = route.params.series;
+    title.value = `シリーズ: ${seriesName}`;
     const { pages: foundPages, completed } = useSearchBlogContent(
       new StaticParamBuilder({ series: seriesName })
     );

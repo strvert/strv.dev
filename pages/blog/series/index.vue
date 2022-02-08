@@ -13,7 +13,7 @@ import { useBlogSeries } from '@/composables/utils/BlogSeries';
 export default defineComponent({
   components: { ContentListFrame, SeriesList },
   setup() {
-    useNuxt2Meta({ title: 'blog' });
+    useNuxt2Meta({ title: 'シリーズ一覧' });
     const { serieses, completed } = useBlogSeries();
     return { serieses, completed };
   },
