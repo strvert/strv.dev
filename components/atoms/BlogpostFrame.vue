@@ -18,6 +18,7 @@
           <slot />
         </div>
       </article>
+      <share-buttons :text="page.title" :url="$route.fullPath"></share-buttons>
       <div class="surround-menu">
         <surround-article-menu
           :path="path"
@@ -39,10 +40,11 @@ import TagList from '@/components/atoms/TagList.vue';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import Container from '@/components/atoms/Container.vue';
 import Giscus from '@/components/atoms/Giscus.vue';
+import ShareButtons from '@/components/atoms/ShareButtons.vue';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
 
 export default defineNuxtComponent({
-  components: { Container, Giscus, TagList, SurroundArticleMenu },
+  components: { Container, Giscus, TagList, SurroundArticleMenu, ShareButtons },
   props: {
     page: {
       type: Object as PropType<IArticle>,

@@ -31,7 +31,7 @@ export default defineComponent({
   },
   setup(props) {
     const ogpImagesLoc = process.env.ogpImages;
-    const baseUrl = process.env.baseURl;
+    const baseUrl = process.env.baseUrl;
     const articleRoute = process.env.articleRoute;
     const siteName = process.env.siteName;
     const slug = pathToSlug(props.article.path);
