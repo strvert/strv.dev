@@ -60,7 +60,9 @@ If 文は命令の流れ自体を切り替えてしまう(真の分岐)のに対
 
 この辺りについては、OpenGL Wiki によい記述がありましたのでよければご参照ください。(英語)
 
-[ShaderExecution model and divergence - OpenGL Wiki](https://www.khronos.org/opengl/wiki/Shader#Execution_model_and_divergence)
+[Shader#Execution model and divergence - OpenGL Wiki](https://www.khronos.org/opengl/wiki/Shader#Execution_model_and_divergence)
+
+<br>
 
 # まとめのようななにか
 
