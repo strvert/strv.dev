@@ -149,6 +149,11 @@
         color: #ffffffd9;
       }
       tbody {
+        code {
+          @extend .inline-code;
+          background-color: #ffffff50;
+        }
+
         tr:nth-child(even) {
           background-color: #ccc;
         }
