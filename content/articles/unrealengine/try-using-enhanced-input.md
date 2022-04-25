@@ -4,6 +4,8 @@ description: 'Enhanced Input Plugin を解説してみる記事'
 tags:
   - Unreal Engine
   - Blueprint
+  - Input System
+  - Enhanced Input
 assets: '/article-assets/unrealengine/try-using-enhanced-input'
 ---
 
@@ -43,7 +45,9 @@ Enhanced Input を有効化すると、以下の 3 つのアセットが作成�
 
 ## Input Action
 
-Input Action は、主に以下のようなことが設定できるアセットです。
+Input Action は、名前の通り**アクション**を定義できるアセットです。ここで言うアクションとは、**移動**とか、**銃を打つ**とか、**アクタのものにインタラクトする**のような、ゲーム上での意味を持つ行動の単位で、特に入力に紐づいて発生するものであると考えると良いと思います。進めていくとわかりますが、このアセットを作成し、アセット名を付けること自体が、一つのアクションの定義となっています。
+
+このアセットでは、主に以下のようなことが設定できます。
 
 - Value Type : アクションから取得できる値の型
   - bool
