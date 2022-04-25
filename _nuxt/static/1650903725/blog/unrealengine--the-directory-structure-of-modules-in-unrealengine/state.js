@@ -1,0 +1,1 @@
+window.__NUXT__=(function(a){return {staticAssetsBase:"\u002F_nuxt\u002Fstatic\u002F1650903725",layout:"default",error:a,serverRendered:true,routePath:"\u002Fblog\u002Funrealengine--the-directory-structure-of-modules-in-unrealengine",config:{_app:{basePath:"\u002F",assetsPath:"\u002F_nuxt\u002F",cdnURL:a},content:{dbHash:"1428bf24"}},_asyncData:{},_errors:{}}}(null));
