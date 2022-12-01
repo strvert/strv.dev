@@ -29,10 +29,6 @@ const defaultLink = [
   { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
   {
     rel: 'stylesheet',
-    href: 'https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css',
-  },
-  {
-    rel: 'stylesheet',
     href: 'https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css',
   },
 ];
@@ -96,6 +92,7 @@ export default defineNuxtConfig({
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '~/assets/css/thirdparty/sanitize.css',
+    '~/assets/css/thirdparty/iconmonstr-iconic-font.min.css',
     '~/assets/css/global.scss',
     '~/assets/css/transition.scss',
     '~/assets/css/blogpost.scss',
