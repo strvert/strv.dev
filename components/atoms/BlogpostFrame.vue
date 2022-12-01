@@ -5,13 +5,15 @@
         <div class="blogpost">
           <header>
             <h1 class="post-title">{{ page !== undefined ? page.title : '' }}</h1>
+              <div class="advent-calendar-label" v-if="(page !== undefined && page.advent_calendar !== undefined)">
+                <advent-calendar-label :name="page.advent_calendar.name" :link="page.advent_calendar.link" :day="page.advent_calendar.day"></advent-calendar-label>
+              </div>
             <div class="post-info-wrapper">
               <div class="tag-list">
                 <tag-list :tags="page !== undefined ? page.tags : []" />
               </div>
               <p class="publish-time">
-                <time :datetime="dateString">{{ dateString }}</time
-                >に{{ pubStatus }}
+                <time :datetime="dateString">{{ dateString }}</time>に{{ pubStatus }}
               </p>
             </div>
           </header>
@@ -20,11 +22,7 @@
       </article>
       <share-buttons :text="page.title" :url="$route.fullPath"></share-buttons>
       <div class="surround-menu">
-        <surround-article-menu
-          :path="path"
-          :useSeries="true"
-          :series="page !== undefined ? page.series : ''"
-        />
+        <surround-article-menu :path="path" :useSeries="true" :series="page !== undefined ? page.series : ''" />
       </div>
       <article v-if="showComment" class="giscus-wrapper">
         <giscus />
@@ -37,6 +35,7 @@
 import { defineNuxtComponent, PropType, computed, onMounted, useNuxtApp } from '#app';
 import { IArticle } from '@/composables/stores/Article';
 import TagList from '@/components/atoms/TagList.vue';
+import AdventCalendarLabel from '@/components/atoms/AdventCalendarLabel.vue';
 import SurroundArticleMenu from '@/components/atoms/SurroundArticleMenu.vue';
 import Container from '@/components/atoms/Container.vue';
 import Giscus from '@/components/atoms/Giscus.vue';
@@ -44,7 +43,7 @@ import ShareButtons from '@/components/atoms/ShareButtons.vue';
 import { readDateInfos } from '@/composables/utils/ArticleInfoReader';
 
 export default defineNuxtComponent({
-  components: { Container, Giscus, TagList, SurroundArticleMenu, ShareButtons },
+  components: { Container, Giscus, AdventCalendarLabel, TagList, SurroundArticleMenu, ShareButtons },
   props: {
     page: {
       type: Object as PropType<IArticle>,
@@ -98,9 +97,11 @@ export default defineNuxtComponent({
 .giscus-wrapper {
   max-inline-size: 820px;
   padding-block-start: 1rem;
+
   @media screen and (max-width: 820px) {
     max-inline-size: 800px;
   }
+
   margin: 0 auto;
 }
 
@@ -110,17 +111,24 @@ export default defineNuxtComponent({
 }
 
 .blogpost {
-  > header {
+  >header {
     margin-block-end: 1.26em;
-    > .post-title {
+
+    >.post-title {
       font-size: 2rem;
       margin-block-end: 0.56em;
     }
-    > .post-info-wrapper {
+
+    .advent-calendar-label{
+      margin-block-end: 0.4rem;
+    }
+
+    >.post-info-wrapper {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      > .publish-time {
+
+      >.publish-time {
         font-size: 0.95rem;
         color: #00000088;
         margin: 0;
