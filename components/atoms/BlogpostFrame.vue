@@ -15,7 +15,9 @@
               </p>
             </div>
           </header>
-          <slot />
+          <div class="content-slot">
+            <slot />
+          </div>
         </div>
       </article>
       <share-buttons :text="page.title" :url="$route.fullPath"></share-buttons>
@@ -111,7 +113,9 @@ export default defineNuxtComponent({
 
 .blogpost {
   > header {
+    position: relative;
     margin-block-end: 1.26em;
+    z-index: 10;
     > .post-title {
       font-size: 2rem;
       margin-block-end: 0.56em;
@@ -126,6 +130,11 @@ export default defineNuxtComponent({
         margin: 0;
       }
     }
+  }
+
+  .content-slot {
+    position: relative;
+    z-index: 5;
   }
 }
 </style>
