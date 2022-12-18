@@ -1064,6 +1064,62 @@ IMPLEMENT_VM_FUNCTION( EX_LocalVariable, execLocalVariable );
 
 -->
 
+## Blueprint バイトコードの逆アセンブル
+ここまで、実装ベースで Blueprint VM の背後を見てきました。しかし、バイトコードの役割がわかるようになったからには、実際に実行されているバイトコードを確認してみたくなるでしょう。
+
+Unreal Engine には、コンパイルして生成されたバイトコードを人間が読みやすい形で逆アセンブルして出力する `FKismetBytecodeDisassembler` というクラスが定義されています。これは Blueprint コンパイラの中でも利用できるようになっていて、Engine.ini に以下を加えることで有効化できます。
+
+```
+[Kismet]
+CompileDisplaysBinaryBackend=True
+```
+
+これが有効化されていると、Blueprint のコンパイル時に、生成されたバイトコードを逆アセンブルしたテキストがログ出力されるようになります。
+たとえば、以下のグラフをコンパイルすると……
+
+![](#/sample-nodes.png)
+
+これが出てきます。
+
+```ini
+LogK2Compiler: [function ReceiveBeginPlay]:
+Label_0x0:
+     $46: Local Final Script Function (stack node L_GameEntry_C::ExecuteUbergraph_L_GameEntry)
+       $1D: literal int32 87
+       $16: EX_EndFunctionParms
+Label_0xF:
+     $4: Return expression
+       $B: EX_Nothing
+Label_0x11:
+     $53: EX_EndOfScript
+LogK2Compiler: [function NewFunction]:
+Label_0x0:
+     $68: Call Math (stack node KismetSystemLibrary::PrintString)
+       $17: EX_Self
+       $1F: literal ansi string "Hello"
+       $27: EX_True
+       $27: EX_True
+       $2F: literal struct LinearColor (serialized size: 16)
+         $1E: literal float 0.000000
+         $1E: literal float 0.660000
+         $1E: literal float 1.000000
+         $1E: literal float 1.000000
+         $30: EX_EndStructConst
+       $1E: literal float 2.000000
+       $21: literal name None
+       $16: EX_EndFunctionParms
+Label_0x48:
+     $4: Return expression
+       $B: EX_Nothing
+Label_0x4A:
+     $53: EX_EndOfScript
+```
+
+`$xx` のように表示されているのが Blueprint VM の命令コードであり、それに合わせて命令の名前などを併記してくれています。
+また、インデントを変えることでその内部で実行されている命令を表現してくれています。リテラル値を表す命令などではその値も示してくれているので、大変読みやすいです。
+
+ただ、実際に Config に上記の設定を加えてみると、`Trace~` などのよくわからない命令が大量に入ると思います。これは Blueprint デバッガのための命令がノード単位で挿入されるからです。これを回避するには、エンジンのソースコードをいじるか、デバッガでデバッグ命令を挿入するかのフラグを上書きする必要があります。僕は面倒なので後者の手法で、`FKismetFunctionContext::bCreateDebugData` の値を `false` に上書きすることで綺麗な出力を得ています。
+
 # この知識、何に使えるの？
 普段意識する必要は全く無いでしょう。しかし、記事中でも少し触れた `CustomThunk` などの Thunk 関数を自作するようなコードは非常に強力です。というのも、本来は Blueprint VM 側に処理が隠されてしまい、結果の引数しか受け取れないはずの C++ 実装で、実行中の Blueprint VM の `FFrame` に直接操作を加えることができるのです。このため、ある種のメタプログラミングのようなことが可能になります。
 代表格は `Wildcard` ピンなどです。たまに見かける、繋いではじめて型が確定する灰色のピンがあると思いますが、あれが `Wildcard` ピンで、そういった特殊な機能を気軽に利用できるようになります。
