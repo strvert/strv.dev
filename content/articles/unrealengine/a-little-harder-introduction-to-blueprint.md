@@ -1082,6 +1082,40 @@ CompileDisplaysBinaryBackend=True
 これが出てきます。
 
 ```ini
+LogK2Compiler: [function ExecuteUbergraph_L_GameEntry]:
+Label_0x0:
+     $4E: Computed Jump, offset specified by expression:
+         $0: Local variable of type int32 named EntryPoint. Parameter flags: (Parameter).
+Label_0xA:
+     $68: Call Math (stack node KismetSystemLibrary::PrintString)
+       $17: EX_Self
+       $1F: literal ansi string "Hello"
+       $27: EX_True
+       $27: EX_True
+       $2F: literal struct LinearColor (serialized size: 16)
+         $1E: literal float 0.000000
+         $1E: literal float 0.660000
+         $1E: literal float 1.000000
+         $1E: literal float 1.000000
+         $30: EX_EndStructConst
+       $1E: literal float 2.000000
+       $21: literal name None
+       $16: EX_EndFunctionParms
+Label_0x52:
+     $6: Jump to offset 0x7D
+Label_0x57:
+     $45: Local Virtual Script Function named NewFunction
+       $28: EX_False
+       $1D: literal int32 0
+       $21: literal name None
+       $16: EX_EndFunctionParms
+Label_0x78:
+     $6: Jump to offset 0xA
+Label_0x7D:
+     $4: Return expression
+       $B: EX_Nothing
+Label_0x7F:
+     $53: EX_EndOfScript
 LogK2Compiler: [function ReceiveBeginPlay]:
 Label_0x0:
      $46: Local Final Script Function (stack node L_GameEntry_C::ExecuteUbergraph_L_GameEntry)
