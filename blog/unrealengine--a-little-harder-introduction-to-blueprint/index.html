@@ -1,0 +1,1028 @@
+<!doctype html>
+<html data-n-head-ssr lang="ja" prefix="og: http://ogp.me/ns#" data-n-head="%7B%22lang%22:%7B%22ssr%22:%22ja%22%7D,%22prefix%22:%7B%22ssr%22:%22og:%20http://ogp.me/ns#%22%7D%7D">
+  <head>
+    <title>すこし厳しい Blueprint 入門 - strv.dev</title><meta data-n-head="ssr" charset="utf-8"><meta data-n-head="ssr" name="viewport" content="width=device-width,initial-scale=1"><meta data-n-head="ssr" name="format-detection" content="telephone=no"><meta data-n-head="ssr" data-hid="og:locale" property="og:locale" content="ja_jp"><meta data-n-head="ssr" data-hid="og:site_name" property="og:site_name" content="strv.dev"><meta data-n-head="ssr" data-hid="og:type" property="og:type" content="article"><meta data-n-head="ssr" name="twitter:card" content="summary_large_image"><meta data-n-head="ssr" name="twitter:creator" content="@strvert"><meta data-n-head="ssr" data-hid="description" name="description" content="Blueprint に本当に入門するために、Blueprint の実行モデルや実装について説明する記事"><meta data-n-head="ssr" data-hid="og:description" property="og:description" content="Blueprint に本当に入門するために、Blueprint の実行モデルや実装について説明する記事"><meta data-n-head="ssr" data-hid="og:url" property="og:url" content="https://strv.dev/blog/unrealengine--a-little-harder-introduction-to-blueprint"><meta data-n-head="ssr" data-hid="og:title" property="og:title" content="すこし厳しい Blueprint 入門 - strv.dev"><meta data-n-head="ssr" data-hid="og:image" property="og:image" content="https://strv.dev/images/ogp/generated/unrealengine--a-little-harder-introduction-to-blueprint.png"><link data-n-head="ssr" data-hid="gf-prefetch" rel="dns-prefetch" href="https://fonts.gstatic.com/"><link data-n-head="ssr" data-hid="gf-preconnect" rel="preconnect" href="https://fonts.gstatic.com/" crossorigin=""><link data-n-head="ssr" data-hid="gf-preload" rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=M PLUS 1:wght@200;300;400;600&family=Source Code Pro:wght@300;400&display=swap"><link data-n-head="ssr" rel="icon" type="image/x-icon" href="/favicon.ico"><link data-n-head="ssr" rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png"><link data-n-head="ssr" rel="icon" type="image/png" href="/icon-192x192.png"><link data-n-head="ssr" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"><link data-n-head="ssr" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"><script data-n-head="ssr" src="https://www.googletagmanager.com/gtag/js?id=G-7CSGM5KZ9W" async></script><script data-n-head="ssr" data-hid="gf-script">!function(){var e=document.createElement("link");e.rel="stylesheet",e.href="https://fonts.googleapis.com/css2?family=M PLUS 1:wght@200;300;400;600&family=Source Code Pro:wght@300;400&display=swap",document.querySelector("head").appendChild(e)}()</script><noscript data-n-head="ssr" data-hid="gf-noscript"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M PLUS 1:wght@200;300;400;600&family=Source Code Pro:wght@300;400&display=swap"></noscript><link rel="preload" href="/_nuxt/runtime.5a58625.js" as="script"><link rel="preload" href="/_nuxt/commons/app.98a0816.js" as="script"><link rel="preload" href="/_nuxt/vendors/app.070d0bc.js" as="script"><link rel="preload" href="/_nuxt/app.541b271.js" as="script"><link rel="preload" href="/_nuxt/pages/blog/_blogpost.970c9d9.js" as="script"><link rel="preload" href="/_nuxt/components/atoms-blogpost-frame.b3ab725.js" as="script"><style data-vue-ssr-id="5f655f6e:0 47b1254e:0 e0c2e3f4:0 1e38ac46:0 30178fb4:0 0d0f8c20:0 efa3685a:0 6f59ad13:0 4fe6bba3:0 4f708215:0 519f442c:0 1ffacb4b:0 5baef921:0 21c0f031:0 ddc74972:0 46b5b2f1:0 31c3e038:0 a1473730:0 698678c4:0 49d44ae3:0 513d0dee:0 00512ee8:0 cb9a5eee:0 31bee032:0 0cbf0b3c:0 06d41f1b:0">*,:after,:before{box-sizing:border-box}:after,:before{text-decoration:inherit;vertical-align:inherit}html{cursor:default;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-tap-highlight-color:transparent;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;word-break:break-word}body{margin:0}h1{font-size:2em;margin:.67em 0}dl dl,dl ol,dl ul,ol dl,ol ol,ol ul,ul dl,ul ol,ul ul{margin:0}hr{height:0;overflow:visible}main{display:block}nav ol,nav ul{list-style:none;padding:0}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}audio,canvas,iframe,img,svg,video{vertical-align:middle}audio,video{display:inline-block}audio:not([controls]){display:none;height:0}iframe,img{border-style:none}svg:not([fill]){fill:currentColor}svg:not(:root){overflow:hidden}table{border-collapse:collapse}button,input,select{margin:0}button{overflow:visible;text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}fieldset{border:1px solid #a0a0a0;padding:.35em .75em .625em}input{overflow:visible}legend{color:inherit;display:table;max-width:100%;white-space:normal}progress{display:inline-block;vertical-align:baseline}select{text-transform:none}textarea{margin:0;overflow:auto;resize:vertical}[type=checkbox],[type=radio]{padding:0}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}::-webkit-input-placeholder{color:inherit;opacity:.54}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}::-moz-focus-inner{border-style:none;padding:0}:-moz-focusring{outline:1px dotted ButtonText}:-moz-ui-invalid{box-shadow:none}details,dialog{display:block}dialog{background-color:#fff;border:solid;color:#000;height:-moz-fit-content;height:fit-content;left:0;margin:auto;padding:1em;position:absolute;right:0;width:-moz-fit-content;width:fit-content}dialog:not([open]){display:none}summary{display:list-item}canvas{display:inline-block}template{display:none}[tabindex],a,area,button,input,label,select,summary,textarea{touch-action:manipulation}[hidden]{display:none}[aria-busy=true]{cursor:progress}[aria-controls]{cursor:pointer}[aria-disabled=true],[disabled]{cursor:not-allowed}[aria-hidden=false][hidden]{display:initial}[aria-hidden=false][hidden]:not(:focus){clip:rect(0,0,0,0);position:absolute}/*!
+ * iconmonstr iconic font v1.2.0
+ * Created by Alexander Kahlkopf - http://iconmonstr.com - @iconmonstr
+ * License - http://iconmonstr.com/license
+ */@font-face{font-family:iconmonstr-iconic-font;src:url(/_nuxt/fonts/iconmonstr-iconic-font.477addb.woff2) format("woff2"),url(/_nuxt/fonts/iconmonstr-iconic-font.7af9e9b.woff) format("woff"),url(/_nuxt/fonts/iconmonstr-iconic-font.44d85dc.ttf) format("truetype")}.im{display:inline-block;font:normal normal normal 24px/1 iconmonstr-iconic-font;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.im-angle-right:before{content:"\e001"}.im-angle-left:before{content:"\e002"}.im-angle-down:before{content:"\e003"}.im-angle-up:before{content:"\e004"}.im-angle-right-circle:before{content:"\e005"}.im-angle-left-circle:before{content:"\e006"}.im-angle-down-circle:before{content:"\e007"}.im-angle-up-circle:before{content:"\e008"}.im-arrow-right:before{content:"\e009"}.im-arrow-left:before{content:"\e00a"}.im-arrow-down:before{content:"\e00b"}.im-arrow-up:before{content:"\e00c"}.im-arrow-right-circle:before{content:"\e00d"}.im-arrow-left-circle:before{content:"\e00e"}.im-arrow-down-circle:before{content:"\e00f"}.im-arrow-up-circle:before{content:"\e010"}.im-care-right:before{content:"\e011"}.im-care-left:before{content:"\e012"}.im-care-down:before{content:"\e013"}.im-care-up:before{content:"\e014"}.im-forbidden:before{content:"\e015"}.im-printer:before{content:"\e016"}.im-menu:before{content:"\e017"}.im-menu-list:before{content:"\e018"}.im-quote-left:before{content:"\e019"}.im-quote-right:before{content:"\e01a"}.im-bell:before{content:"\e01b"}.im-bell-off:before{content:"\e01c"}.im-bookmark:before{content:"\e01d"}.im-briefcase:before{content:"\e01e"}.im-calendar:before{content:"\e01f"}.im-photo-camera:before{content:"\e020"}.im-video-camera:before{content:"\e021"}.im-microphone:before{content:"\e022"}.im-check-mark:before{content:"\e023"}.im-check-mark-circle:before{content:"\e024"}.im-check-square-o:before{content:"\e025"}.im-check-square:before{content:"\e026"}.im-check-square-i:before{content:"\e027"}.im-square-o:before{content:"\e028"}.im-radio-button-circle-o:before{content:"\e029"}.im-radio-button-circle:before{content:"\e02a"}.im-circle-o:before{content:"\e02b"}.im-clock-o:before{content:"\e02c"}.im-cloud:before{content:"\e02d"}.im-cloud-download:before{content:"\e02e"}.im-cloud-upload:before{content:"\e02f"}.im-code:before{content:"\e030"}.im-speech-bubble:before{content:"\e031"}.im-speech-bubble-comment:before{content:"\e032"}.im-speech-bubble-comments:before{content:"\e033"}.im-copy:before{content:"\e034"}.im-credit-card:before{content:"\e035"}.im-crown:before{content:"\e036"}.im-database:before{content:"\e037"}.im-computer:before{content:"\e038"}.im-download:before{content:"\e039"}.im-upload:before{content:"\e03a"}.im-pencil:before{content:"\e03b"}.im-edit-off:before{content:"\e03c"}.im-play:before{content:"\e03d"}.im-pause:before{content:"\e03e"}.im-stop:before{content:"\e03f"}.im-eject:before{content:"\e040"}.im-previous:before{content:"\e041"}.im-next:before{content:"\e042"}.im-loop:before{content:"\e043"}.im-random:before{content:"\e044"}.im-menu-dot-h:before{content:"\e045"}.im-menu-dot-v:before{content:"\e046"}.im-mail:before{content:"\e047"}.im-info:before{content:"\e048"}.im-warning:before{content:"\e049"}.im-question:before{content:"\e04a"}.im-link:before{content:"\e04b"}.im-unlink:before{content:"\e04c"}.im-external-link:before{content:"\e04d"}.im-eye:before{content:"\e04e"}.im-eye-off:before{content:"\e04f"}.im-file:before{content:"\e050"}.im-file-o:before{content:"\e051"}.im-files-o:before{content:"\e052"}.im-video:before{content:"\e053"}.im-audio:before{content:"\e054"}.im-picture-o:before{content:"\e055"}.im-flag:before{content:"\e056"}.im-folder:before{content:"\e057"}.im-folder-open:before{content:"\e058"}.im-smiley-o:before{content:"\e059"}.im-frown-o:before{content:"\e05a"}.im-gear:before{content:"\e05b"}.im-globe:before{content:"\e05c"}.im-heart:before{content:"\e05d"}.im-home:before{content:"\e05e"}.im-inbox:before{content:"\e05f"}.im-key:before{content:"\e060"}.im-lock:before{content:"\e061"}.im-lock-open:before{content:"\e062"}.im-task-o:before{content:"\e063"}.im-filter:before{content:"\e064"}.im-light-bulb:before{content:"\e065"}.im-flash:before{content:"\e066"}.im-map-o:before{content:"\e067"}.im-location:before{content:"\e068"}.im-maximize:before{content:"\e069"}.im-minimize:before{content:"\e06a"}.im-fullscreen:before{content:"\e06b"}.im-mobile:before{content:"\e06c"}.im-phone:before{content:"\e06d"}.im-coin:before{content:"\e06e"}.im-banknote:before{content:"\e06f"}.im-paper-clip:before{content:"\e070"}.im-bar-chart:before{content:"\e071"}.im-plus:before{content:"\e072"}.im-minus:before{content:"\e073"}.im-plus-circle:before{content:"\e074"}.im-minus-circle:before{content:"\e075"}.im-undo:before{content:"\e076"}.im-redo:before{content:"\e077"}.im-rocket:before{content:"\e078"}.im-rss:before{content:"\e079"}.im-magnifier:before{content:"\e07a"}.im-magnifier-plus:before{content:"\e07b"}.im-magnifier-minus:before{content:"\e07c"}.im-share:before{content:"\e07d"}.im-shield:before{content:"\e07e"}.im-shopping-cart:before{content:"\e07f"}.im-sign-in:before{content:"\e080"}.im-sign-out:before{content:"\e081"}.im-spinner:before{content:"\e082"}.im-star:before{content:"\e083"}.im-star-half:before{content:"\e084"}.im-star-o:before{content:"\e085"}.im-sync:before{content:"\e086"}.im-table:before{content:"\e087"}.im-window-o:before{content:"\e088"}.im-windows-o:before{content:"\e089"}.im-thumb-up:before{content:"\e08a"}.im-thumb-down:before{content:"\e08b"}.im-x-mark:before{content:"\e08c"}.im-x-mark-circle:before{content:"\e08d"}.im-trash-can:before{content:"\e08e"}.im-user-male:before{content:"\e08f"}.im-user-female:before{content:"\e090"}.im-user-circle:before{content:"\e091"}.im-users:before{content:"\e092"}.im-volume:before{content:"\e093"}.im-volume-off:before{content:"\e094"}.im-wifi:before{content:"\e095"}.im-tools:before{content:"\e096"}.im-dashboard:before{content:"\e097"}.im-archive:before{content:"\e098"}.im-save:before{content:"\e099"}.im-floppy-disk:before{content:"\e09a"}.im-sitemap:before{content:"\e09b"}.im-toggle:before{content:"\e09c"}.im-tag:before{content:"\e09d"}.im-tags:before{content:"\e09e"}.im-wizard:before{content:"\e09f"}.im-book:before{content:"\e0a0"}.im-fire:before{content:"\e0a1"}.im-id-card:before{content:"\e0a2"}.im-note-o:before{content:"\e0a3"}.im-control-panel:before{content:"\e0a4"}.im-facebook:before{content:"\e0a5"}.im-facebook-like:before{content:"\e0a6"}.im-twitter:before{content:"\e0a7"}.im-amazon:before{content:"\e0a8"}.im-android-os:before{content:"\e0a9"}.im-apple-os:before{content:"\e0aa"}.im-windows-os:before{content:"\e0ab"}.im-linux-os:before{content:"\e0ac"}.im-chrome:before{content:"\e0ad"}.im-ie:before{content:"\e0ae"}.im-edge:before{content:"\e0af"}.im-firefox:before{content:"\e0b0"}.im-safari:before{content:"\e0b1"}.im-opera:before{content:"\e0b2"}.im-behance:before{content:"\e0b3"}.im-blogger:before{content:"\e0b4"}.im-flickr:before{content:"\e0b5"}.im-github:before{content:"\e0b6"}.im-google-plus:before{content:"\e0b7"}.im-instagram:before{content:"\e0b8"}.im-linkedin:before{content:"\e0b9"}.im-pinterest:before{content:"\e0ba"}.im-skype:before{content:"\e0bb"}.im-snapchat:before{content:"\e0bc"}.im-soundcloud:before{content:"\e0bd"}.im-stackoverflow:before{content:"\e0be"}.im-stumbleupon:before{content:"\e0bf"}.im-tumblr:before{content:"\e0c0"}.im-xing:before{content:"\e0c1"}.im-youtube:before{content:"\e0c2"}.im-reddit:before{content:"\e0c3"}.im-vimeo:before{content:"\e0c4"}.im-vk:before{content:"\e0c5"}.im-whatsapp:before{content:"\e0c6"}.im-paypal:before{content:"\e0c7"}.im-twitch:before{content:"\e0c8"}.im-drop:before{content:"\e0c9"}.im-sun:before{content:"\e0ca"}.im-certificate-o:before{content:"\e0cb"}.im-graduation-hat:before{content:"\e0cc"}.im-store:before{content:"\e0cd"}.im-pin:before{content:"\e0ce"}.im-navigation:before{content:"\e0cf"}.im-keyboard:before{content:"\e0d0"}.im-cursor:before{content:"\e0d1"}.im-monitor-o:before{content:"\e0d2"}.im-laptop-o:before{content:"\e0d3"}.im-power:before{content:"\e0d4"}.im-pie-chart:before{content:"\e0d5"}.im-line-chart-up:before{content:"\e0d6"}.im-clock:before{content:"\e0d7"}.im-flip-chart-o:before{content:"\e0d8"}.im-gift:before{content:"\e0d9"}.im-leaf:before{content:"\e0da"}.im-bug:before{content:"\e0db"}.im-coffee:before{content:"\e0dc"}.im-diamond-o:before{content:"\e0dd"}.im-bell-active:before{content:"\e0de"}.im-history:before{content:"\e0df"}.im-gamepad:before{content:"\e0e0"}.im-binoculars:before{content:"\e0e1"}.im-paperplane:before{content:"\e0e2"}.im-wrench:before{content:"\e0e3"}.im-newspaper-o:before{content:"\e0e4"}.im-lifebuoy:before{content:"\e0e5"}.im-fingerprint:before{content:"\e0e6"}.im-date-o:before{content:"\e0e7"}.im-network:before{content:"\e0e8"}.im-target:before{content:"\e0e9"}.im-user-settings:before{content:"\e0ea"}.im-radio:before{content:"\e0eb"}.im-bank:before{content:"\e0ec"}.im-calculator:before{content:"\e0ed"}.im-battery-empty:before{content:"\e0ee"}.im-battery:before{content:"\e0ef"}.im-battery-full:before{content:"\e0f0"}.im-check-mark-circle-o:before{content:"\e0f1"}.im-x-mark-circle-o:before{content:"\e0f2"}.im-cube:before{content:"\e0f3"}.im-cubes:before{content:"\e0f4"}.im-warning-circle:before{content:"\e0f5"}.im-timer:before{content:"\e0f6"}.im-hashtag:before{content:"\e0f7"}.im-pointer:before{content:"\e0f8"}.im-paintbrush:before{content:"\e0f9"}.im-server:before{content:"\e0fa"}.im-car:before{content:"\e0fb"}.im-edit:before{content:"\e0fc"}.im-flask:before{content:"\e0fd"}.im-language:before{content:"\e0fe"}.im-anchor:before{content:"\e0ff"}.im-trophy:before{content:"\e100"}.im-umbrella:before{content:"\e101"}.im-cc-amex:before{content:"\e102"}.im-cc-visa:before{content:"\e103"}.im-cc-mastercard:before{content:"\e104"}.im-cc-paypal:before{content:"\e105"}.im-cc-amazon:before{content:"\e106"}.im-cc-bitcoin:before{content:"\e107"}html{font-family:"M PLUS 1",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif,"Segoe UI Emoji";font-size:15px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;word-wrap:break-word;word-break:break-word;color:var(--strvdev-text-color);background-color:var(--strvdev-bg-color);block-size:100%;scroll-behavior:smooth}body{overflow-x:hidden}a{color:var(--strvdev-link-color);-webkit-text-decoration-line:none;text-decoration-line:none;text-decoration-thickness:.07em}a:hover{-webkit-text-decoration-line:underline;text-decoration-line:underline;-webkit-text-decoration-style:dashed;text-decoration-style:dashed}::-webkit-scrollbar{background:#c9c9c9;inline-size:7.5px;block-size:7.5px}::-webkit-scrollbar-thumb{background:#808494;border-radius:5px}::-moz-selection{text-shadow:none;background:#a3c4fc}::selection{text-shadow:none;background:#a3c4fc}[v-cloak]{opacity:0}.page-enter-active,.page-leave-active{transition-property:opacity height block-size transform;transition-duration:.2s}.page-enter,.page-leave-to{opacity:0}.inverse-page-enter-active,.inverse-page-leave-active,.layout-enter-active,.layout-leave-active{transition-property:opacity height block-size transform;transition-duration:.2s}.layout-enter,.layout-leave-to{opacity:0}.inverse-layout-enter-active,.inverse-layout-leave-active{transition-property:opacity height block-size transform;transition-duration:.2s}@font-face{font-family:Virgil;src:url(https://excalidraw.com/Virgil.woff2)}.blogpost .nuxt-content{--header-height:44px}.blogpost .nuxt-content .headers-border,.blogpost .nuxt-content h1{border-bottom:2px solid;border-color:rgba(0,0,0,.13333333333333333)}.blogpost .nuxt-content h1,.blogpost .nuxt-content h2,.blogpost .nuxt-content h3,.blogpost .nuxt-content h4,.blogpost .nuxt-content h5,.blogpost .nuxt-content h6{position:relative;z-index:0;-webkit-padding-before:var(--header-height);padding-block-start:var(--header-height);-webkit-margin-before:calc(var(--header-height)*-1);margin-block-start:calc(var(--header-height)*-1)}.blogpost .nuxt-content h1:hover a:before,.blogpost .nuxt-content h2:hover a:before,.blogpost .nuxt-content h3:hover a:before,.blogpost .nuxt-content h4:hover a:before,.blogpost .nuxt-content h5:hover a:before,.blogpost .nuxt-content h6:hover a:before{content:"§";display:block;inline-size:2em;position:absolute;font-size:1em;left:-1em;bottom:.05em}.blogpost .nuxt-content h1{font-size:1.7rem}.blogpost .nuxt-content h3{font-size:1.3rem}.blogpost .nuxt-content h4{font-size:1.04rem}.blogpost .nuxt-content .inline-code,.blogpost .nuxt-content li code,.blogpost .nuxt-content p code,.blogpost .nuxt-content table tbody code{font-family:var(--source-code-font);background-color:var(--strvdev-blogpost-code);border-radius:4px;margin:0 .2em;padding:0 .2em}.blogpost .nuxt-content p{position:relative;z-index:1;font-size:1.08rem;letter-spacing:.03em;line-height:3ex}.blogpost .nuxt-content details{position:relative;z-index:1;inline-size:95%;margin:0 auto}.blogpost .nuxt-content .blueprint-renderer,.blogpost .nuxt-content .code-extra pre,.blogpost .nuxt-content img,.blogpost .nuxt-content table,.blogpost .nuxt-content video{box-shadow:5px 5px 7px 2px rgba(0,0,0,.0392156862745098)}.blogpost .nuxt-content #目次+ul p{margin:.2em 0}.blogpost .nuxt-content .code-extra{-webkit-margin-after:1.5rem;margin-block-end:1.5rem}.blogpost .nuxt-content .code-extra pre{margin:0;border-radius:5px;border:2px solid rgba(0,0,0,.13333333333333333);-webkit-padding-before:2rem;padding-block-start:2rem;-webkit-padding-after:1rem;padding-block-end:1rem}.blogpost .nuxt-content .code-extra pre code{z-index:1;font-family:var(--source-code-font)}.blogpost .nuxt-content .code-extra .nuxt-content-highlight{position:relative}.blogpost .nuxt-content .code-extra .filename{position:absolute;font-size:.85rem;padding:4px 6px 4px 8px;border-radius:4px;background-color:rgba(0,0,0,.0392156862745098);font-family:var(--source-code-font);z-index:50}.blogpost .nuxt-content img{display:block;position:relative;left:50%;transform:translateX(-50%);max-inline-size:70%;border-radius:4px;z-index:10;transition-property:max-inline-size position;transition-duration:.5s}.blogpost .nuxt-content img:hover{max-inline-size:85vw;z-index:11}.blogpost .nuxt-content .without-shadow img{box-shadow:none}.blogpost .nuxt-content svg{display:block;position:relative;left:50%;transform:translateX(-50%)}.blogpost .nuxt-content video{display:block;margin:0 auto;max-inline-size:100%;min-inline-size:70%;border-radius:4px}.blogpost .nuxt-content table{inline-size:100%}.blogpost .nuxt-content table thead{border-radius:40px;background-color:var(--strvdev-palette-4);color:hsla(0,0%,100%,.8509803921568627)}.blogpost .nuxt-content table tbody code{background-color:hsla(0,0%,100%,.3137254901960784)}.blogpost .nuxt-content table tbody tr:nth-child(2n){background-color:#ccc}.blogpost .nuxt-content table tbody td{padding:.5em}.blogpost .nuxt-content .blueprint-renderer{display:block;inline-size:100%;block-size:500px;border-radius:4px;margin-top:15px;margin-bottom:15px}.blogpost .nuxt-content .footnotes li{-webkit-padding-before:var(--header-height);padding-block-start:var(--header-height);-webkit-margin-before:calc(var(--header-height)*-1);margin-block-start:calc(var(--header-height)*-1)}.blogpost .nuxt-content .katex{font-size:1.3em}:root{--source-code-font:"Source Code Pro";--strvdev-palette-1:#d9dbd9;--strvdev-palette-2:#7ac292;--strvdev-palette-3:#505464;--strvdev-palette-4:#273134;--strvdev-palette-5:#4174a5;--strvdev-palette-6:#a61010;--strvdev-blogpost-code:hsla(0,0%,100%,0.5647058823529412);--strvdev-blogpost-tag:#d1d3d1;--strvdev-bg-color:var(--strvdev-palette-1);--strvdev-text-color:var(--strvdev-palette-4);--strvdev-link-color:var(--strvdev-palette-5);--default-margin-block-start:80px}code[class*=language-],pre[class*=language-]{background:#fafafa;color:#383a42;font-family:"Fira Code","Fira Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}code[class*=language-] ::-moz-selection,code[class*=language-]::-moz-selection,pre[class*=language-] ::-moz-selection{background:#e5e5e6;color:inherit}code[class*=language-] ::-moz-selection,code[class*=language-]::-moz-selection,pre[class*=language-] ::-moz-selection{background:#e5e5e6;color:inherit}code[class*=language-] ::selection,code[class*=language-]::selection,pre[class*=language-] ::selection{background:#e5e5e6;color:inherit}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto;border-radius:.3em}:not(pre)>code[class*=language-]{padding:.2em .3em;border-radius:.3em;white-space:normal}.token.cdata,.token.comment,.token.prolog{color:#a0a1a7}.token.doctype,.token.entity,.token.punctuation{color:#383a42}.token.atrule,.token.attr-name,.token.boolean,.token.class-name,.token.constant,.token.number{color:#b76b01}.token.keyword{color:#a626a4}.token.deleted,.token.important,.token.property,.token.symbol,.token.tag{color:#e45649}.token.attr-value,.token.attr-value>.token.punctuation,.token.builtin,.token.char,.token.inserted,.token.regex,.token.selector,.token.string{color:#50a14f}.token.function,.token.operator,.token.variable{color:#4078f2}.token.url{color:#0184bc}.token.attr-value>.token.punctuation.attr-equals,.token.special-attr>.token.attr-value>.token.value.css{color:#383a42}.language-css .token.selector{color:#e45649}.language-css .token.property{color:#383a42}.language-css .token.function,.language-css .token.url>.token.function{color:#0184bc}.language-css .token.url>.token.string.url{color:#50a14f}.language-css .token.atrule .token.rule,.language-css .token.important,.language-javascript .token.operator{color:#a626a4}.language-javascript .token.template-string>.token.interpolation>.token.interpolation-punctuation.punctuation{color:#ca1243}.language-json .token.operator{color:#383a42}.language-json .token.null.keyword{color:#b76b01}.language-markdown .token.url,.language-markdown .token.url-reference.url>.token.string,.language-markdown .token.url>.token.operator{color:#383a42}.language-markdown .token.url>.token.content{color:#4078f2}.language-markdown .token.url-reference.url,.language-markdown .token.url>.token.url{color:#0184bc}.language-markdown .token.blockquote.punctuation,.language-markdown .token.hr.punctuation{color:#a0a1a7;font-style:italic}.language-markdown .token.code-snippet{color:#50a14f}.language-markdown .token.bold .token.content{color:#b76b01}.language-markdown .token.italic .token.content{color:#a626a4}.language-markdown .token.list.punctuation,.language-markdown .token.strike .token.content,.language-markdown .token.strike .token.punctuation,.language-markdown .token.title.important>.token.punctuation{color:#e45649}.token.bold{font-weight:700}.token.comment,.token.italic{font-style:italic}.token.entity{cursor:help}.token.namespace{opacity:.8}.token.token.cr:before,.token.token.lf:before,.token.token.space:before,.token.token.tab:not(:empty):before{color:rgba(56,58,66,.2)}div.code-toolbar>.toolbar.toolbar>.toolbar-item{margin-right:.4em}div.code-toolbar>.toolbar.toolbar>.toolbar-item>a,div.code-toolbar>.toolbar.toolbar>.toolbar-item>button,div.code-toolbar>.toolbar.toolbar>.toolbar-item>span{background:#e5e5e6;color:#696c77;padding:.1em .4em;border-radius:.3em}div.code-toolbar>.toolbar.toolbar>.toolbar-item>a:focus,div.code-toolbar>.toolbar.toolbar>.toolbar-item>a:hover,div.code-toolbar>.toolbar.toolbar>.toolbar-item>button:focus,div.code-toolbar>.toolbar.toolbar>.toolbar-item>button:hover,div.code-toolbar>.toolbar.toolbar>.toolbar-item>span:focus,div.code-toolbar>.toolbar.toolbar>.toolbar-item>span:hover{background:#c6c7c7;color:#383a42}.line-highlight.line-highlight{background:rgba(56,58,66,.05)}.line-highlight.line-highlight:before,.line-highlight.line-highlight[data-end]:after{background:#e5e5e6;color:#383a42;padding:.1em .6em;border-radius:.3em;box-shadow:0 2px 0 0 rgba(0,0,0,.2)}pre[id].linkable-line-numbers.linkable-line-numbers span.line-numbers-rows>span:hover:before{background-color:rgba(56,58,66,.05)}.command-line .command-line-prompt,.line-numbers.line-numbers .line-numbers-rows{border-right-color:rgba(56,58,66,.2)}.command-line .command-line-prompt>span:before,.line-numbers .line-numbers-rows>span:before{color:#9d9d9f}.rainbow-braces .token.token.punctuation.brace-level-1,.rainbow-braces .token.token.punctuation.brace-level-5,.rainbow-braces .token.token.punctuation.brace-level-9{color:#e45649}.rainbow-braces .token.token.punctuation.brace-level-10,.rainbow-braces .token.token.punctuation.brace-level-2,.rainbow-braces .token.token.punctuation.brace-level-6{color:#50a14f}.rainbow-braces .token.token.punctuation.brace-level-11,.rainbow-braces .token.token.punctuation.brace-level-3,.rainbow-braces .token.token.punctuation.brace-level-7{color:#4078f2}.rainbow-braces .token.token.punctuation.brace-level-12,.rainbow-braces .token.token.punctuation.brace-level-4,.rainbow-braces .token.token.punctuation.brace-level-8{color:#a626a4}pre.diff-highlight>code .token.token.deleted:not(.prefix),pre>code.diff-highlight .token.token.deleted:not(.prefix){background-color:rgba(255,82,102,.15)}pre.diff-highlight>code .token.token.deleted:not(.prefix) ::-moz-selection,pre.diff-highlight>code .token.token.deleted:not(.prefix)::-moz-selection,pre>code.diff-highlight .token.token.deleted:not(.prefix) ::-moz-selection,pre>code.diff-highlight .token.token.deleted:not(.prefix)::-moz-selection{background-color:rgba(251,86,105,.25)}pre.diff-highlight>code .token.token.deleted:not(.prefix) ::-moz-selection,pre.diff-highlight>code .token.token.deleted:not(.prefix)::-moz-selection,pre>code.diff-highlight .token.token.deleted:not(.prefix) ::-moz-selection,pre>code.diff-highlight .token.token.deleted:not(.prefix)::-moz-selection{background-color:rgba(251,86,105,.25)}pre.diff-highlight>code .token.token.deleted:not(.prefix) ::selection,pre.diff-highlight>code .token.token.deleted:not(.prefix)::selection,pre>code.diff-highlight .token.token.deleted:not(.prefix) ::selection,pre>code.diff-highlight .token.token.deleted:not(.prefix)::selection{background-color:rgba(251,86,105,.25)}pre.diff-highlight>code .token.token.inserted:not(.prefix),pre>code.diff-highlight .token.token.inserted:not(.prefix){background-color:rgba(26,255,91,.15)}pre.diff-highlight>code .token.token.inserted:not(.prefix) ::-moz-selection,pre.diff-highlight>code .token.token.inserted:not(.prefix)::-moz-selection,pre>code.diff-highlight .token.token.inserted:not(.prefix) ::-moz-selection,pre>code.diff-highlight .token.token.inserted:not(.prefix)::-moz-selection{background-color:rgba(57,224,98,.25)}pre.diff-highlight>code .token.token.inserted:not(.prefix) ::-moz-selection,pre.diff-highlight>code .token.token.inserted:not(.prefix)::-moz-selection,pre>code.diff-highlight .token.token.inserted:not(.prefix) ::-moz-selection,pre>code.diff-highlight .token.token.inserted:not(.prefix)::-moz-selection{background-color:rgba(57,224,98,.25)}pre.diff-highlight>code .token.token.inserted:not(.prefix) ::selection,pre.diff-highlight>code .token.token.inserted:not(.prefix)::selection,pre>code.diff-highlight .token.token.inserted:not(.prefix) ::selection,pre>code.diff-highlight .token.token.inserted:not(.prefix)::selection{background-color:rgba(57,224,98,.25)}.prism-previewer-gradient.prism-previewer-gradient div,.prism-previewer.prism-previewer:before{border-color:#f2f2f2}.prism-previewer-color.prism-previewer-color:before,.prism-previewer-easing.prism-previewer-easing:before,.prism-previewer-gradient.prism-previewer-gradient div{border-radius:.3em}.prism-previewer.prism-previewer:after{border-top-color:#f2f2f2}.prism-previewer-flipped.prism-previewer-flipped.after{border-bottom-color:#f2f2f2}.prism-previewer-angle.prism-previewer-angle:before,.prism-previewer-easing.prism-previewer-easing,.prism-previewer-time.prism-previewer-time:before{background:#fff}.prism-previewer-angle.prism-previewer-angle circle,.prism-previewer-time.prism-previewer-time circle{stroke:#383a42;stroke-opacity:1}.prism-previewer-easing.prism-previewer-easing circle,.prism-previewer-easing.prism-previewer-easing line,.prism-previewer-easing.prism-previewer-easing path{stroke:#383a42}.prism-previewer-easing.prism-previewer-easing circle{fill:transparent}div.code-toolbar{position:relative}div.code-toolbar>.toolbar{position:absolute;z-index:10;top:.3em;right:.2em;transition:opacity .3s ease-in-out;opacity:0}div.code-toolbar:hover>.toolbar{opacity:1}div.code-toolbar:focus-within>.toolbar{opacity:1}div.code-toolbar>.toolbar>.toolbar-item{display:inline-block}div.code-toolbar>.toolbar>.toolbar-item>a{cursor:pointer}div.code-toolbar>.toolbar>.toolbar-item>button{background:0 0;border:0;color:inherit;font:inherit;line-height:normal;overflow:visible;padding:0;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}div.code-toolbar>.toolbar>.toolbar-item>a,div.code-toolbar>.toolbar>.toolbar-item>button,div.code-toolbar>.toolbar>.toolbar-item>span{color:#bbb;font-size:.8em;padding:0 .5em;background:#f5f2f0;background:hsla(0,0%,87.8%,.2);box-shadow:0 2px 0 0 rgba(0,0,0,.2);border-radius:.5em}div.code-toolbar>.toolbar>.toolbar-item>a:focus,div.code-toolbar>.toolbar>.toolbar-item>a:hover,div.code-toolbar>.toolbar>.toolbar-item>button:focus,div.code-toolbar>.toolbar>.toolbar-item>button:hover,div.code-toolbar>.toolbar>.toolbar-item>span:focus,div.code-toolbar>.toolbar>.toolbar-item>span:hover{color:inherit;text-decoration:none}.token.treeview-part .entry-line{position:relative;text-indent:-99em;display:inline-block;vertical-align:top;width:1.2em}.token.treeview-part .entry-line:before,.token.treeview-part .line-h:after{content:"";position:absolute;top:0;left:50%;width:50%;height:100%}.token.treeview-part .line-h:before,.token.treeview-part .line-v:before{border-left:1px solid #ccc}.token.treeview-part .line-v-last:before{height:50%;border-left:1px solid #ccc;border-bottom:1px solid #ccc}.token.treeview-part .line-h:after{height:50%;border-bottom:1px solid #ccc}.token.treeview-part .entry-name{position:relative;display:inline-block;vertical-align:top}.token.treeview-part .entry-name.dotfile{opacity:.5}@font-face{font-family:PrismTreeview;src:url(data:application/font-woff;base64,d09GRgABAAAAAAgYAAsAAAAAEGAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADsAAABUIIslek9TLzIAAAFEAAAAPwAAAFY1UkH9Y21hcAAAAYQAAAB/AAACCtvO7yxnbHlmAAACBAAAA+MAAAlACm1VqmhlYWQAAAXoAAAAKgAAADZfxj5jaGhlYQAABhQAAAAYAAAAJAFbAMFobXR4AAAGLAAAAA4AAAA0CGQAAGxvY2EAAAY8AAAAHAAAABwM9A9CbWF4cAAABlgAAAAfAAAAIAEgAHZuYW1lAAAGeAAAATcAAAJSfUrk+HBvc3QAAAewAAAAZgAAAIka0DSfeJxjYGRgYOBiMGCwY2BycfMJYeDLSSzJY5BiYGGAAJA8MpsxJzM9kYEDxgPKsYBpDiBmg4gCACY7BUgAeJxjYGRYyjiBgZWBgaGQoRZISkLpUAYOBj0GBiYGVmYGrCAgzTWFweEV4ysehs1ArgDDFgZGIA3CDAB2tQjAAHic7ZHLEcMwCESfLCz/VEoKSEE5parURxMOC4c0Ec283WGFdABgBXrwCAzam4bOK9KWeefM3Hhmjyn3ed+hTRq1pS7Ra/HjYGPniHcXMy4G/zNTP7/KW5HTXArkvdBW3ArN19dCG/NRIN8K5HuB/CiQn4U26VeBfBbML9NEH78AeJyVVc1u20YQ3pn905JcSgr/YsuSDTEg3cR1bFEkYyS1HQcQ2jQF2hot6vYSoECKnnPLA/SWUy9NTr31Bfp+6azsNI0SGiolzu7ODnfn+2Z2lnHG3rxhr9nfLGKbLGesncAYYnUHpsVnMG/uwyzNdFIVd6HI6twp8+R3LpT4TSglLoTHwwJgG2/dFvKrl9yI507/p5CCq4LTxB/PlPjkFaMHnWB/0S9je7RTPS+utnGtom1T2q5pk/e3H0M1S18rsXAL7wgpxQuhAmteGGvNjmcfGXuwnFNOPCXxeOGmnjrBLWNyBeNtVq2Hs03yus1aPS3mzSyNVSfu588iW1Q93x/4fjcHn+5EkS2tMxr4xIRa8ese+4L9uKZnxEqs8+ldyN9atU02a5t5uQ8hZGms1QTKpaKYqnipiNNOAIeIADC0JNEOYY+jtSgFoOchiAjRGFACpUTRje8bwIYWGCDEgENY8MEu9bnCYCdAxftoNg0KiSpUtPaHcanYwzXRu6T4r40b5npal3V7UHWCPJW9niyl1vIHgoujEXZjudBkeWkOeMQBRmbEPhKzij1i52t6/TadL+3q7H0U1eq4E8cG4gIIwQLx8VX7ToPXgPrehVc5QXHR7gMSmwjKfaYAP4KvZV+yn9bE18y2IY37LvtyrSg3i7ZK++B603ndlg/gBJpZRsfpBI6hyiaQ6FjlnThz8lAC3LgBIMnXDOAXxBQ4SIgiEhx2AcGCAwAhwjXRpCQms42bwAUt75BvAwgONzdgOfWEwzk4Ylzj4mz+5YEzzXzWX9aNlk7ot65y5QnBHsNlm6zDTu7sspRqG4V+fgJ1lVBZ07Nm7s5nemo3Lf3PO7iwtnroQ5/YDGwPRUip6fV6L+27p+wCHwSvPs85UnHqId8NAn5IBsKdv95KrL9m31Gsf2a/rluDslk1y1J9GE+LUmmVT/OyOHaFKGnapt2H5XeJTmKd6qYNoVVZOy+pWzr7rMip3ndG/4mQSoUcMbAqG/YNIAdXhkAqTVruXhocSKN0iS4Rwj7vSS4fcF/La07BfeQSuRAcFeW+9igjwPhhYPpGCBCBHhxiKMyFMFT7ziRH7RtfIWdiha+TdW+Rqs7bLHdN2ZJIKl0um0x3op9saYr0REeRdj09pl43pMzz4tjztrY8L4o8bzT+oLY27PR/eFtXs/YY5vtwB5Iqad14eYN0ujveMaGWqkdU3TKbQSC5Uvxaf4fA7SAQ3r2tEfIhd4duld91bwMisjqBw22orthNcroXl7KqO1329HBgAexgoCfGAwiDPoBnriki3lmNojrzvD0tjo6E3vPYP6E2BMIAeJxjYGRgYADiY8t3FsTz23xl4GbYzIAB/v9nWM6wBcjgYGAC8QH+QQhZAAB4nGNgZGBg2MzAACeXMzAyoAJeADPyAh14nGNgAILNpGEA0fgIZQAAAAAAAAA2AHIAvgE+AZgCCAKMAv4DlgPsBEYEoHicY2BkYGDgZchi4GQAASYg5gJCBob/YD4DABTSAZcAeJx9kU1uwjAQhV/4qwpqhdSqi67cTTeVEmBXDgBbhBD7AHYISuLUMSD2PUdP0HNwjp6i676k3qQS9Ujjb968mYUNoI8zPJTHw02Vy9PAFatfbpLuHbfIT47b6MF33KH+6riLF0wc93CHN27wWtdUHvHuuIFbfDhuUv903CKfHbfxgC/HHerfjrtYen3HPTx7ambiIl0YKQ+xPM5ltE9CU9NqxVKaItaZGPqDmj6VmTShlRuxOoniEI2sVUIZnYqJzqxMEi1yo3dybf2ttfk4CJTT/bVOMYNBjAIpFiTJOLCWOGLOHGGPBCE7l32XO0tmw04MjQwCQ7774B//lDmrZkJY3hvOrHBiLuiJMKJqoVgrejQ3CP5Yubt0JwxNJa96Oypr6j621VSOMQKG+uP36eKmHylcb0MAeJxtwdEOgjAMBdBeWEFR/Mdl7bTJtMsygc/nwVfPoYF+QP+tGDAigDFhxgVXLLjhjhUPCtmKTtmLaGN7x6dy/Io5bybqoevRQ3LRObb0sk3HKpn1SFqW6ru26vbpYfcmRCccJhqsAAA=) format("woff")}.token.treeview-part .entry-name:before{content:"\ea01";font-family:PrismTreeview;font-size:inherit;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;width:2.5ex;display:inline-block}.token.treeview-part .entry-name.dir:before{content:"\ea02"}.token.treeview-part .entry-name.ext-bmp:before,.token.treeview-part .entry-name.ext-eps:before,.token.treeview-part .entry-name.ext-gif:before,.token.treeview-part .entry-name.ext-jpe:before,.token.treeview-part .entry-name.ext-jpeg:before,.token.treeview-part .entry-name.ext-jpg:before,.token.treeview-part .entry-name.ext-png:before,.token.treeview-part .entry-name.ext-svg:before,.token.treeview-part .entry-name.ext-tiff:before{content:"\ea03"}.token.treeview-part .entry-name.ext-cfg:before,.token.treeview-part .entry-name.ext-conf:before,.token.treeview-part .entry-name.ext-config:before,.token.treeview-part .entry-name.ext-csv:before,.token.treeview-part .entry-name.ext-ini:before,.token.treeview-part .entry-name.ext-log:before,.token.treeview-part .entry-name.ext-md:before,.token.treeview-part .entry-name.ext-nfo:before,.token.treeview-part .entry-name.ext-txt:before{content:"\ea06"}.token.treeview-part .entry-name.ext-asp:before,.token.treeview-part .entry-name.ext-aspx:before,.token.treeview-part .entry-name.ext-c:before,.token.treeview-part .entry-name.ext-cc:before,.token.treeview-part .entry-name.ext-cpp:before,.token.treeview-part .entry-name.ext-cs:before,.token.treeview-part .entry-name.ext-css:before,.token.treeview-part .entry-name.ext-h:before,.token.treeview-part .entry-name.ext-hh:before,.token.treeview-part .entry-name.ext-htm:before,.token.treeview-part .entry-name.ext-html:before,.token.treeview-part .entry-name.ext-jav:before,.token.treeview-part .entry-name.ext-java:before,.token.treeview-part .entry-name.ext-js:before,.token.treeview-part .entry-name.ext-php:before,.token.treeview-part .entry-name.ext-rb:before,.token.treeview-part .entry-name.ext-xml:before{content:"\ea07"}.token.treeview-part .entry-name.ext-7z:before,.token.treeview-part .entry-name.ext-bz2:before,.token.treeview-part .entry-name.ext-bz:before,.token.treeview-part .entry-name.ext-gz:before,.token.treeview-part .entry-name.ext-rar:before,.token.treeview-part .entry-name.ext-tar:before,.token.treeview-part .entry-name.ext-tgz:before,.token.treeview-part .entry-name.ext-zip:before{content:"\ea08"}.token.treeview-part .entry-name.ext-aac:before,.token.treeview-part .entry-name.ext-au:before,.token.treeview-part .entry-name.ext-cda:before,.token.treeview-part .entry-name.ext-flac:before,.token.treeview-part .entry-name.ext-mp3:before,.token.treeview-part .entry-name.ext-oga:before,.token.treeview-part .entry-name.ext-ogg:before,.token.treeview-part .entry-name.ext-wav:before,.token.treeview-part .entry-name.ext-wma:before{content:"\ea04"}.token.treeview-part .entry-name.ext-avi:before,.token.treeview-part .entry-name.ext-flv:before,.token.treeview-part .entry-name.ext-mkv:before,.token.treeview-part .entry-name.ext-mov:before,.token.treeview-part .entry-name.ext-mp4:before,.token.treeview-part .entry-name.ext-mpeg:before,.token.treeview-part .entry-name.ext-mpg:before,.token.treeview-part .entry-name.ext-ogv:before,.token.treeview-part .entry-name.ext-webm:before{content:"\ea05"}.token.treeview-part .entry-name.ext-pdf:before{content:"\ea09"}.token.treeview-part .entry-name.ext-xls:before,.token.treeview-part .entry-name.ext-xlsx:before{content:"\ea0a"}.token.treeview-part .entry-name.ext-doc:before,.token.treeview-part .entry-name.ext-docm:before,.token.treeview-part .entry-name.ext-docx:before{content:"\ea0c"}.token.treeview-part .entry-name.ext-pps:before,.token.treeview-part .entry-name.ext-ppt:before,.token.treeview-part .entry-name.ext-pptx:before{content:"\ea0b"}.nuxt-progress{position:fixed;top:0;left:0;right:0;height:2px;width:0;opacity:1;transition:width .1s,opacity .4s;background-color:#000;z-index:999999}.nuxt-progress.nuxt-progress-notransition{transition:none}.nuxt-progress-failed{background-color:red}.frame[data-v-32d9e426]{display:flex;flex-direction:column;min-height:100vh}.frame .header[data-v-32d9e426]{position:fixed;z-index:100;top:0;left:0}.frame main[data-v-32d9e426]{flex:1}.frame main .content[data-v-32d9e426]{max-inline-size:800px;margin:0 auto}@media screen and (max-width:800px){.frame main .content[data-v-32d9e426]{margin-left:10px;margin-right:10px}}.header-main[data-v-031b1d0e]{background-color:var(--strvdev-palette-1);box-shadow:0 0 3px 0 var(--strvdev-palette-3);inline-size:100%;transition-property:transform;transition-duration:.3s;transform:translateY(calc(var(--header-row-height)*-1*var(--header-row-count)))}.header-main.open[data-v-031b1d0e]{transform:translateY(0)}.site-content-list[data-v-031b1d0e]{display:flex;justify-content:center}.header-grid[data-v-031b1d0e]{block-size:var(--header-row-height);max-inline-size:800px;margin:0 auto;position:relative;display:grid;grid-template-columns:repeat(5,1fr);grid-template-areas:"a b c d e";align-items:start;justify-items:center}.header-grid>.strvdevlogo[data-v-031b1d0e]{background-color:inherit;border-style:none;grid-area:c;padding-top:5px}.header-grid>.strvdevlogo[data-v-031b1d0e]:hover{cursor:pointer}.header-grid>.sitenav[data-v-031b1d0e]{grid-area:c}ul[data-v-30c9cc4b]{display:flex;list-style:none;padding:0;margin:0;justify-content:space-around}ul li[data-v-30c9cc4b]{text-align:center;font-size:1.1rem;font-weight:900;transition-property:color,background-color;transition-duration:.5s}ul li a[data-v-30c9cc4b]{display:block;inline-size:100%;block-size:100%;color:#333c49}svg[data-v-bddbf348]{display:block;margin:0 auto}.giscus-wrapper[data-v-2f2c1355]{max-inline-size:820px;-webkit-padding-before:1rem;padding-block-start:1rem;margin:0 auto}@media screen and (max-width:820px){.giscus-wrapper[data-v-2f2c1355]{max-inline-size:800px}}.surround-menu[data-v-2f2c1355]{display:block;-webkit-margin-before:4rem;margin-block-start:4rem}.blogpost>header[data-v-2f2c1355]{position:relative;-webkit-margin-after:1.26em;margin-block-end:1.26em;z-index:10}.blogpost>header>.post-title[data-v-2f2c1355]{font-size:2rem;-webkit-margin-after:.56em;margin-block-end:.56em}.blogpost>header .advent-calendar-label[data-v-2f2c1355]{-webkit-margin-after:.4rem;margin-block-end:.4rem}.blogpost>header>.post-info-wrapper[data-v-2f2c1355]{display:flex;justify-content:space-between;align-items:center}.blogpost>header>.post-info-wrapper>.publish-time[data-v-2f2c1355]{font-size:.95rem;color:rgba(0,0,0,.5333333333333333);margin:0}.blogpost .content-slot[data-v-2f2c1355]{position:relative;z-index:5}.container-base[data-v-6f1598ec]{-webkit-margin-before:var(--default-margin-block-start);margin-block-start:var(--default-margin-block-start)}.advent-calendar-label[data-v-199c23c4]{display:inline-block;border-radius:7px;background-color:var(--strvdev-palette-3);font-weight:700;color:var(--strvdev-palette-1);font-size:14px}.advent-calendar-label p[data-v-199c23c4]{-webkit-margin-start:1em;margin-inline-start:1em;-webkit-margin-end:1em;margin-inline-end:1em;-webkit-margin-before:.2em;margin-block-start:.2em;-webkit-margin-after:.2em;margin-block-end:.2em}.advent-calendar-label a[data-v-199c23c4]{color:var(--strvdev-palette-1)}.list-wrapper[data-v-7e21c619]{display:flex;gap:.3em;align-items:flex-start}.list-wrapper>.material-icons[data-v-7e21c619]{color:inherit;font-size:1.3em}.list-wrapper>.tag-list[data-v-7e21c619]{display:flex;flex-wrap:wrap;list-style:none;margin:0;padding:0;gap:.7em}.list-wrapper>.tag-list li[data-v-7e21c619]{background-color:var(--strvdev-blogpost-tag);border-radius:4px;padding:0 .2em;font-size:.9em}h2[data-v-6bc0f40a]{display:none}.share-list[data-v-6bc0f40a]{list-style:none;padding:0;-webkit-margin-end:.5rem;margin-inline-end:.5rem;display:flex;gap:1rem;justify-content:flex-end}.share-list a[data-v-6bc0f40a]{color:var(--strvdev-palette-3)}.wrapper[data-v-08b63208]{display:grid;grid-auto-flow:column;justify-content:space-between;gap:.5rem;grid-template-columns:minmax(max-content,auto) auto minmax(max-content,auto);align-items:center}.wrapper .prev[data-v-08b63208]{justify-self:flex-start}.wrapper .seriesname[data-v-08b63208]{text-align:center}.wrapper .next[data-v-08b63208]{-webkit-margin-start:auto;margin-inline-start:auto;text-align:right}.button[data-v-08b63208]{display:block}.giscus-frame{width:100%}.footer-wrapper[data-v-194ed6b2]{box-shadow:0 0 3px 0 var(--strvdev-palette-3);-webkit-margin-before:5rem;margin-block-start:5rem;-webkit-padding-before:1.5rem;padding-block-start:1.5rem}.footer-wrapper .footer-main[data-v-194ed6b2]{position:relative;max-inline-size:800px;margin:0 auto;-webkit-padding-after:1rem;padding-block-end:1rem;color:rgba(0,0,0,.7333333333333333)}.footer-wrapper .footer-main .infos[data-v-194ed6b2]{display:flex;justify-content:space-between}.footer-wrapper .footer-main .infos .copyright[data-v-194ed6b2],.footer-wrapper .footer-main .infos .privacy[data-v-194ed6b2]{bottom:1em;left:0;font-size:.9rem;-webkit-margin-before:1em;margin-block-start:1em}@media screen and (min-width:800px){.footer-wrapper .footer-main .contact[data-v-194ed6b2]{position:relative;left:-1.2em;inline-size:50%}}@media screen and (max-width:820px){.footer-wrapper .footer-main[data-v-194ed6b2]{padding-left:10px;padding-right:10px}}h2[data-v-b716246c]{display:none}address[data-v-b716246c]{flex-wrap:wrap;justify-content:space-around;margin:0 1em;gap:1em}address p[data-v-b716246c],address[data-v-b716246c]{display:flex;align-items:center}address p[data-v-b716246c]{margin:0;gap:.2em}address p .icon[data-v-b716246c]{position:relative;top:.095em;font-size:inherit}address p .display[data-v-b716246c]{font-size:1em;font-style:normal}.tail[data-v-4e732b52]:before{content:"@"}.msgbox[data-v-753eb174]{cursor:pointer}@media screen and (min-width:800px){.content[data-v-753eb174]:hover{border-radius:4px;background-color:rgba(0,0,0,.1)}}.container[data-v-e0d516b2]{position:relative}.container .msgbox[data-v-e0d516b2]{display:flex;justify-content:center;align-items:center;position:absolute;top:3px;left:50%;transform:translateY(-100%) translateX(-50%);block-size:2.5rem;inline-size:auto;white-space:nowrap;background:var(--strvdev-blogpost-code);border-radius:5px;transition-property:opacity;transition-duration:.1s;padding:.3rem}.container .msgbox span[data-v-e0d516b2]{margin:0;font-size:1.1rem}.container .msgbox.hide[data-v-e0d516b2]{opacity:0}</style><link rel="preload" href="/_nuxt/static/1671344635/blog/unrealengine--a-little-harder-introduction-to-blueprint/state.js" as="script"><link rel="preload" href="/_nuxt/static/1671344635/blog/unrealengine--a-little-harder-introduction-to-blueprint/payload.js" as="script"><link rel="preload" href="/_nuxt/static/1671344635/manifest.js" as="script">
+  </head>
+  <body>
+    <div data-server-rendered="true" id="__nuxt"><!----><div id="__layout"><div class="frame" data-v-32d9e426><div class="header-main header" style="--header-row-height:44px;--header-row-count:1" data-v-031b1d0e data-v-32d9e426><div class="site-content-list" data-v-031b1d0e><nav class="sitenav" data-v-031b1d0e><ul style="flex-direction:row" data-v-30c9cc4b data-v-031b1d0e><li style="line-height:44px;inline-size:200px" data-v-30c9cc4b><a href="/" class="nuxt-link-active" data-v-30c9cc4b>
+      HOME
+    </a></li><li style="line-height:44px;inline-size:200px" data-v-30c9cc4b><a href="/blog" class="nuxt-link-active" data-v-30c9cc4b>
+      BLOG
+    </a></li><li style="line-height:44px;inline-size:200px" data-v-30c9cc4b><a href="/about" data-v-30c9cc4b>
+      ABOUT
+    </a></li></ul></nav></div> <div class="header-grid" data-v-031b1d0e><button name="show-navcontent" aria-label="show navigation menu content" class="strvdevlogo" data-v-031b1d0e><div data-v-bddbf348 data-v-031b1d0e><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 35.893 6.419" width="184.37099999999998" height="33" style="isolation:isolate" data-v-bddbf348><defs data-v-bddbf348><clipPath id="_clipPath_wRGPbw1kW50q8FvcamYb3Hxr115iy0Iy" data-v-bddbf348><rect width="35.893" height="6.419" data-v-bddbf348></rect></clipPath></defs> <g clip-path="url(#_clipPath_wRGPbw1kW50q8FvcamYb3Hxr115iy0Iy)" data-v-bddbf348><clipPath id="_clipPath_I8fUhl3gs6z6fOmYoJZCtzdbffHu72Ll" data-v-bddbf348><rect x="0" y="0" width="35.893" height="6.419" transform="matrix(1,0,0,1,0,0)" fill="rgb(255,255,255)" data-v-bddbf348></rect></clipPath> <g clip-path="url(#_clipPath_I8fUhl3gs6z6fOmYoJZCtzdbffHu72Ll)" data-v-bddbf348><g class="characters" data-v-bddbf348><path d=" M 35.059 1.474 L 35.017 1.474 L 33.893 5.978 C 33.853 6.139 33.686 6.269 33.52 6.269 L 31.39 6.269 C 31.225 6.269 31.058 6.139 31.018 5.978 L 29.892 1.469 L 29.892 1.469 L 31.726 1.474 L 31.647 1.474 L 32.339 4.298 C 32.378 4.459 32.431 4.589 32.455 4.589 L 32.455 4.589 C 32.48 4.589 32.532 4.459 32.572 4.298 L 33.265 1.469 L 35.059 1.474 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 27.535 1.469 L 27.56 1.469 L 27.535 1.469 L 27.535 2.199 C 27.535 2.365 27.669 2.499 27.835 2.499 L 29.315 2.499 C 29.48 2.499 29.615 2.634 29.615 2.799 L 29.615 3.489 C 29.615 3.655 29.48 3.789 29.315 3.789 L 27.835 3.789 C 27.669 3.789 27.535 3.924 27.535 4.089 L 27.535 4.519 C 27.535 4.685 27.669 4.819 27.835 4.819 L 29.675 4.819 C 29.84 4.819 29.975 4.954 29.975 5.119 L 29.975 5.969 C 29.975 6.135 29.84 6.269 29.675 6.269 L 26.075 6.269 C 25.909 6.269 25.775 6.135 25.775 5.969 L 25.775 1.469 L 25.775 1.469 L 27.535 1.469 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 25.396 1.469 Q 25.414 1.537 25.43 1.609 L 25.43 1.609 L 25.43 1.609 Q 25.56 2.219 25.56 3.149 L 25.56 3.149 L 25.56 3.149 Q 25.56 4.069 25.43 4.679 L 25.43 4.679 L 25.43 4.679 Q 25.3 5.289 24.985 5.639 L 24.985 5.639 L 24.985 5.639 Q 24.67 5.989 24.12 6.129 L 24.12 6.129 L 24.12 6.129 Q 23.57 6.269 22.72 6.269 L 22.72 6.269 L 20.37 6.269 C 20.204 6.269 20.07 6.135 20.07 5.969 L 20.07 1.474 L 20.07 1.474 L 20.07 1.474 L 20.07 1.474 L 21.83 1.469 L 21.83 4.589 C 21.83 4.755 21.964 4.889 22.13 4.889 L 22.89 4.889 L 22.89 4.889 Q 23.33 4.889 23.5 4.744 L 23.5 4.744 L 23.5 4.744 Q 23.67 4.599 23.67 4.229 L 23.67 4.229 L 23.67 2.059 L 23.67 2.059 Q 23.67 1.689 23.5 1.544 L 23.5 1.544 L 23.5 1.544 Q 23.452 1.503 23.382 1.474 L 23.317 1.474 L 23.317 1.474 L 25.396 1.469 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 19.15 5.008 L 19.411 5.008 C 19.687 5.008 19.911 5.232 19.911 5.508 L 19.911 5.769 C 19.911 6.045 19.687 6.269 19.411 6.269 L 19.15 6.269 C 18.874 6.269 18.65 6.045 18.65 5.769 L 18.65 5.508 C 18.65 5.232 18.874 5.008 19.15 5.008 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 19.49 1.474 L 18.365 5.978 C 18.325 6.139 18.158 6.269 17.993 6.269 L 15.863 6.269 C 15.697 6.269 15.53 6.139 15.49 5.978 L 14.366 1.474 L 16.118 1.469 L 16.811 4.298 C 16.851 4.459 16.903 4.589 16.928 4.589 L 16.928 4.589 C 16.952 4.589 17.005 4.459 17.044 4.298 L 17.737 1.469 L 19.49 1.474 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 14.014 1.469 Q 14.082 1.826 14.096 2.276 L 14.096 2.276 L 14.096 2.276 Q 14.017 3.359 13.517 3.859 L 13.517 3.859 L 13.517 3.859 Q 13.396 3.981 13.376 3.994 C 13.24 4.088 13.194 4.281 13.273 4.426 L 14.143 6.006 C 14.223 6.151 14.153 6.269 13.987 6.269 L 12.677 6.269 C 12.512 6.269 12.32 6.148 12.249 5.998 L 11.602 4.63 C 11.531 4.481 11.339 4.359 11.173 4.359 L 11.037 4.359 C 10.872 4.359 10.737 4.494 10.737 4.659 L 10.737 5.969 C 10.737 6.135 10.603 6.269 10.437 6.269 L 9.277 6.269 C 9.112 6.269 8.977 6.135 8.976 5.969 L 8.946 1.469 L 10.737 1.469 L 10.737 2.769 C 10.737 2.935 10.872 3.069 11.037 3.069 L 11.707 3.069 L 11.707 3.069 Q 11.977 3.069 12.077 2.979 L 12.077 2.979 L 12.077 2.979 Q 12.177 2.889 12.177 2.649 L 12.177 2.649 L 12.177 1.889 L 12.177 1.889 Q 12.177 1.649 12.077 1.559 L 12.077 1.559 L 12.077 1.559 L 11.859 1.469 L 14.014 1.469 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 7.663 1.469 L 7.663 5.969 C 7.663 6.135 7.529 6.269 7.363 6.269 L 6.203 6.269 C 6.038 6.269 5.903 6.135 5.903 5.969 L 5.903 1.469 L 7.663 1.469 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 2.033 1.474 C 1.978 1.474 1.933 1.519 1.933 1.574 L 1.933 2.169 C 1.933 2.224 1.978 2.273 2.033 2.278 L 2.753 2.339 L 2.753 2.339 Q 3.553 2.409 4.048 2.639 L 4.048 2.639 L 4.048 2.639 Q 4.543 2.869 4.768 3.284 L 4.768 3.284 L 4.768 3.284 Q 4.993 3.699 4.993 4.349 L 4.993 4.349 L 4.993 4.349 Q 4.993 5.079 4.728 5.534 L 4.728 5.534 L 4.728 5.534 Q 4.463 5.989 3.898 6.204 L 3.898 6.204 L 3.898 6.204 Q 3.333 6.419 2.423 6.419 L 2.423 6.419 L 2.423 6.419 Q 1.753 6.419 1.138 6.339 L 1.138 6.339 L 1.138 6.339 L 0.247 6.151 C 0.085 6.117 -0.024 5.957 0.004 5.793 L 0.152 4.935 C 0.181 4.772 0.332 4.678 0.49 4.727 Q 0.693 4.789 1.203 4.864 L 1.203 4.864 L 1.203 4.864 Q 1.713 4.939 2.213 4.939 L 2.213 4.939 L 2.213 4.939 Q 2.473 4.939 2.673 4.929 L 2.673 4.929 L 2.673 4.929 L 2.805 4.914 C 2.97 4.895 3.103 4.745 3.103 4.579 L 3.103 4.319 C 3.103 4.154 2.97 4.007 2.805 3.993 L 2.193 3.939 L 2.193 3.939 Q 1.593 3.889 1.178 3.764 L 1.178 3.764 L 1.178 3.764 Q 0.763 3.639 0.513 3.414 L 0.513 3.414 L 0.513 3.414 Q 0.263 3.189 0.153 2.854 L 0.153 2.854 L 0.153 2.854 Q 0.043 2.519 0.043 2.039 L 0.043 2.039 L 0.043 2.039 Q 0.043 1.239 0.263 0.764 L 0.263 0.764 L 0.263 0.764 Q 0.521 0.163 1.036 0.019 L 1.036 0.019 L 1.036 0.019 L 1.036 0.019 L 1.036 1.469 L 1.728 1.469 L 2.033 1.474 L 2.033 1.474 Z " fill="rgb(51,60,73)" data-v-bddbf348></path></g> <g class="barcode" data-v-bddbf348><path d=" M 23.116 1.48 L 23.116 0 L 23.393 0 L 23.393 1.48 L 23.116 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 25.06 1.48 L 25.06 0 L 24.782 0 L 24.782 1.48 L 25.06 1.48 L 25.06 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 24.227 1.48 L 24.227 0 L 23.671 0 L 23.671 1.48 L 24.227 1.48 L 24.227 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 27.282 1.48 L 27.282 0 L 26.171 0 L 26.171 1.48 L 27.282 1.48 L 27.282 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 27.838 0 L 27.838 1.475 L 27.838 1.48 L 27.56 1.48 L 27.56 1.475 L 27.56 0 L 27.838 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 28.671 0 L 28.671 1.475 L 28.671 1.48 L 28.393 1.48 L 28.393 1.475 L 28.393 0 L 28.671 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 29.226 1.475 L 29.226 1.48 L 29.782 1.48 L 29.782 1.475 L 29.782 0 L 29.226 0 L 29.226 1.475 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 35.059 1.48 L 35.059 0 L 34.782 0 L 34.782 1.48 L 35.059 1.48 L 35.059 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 34.504 1.48 L 34.504 0 L 33.671 0 L 33.671 1.48 L 34.504 1.48 L 34.504 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 31.726 1.48 L 31.726 0 L 30.893 0 L 30.893 1.48 L 31.726 1.48 L 31.726 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 30.615 1.48 L 30.615 0 L 30.337 0 L 30.337 1.48 L 30.615 1.48 L 30.615 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 32.837 0 L 32.837 1.48 L 32.282 1.48 L 32.282 0 L 32.837 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 35.893 0.201 L 35.893 1.28 C 35.893 1.39 35.803 1.48 35.693 1.48 L 35.337 1.48 L 35.337 0 L 35.693 0 C 35.803 0 35.893 0.089 35.893 0.201 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 2.283 1.48 L 2.283 1.48 L 2.283 1.48 L 2.283 1.48 L 2.283 0 L 1.728 0 L 1.728 1.48 L 2.283 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 2.839 0 L 2.839 1.48 L 2.561 1.48 L 2.561 0 L 2.839 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 3.672 0 L 3.672 1.48 L 3.394 1.48 L 3.394 0 L 3.672 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 5.061 0 L 5.061 1.48 L 4.783 1.48 L 4.783 0 L 5.061 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 6.45 1.475 L 6.45 0 L 5.339 0 L 5.339 1.48 L 6.45 1.48 L 6.45 1.475 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 7.283 1.48 L 7.283 0.777 L 7.283 0 L 7.005 0 L 7.005 1.48 L 7.283 1.48 L 7.283 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 10.338 1.48 L 10.338 0 L 10.061 0 L 10.061 1.478 L 10.338 1.48 L 10.338 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 9.783 1.48 L 9.783 0 L 8.672 0 L 8.672 1.475 L 8.672 1.475 L 8.672 1.475 L 8.672 1.475 L 8.672 1.48 L 9.783 1.475 L 9.783 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 8.116 1.475 L 8.116 0 L 7.839 0 L 7.839 0.918 L 7.839 1.475 L 8.116 1.475 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 21.727 1.475 L 21.727 0 L 21.449 0 L 21.449 1.475 L 21.727 1.475 L 21.727 1.475 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 20.338 1.48 L 20.338 0 L 20.06 0 L 20.06 1.48 L 20.338 1.48 L 20.338 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 13.949 1.48 L 13.949 0 L 15.06 0 L 15.06 1.48 L 13.949 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 19.782 1.48 L 19.782 0 L 18.949 0 L 18.949 1.48 L 19.782 1.48 L 19.782 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 18.394 1.48 L 18.394 0 L 17.838 0 L 17.838 1.48 L 18.394 1.48 L 18.394 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 15.616 1.48 L 15.616 0 L 15.338 0 L 15.338 1.48 L 15.616 1.48 L 15.616 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 13.672 1.48 L 13.672 0 L 12.561 0 L 12.561 1.48 L 13.672 1.48 L 13.672 1.48 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 12.005 0 L 11.727 0 L 11.727 1.48 L 12.005 1.48 L 12.005 0 Z " fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 11.172 0 L 11.172 1.48 L 10.894 1.48 L 10.894 0 L 11.172 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 16.449 0 L 16.449 1.48 L 16.172 1.48 L 16.172 0 L 16.449 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 17.283 0 L 17.283 1.48 L 17.005 1.48 L 17.005 0 L 17.283 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path> <path d=" M 22.838 0 L 22.838 1.48 L 22.282 1.48 L 22.282 0 L 22.838 0 Z " fill-rule="evenodd" fill="rgb(51,60,73)" data-v-bddbf348></path></g></g></g></svg></div></button></div></div> <main data-v-32d9e426><div class="content" data-v-32d9e426><div class="outer"><div data-v-2f2c1355><div class="container-base" data-v-6f1598ec data-v-2f2c1355><article data-v-6f1598ec data-v-2f2c1355><div class="blogpost" data-v-6f1598ec data-v-2f2c1355><header data-v-6f1598ec data-v-2f2c1355><h1 class="post-title" data-v-6f1598ec data-v-2f2c1355>すこし厳しい Blueprint 入門</h1> <div class="advent-calendar-label" data-v-6f1598ec data-v-2f2c1355><div class="advent-calendar-label" data-v-199c23c4 data-v-2f2c1355><p data-v-199c23c4><a href="https://qiita.com/advent-calendar/2022/ue" data-v-199c23c4> Unreal Engine (UE) Advent Calendar 2022 </a> 18日目</p></div></div> <div class="post-info-wrapper" data-v-6f1598ec data-v-2f2c1355><div class="tag-list" data-v-6f1598ec data-v-2f2c1355><div class="list-wrapper" data-v-7e21c619 data-v-2f2c1355><span class="material-icons" data-v-7e21c619>local_offer</span> <ul class="tag-list" data-v-7e21c619><li data-v-7e21c619><a href="/blog/search?t=Unreal%20Engine" data-v-7e21c619>Unreal Engine</a></li><li data-v-7e21c619><a href="/blog/search?t=Unreal%20C%2B%2B" data-v-7e21c619>Unreal C++</a></li><li data-v-7e21c619><a href="/blog/search?t=Blueprint" data-v-7e21c619>Blueprint</a></li><li data-v-7e21c619><a href="/blog/search?t=Advent%20Calendar" data-v-7e21c619>Advent Calendar</a></li></ul></div></div> <p class="publish-time" data-v-6f1598ec data-v-2f2c1355><time datetime="2022.12.18" data-v-6f1598ec data-v-2f2c1355>2022.12.18</time>に公開
+            </p></div></header> <div class="content-slot" data-v-6f1598ec data-v-2f2c1355><div class="nuxt-content" data-v-6f1598ec><h1 id="introduction" data-v-6f1598ec><a href="#introduction" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>Introduction</h1>
+<p data-v-6f1598ec>Unreal Engine ユーザーたるもの、Blueprint は日々活用されていることでしょう。そういった皆々様方は、かつてBlueprint に入門されたことかと思いますが、Blueprint
+の裏側を覗きに行く機会はあまりないかもしれません。</p>
+<p data-v-6f1598ec>Unreal Engine に搭載されたスクリプティング言語としての Blueprint が、はたしてどのような形で記述され、誰によって実行され、どうやって C++ と連携しているのか？
+そんな裏側について掘り下げ、「Blueprint に入門」してみるのが本記事です。</p>
+<p data-v-6f1598ec>使えなさそうで、意外と実用できる場面もある知識だったりしますので、興味のある方はぜひ読んでみてください。「そんなこととっくに知ってるぜ」というパワー系の皆さんは、本記事の粗を探してつついてくれると大変助かります。</p>
+<h1 id="目次" data-v-6f1598ec><a href="#%E7%9B%AE%E6%AC%A1" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>目次</h1>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#%E5%89%8D%E6%8F%90" data-v-6f1598ec>前提</a></p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><a href="#%E6%A4%9C%E8%A8%BC%E7%92%B0%E5%A2%83" data-v-6f1598ec>検証環境</a></li>
+<li data-v-6f1598ec><a href="#%E5%AF%BE%E8%B1%A1%E8%AA%AD%E8%80%85" data-v-6f1598ec>対象読者</a></li>
+<li data-v-6f1598ec><a href="#%E8%A8%98%E8%BF%B0%E7%AF%84%E5%9B%B2%E3%81%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85" data-v-6f1598ec>記述範囲と注意事項</a></li>
+</ul>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9E%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AE-blueprint" data-v-6f1598ec>プログラミング言語としての Blueprint</a></p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><a href="#%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E5%9B%BA%E6%9C%89%E8%A8%80%E8%AA%9E-dsl" data-v-6f1598ec>ドメイン固有言語 (DSL)</a></li>
+<li data-v-6f1598ec><a href="#%E9%9D%9E%E3%83%8D%E3%82%A4%E3%83%86%E3%82%A3%E3%83%96%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E8%A8%80%E8%AA%9E" data-v-6f1598ec>非ネイティブコンパイル言語</a></li>
+<li data-v-6f1598ec><a href="#c%E3%81%A8%E3%81%AE%E7%9B%B8%E4%BA%92%E9%81%8B%E7%94%A8%E6%80%A7" data-v-6f1598ec>C++との相互運用性</a></li>
+<li data-v-6f1598ec><a href="#%E5%9E%8B%E5%AE%89%E5%85%A8%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%84%E5%BC%B1%E3%81%84%E9%9D%99%E7%9A%84%E5%9E%8B%E4%BB%98%E3%81%91" data-v-6f1598ec>型安全ではない、弱い静的型付け</a></li>
+</ul>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#blueprint-%E3%81%AE%E6%AD%B4%E5%8F%B2%E7%9A%84%E8%83%8C%E6%99%AF%E3%81%A8-unrealkismet" data-v-6f1598ec>Blueprint の歴史的背景と UnrealKismet</a></p>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#blueprint-vm-%E6%A6%82%E8%A6%81" data-v-6f1598ec>Blueprint VM 概要</a></p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><a href="#%E8%A8%88%E7%AE%97%E3%83%A2%E3%83%87%E3%83%AB" data-v-6f1598ec>計算モデル</a></li>
+<li data-v-6f1598ec><a href="#%E5%91%BD%E4%BB%A4%E3%82%BB%E3%83%83%E3%83%88%E8%A8%AD%E8%A8%88" data-v-6f1598ec>命令セット設計</a></li>
+<li data-v-6f1598ec><a href="#blueprint-vm-%E5%91%BD%E4%BB%A4%E8%A1%A8" data-v-6f1598ec>Blueprint VM 命令表</a></li>
+<li data-v-6f1598ec><a href="#blueprint-vm--%E3%83%87%E3%82%AB%E3%81%84-c-%E3%81%AE-wrapper" data-v-6f1598ec>Blueprint VM ≒ デカい C++ の Wrapper</a></li>
+</ul>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#blueprint-vm-%E8%A9%B3%E8%A7%A3" data-v-6f1598ec>Blueprint VM 詳解</a></p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#%E9%80%A3%E6%90%BA%E3%81%AE%E6%9C%AC%E8%B3%AA%E3%81%AF%E9%96%A2%E6%95%B0%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97" data-v-6f1598ec>連携の本質は関数呼び出し</a></p>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#ufunction" data-v-6f1598ec>UFunction</a></p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><a href="#ufunction-%E3%81%AE%E5%86%85%E5%81%B4" data-v-6f1598ec>UFunction の内側</a></li>
+<li data-v-6f1598ec><a href="#ufunction-%E3%83%9E%E3%82%AF%E3%83%AD%E3%81%AE%E5%BD%B9%E5%89%B2-thunk--customthunk" data-v-6f1598ec>UFUNCTION() マクロの役割 Thunk / CustomThunk</a></li>
+</ul>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#ufunction%E3%81%AE%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97%E3%81%A8%E5%A4%A7%E3%81%8D%E3%81%AA%E6%B5%81%E3%82%8C" data-v-6f1598ec>UFunctionの呼び出しと大きな流れ</a></p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><a href="#c-%E9%96%A2%E6%95%B0%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%87%A6%E7%90%86" data-v-6f1598ec>C++ 関数に対する処理</a></li>
+<li data-v-6f1598ec><a href="#blueprint-%E9%96%A2%E6%95%B0%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%87%A6%E7%90%86" data-v-6f1598ec>Blueprint 関数に対する処理</a></li>
+</ul>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#fframe" data-v-6f1598ec>FFrame</a></p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><a href="#%E5%85%B8%E5%9E%8B%E7%9A%84%E3%81%AA%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%81%A3%E3%81%BD%E3%81%84%E3%82%84%E3%81%A4" data-v-6f1598ec>典型的なスタックフレームっぽいやつ</a></li>
+<li data-v-6f1598ec><a href="#%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF%E3%81%A3%E3%81%BD%E3%81%84%E3%82%84%E3%81%A4" data-v-6f1598ec>レジスタっぽいやつ</a></li>
+</ul>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#fframe-%E3%81%AB%E3%82%88%E3%82%8B-blueprint-vm-%E5%91%BD%E4%BB%A4%E3%81%AE%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E5%AE%9F%E8%A1%8C" data-v-6f1598ec>FFrame による Blueprint VM 命令のステップ実行</a></p>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#blueprint-vm-%E5%91%BD%E4%BB%A4%E3%81%AE%E5%AE%9A%E7%BE%A9" data-v-6f1598ec>Blueprint VM 命令の定義</a></p>
+</li>
+</ul>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#%E3%81%93%E3%81%AE%E7%9F%A5%E8%AD%98%E4%BD%95%E3%81%AB%E4%BD%BF%E3%81%88%E3%82%8B%E3%81%AE" data-v-6f1598ec>この知識、何に使えるの？</a></p>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#%E3%81%BE%E3%81%A8%E3%82%81" data-v-6f1598ec>まとめ</a></p>
+</li>
+<li data-v-6f1598ec>
+<p data-v-6f1598ec><a href="#%E3%81%8A%E3%82%8F%E3%82%8A%E3%81%AB" data-v-6f1598ec>おわりに</a></p>
+</li>
+</ul>
+<h1 id="前提" data-v-6f1598ec><a href="#%E5%89%8D%E6%8F%90" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>前提</h1>
+<h2 id="検証環境" data-v-6f1598ec><a href="#%E6%A4%9C%E8%A8%BC%E7%92%B0%E5%A2%83" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>検証環境</h2>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>UE 5.1</li>
+<li data-v-6f1598ec>UHT は C# 実装版を利用</li>
+</ul>
+<h2 id="対象読者" data-v-6f1598ec><a href="#%E5%AF%BE%E8%B1%A1%E8%AA%AD%E8%80%85" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>対象読者</h2>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>C++ がある程度読める</li>
+<li data-v-6f1598ec>Unreal のリフレクションに関する知識 (FPropertyがわかればよい) がある</li>
+<li data-v-6f1598ec>原理に興味がある</li>
+</ul>
+<h2 id="記述範囲と注意事項" data-v-6f1598ec><a href="#%E8%A8%98%E8%BF%B0%E7%AF%84%E5%9B%B2%E3%81%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>記述範囲と注意事項</h2>
+<p data-v-6f1598ec>本記事での範疇は、Blueprint コードの内部表現、Blueprint 実行システムの構造などに焦点を当てます。</p>
+<p data-v-6f1598ec>Blueprint Graph 画面の描画や、ノードの定義方法などについてはあまり詳しく掘り下げません。</p>
+<p data-v-6f1598ec>また、本記事はエンジンのソースを読むことで得られた情報に基づいており、用語などは極力ソースに準拠するようにしていますが、説明のための記事上の用語が存在することがあります。Unreal
+Engine 以外の一般論については通常の用語を使用しています。</p>
+<h1 id="プログラミング言語としての-blueprint" data-v-6f1598ec><a href="#%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E8%A8%80%E8%AA%9E%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AE-blueprint" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>プログラミング言語としての Blueprint</h1>
+<p data-v-6f1598ec>まず、Blueprint の実行システムについて、大まかな構造を理解しましょう。Blueprint をひとつのプログラミング言語としてみたとき、以下のような特徴を持つと言えるでしょう。</p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>ドメイン固有言語 (DSL)</li>
+<li data-v-6f1598ec>スクリプト言語</li>
+<li data-v-6f1598ec>ノードベース・ビジュアルプログラミング言語</li>
+<li data-v-6f1598ec>非ネイティブコンパイル言語</li>
+<li data-v-6f1598ec>C++ との相互運用性</li>
+<li data-v-6f1598ec>オブジェクト指向言語</li>
+<li data-v-6f1598ec>明示的な型付け</li>
+<li data-v-6f1598ec>型安全ではない、弱い静的型付け</li>
+</ul>
+<p data-v-6f1598ec>型などについては <a href="https://ja.wikipedia.org/wiki/%E5%9E%8B%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0" rel="nofollow noopener noreferrer" target="_blank" data-v-6f1598ec>Wikipedia</a>
+に説明を任せるとして、この後のために説明しておきたい事項について触れておきます。</p>
+<h2 id="ドメイン固有言語-dsl" data-v-6f1598ec><a href="#%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E5%9B%BA%E6%9C%89%E8%A8%80%E8%AA%9E-dsl" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>ドメイン固有言語 (DSL)</h2>
+<p data-v-6f1598ec>Blueprint は汎用言語ではなく、特定のタスクに特化した<a href="https://ja.wikipedia.org/wiki/%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E5%9B%BA%E6%9C%89%E8%A8%80%E8%AA%9E" rel="nofollow noopener noreferrer" target="_blank" data-v-6f1598ec>ドメイン固有言語</a>です。このことは、Blueprint の設計にも大きく影響しています。詳しくは後述しますが、演算のような基本処理から、タスクスケジューリングのような高度な処理まで、Blueprint の実行基盤は全面的に Unreal Engine に依存しています。そのため、スタンドアロンな言語として切り離して利用するのはなかなか難しい作りになっていますが、よく言えば Unreal Engine と深く統合されていると言えます。切り離す必要もないですしね。</p>
+<p data-v-6f1598ec>ところで、Wikipedia のドメイン固有言語のページを覗くと、Unreal Engine への言及があります。なんとそこで触れられているのは Blueprint ではなく Unreal Script なのですが……。加筆すべきか？</p>
+<h2 id="非ネイティブコンパイル言語" data-v-6f1598ec><a href="#%E9%9D%9E%E3%83%8D%E3%82%A4%E3%83%86%E3%82%A3%E3%83%96%E3%82%B3%E3%83%B3%E3%83%91%E3%82%A4%E3%83%AB%E8%A8%80%E8%AA%9E" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>非ネイティブコンパイル言語</h2>
+<p data-v-6f1598ec>Blueprint がネイティブコンパイル言語ではないというのは、最終的に Blueprint で記述された処理が実行される際に、機械語となって各プラットフォームの CPU で直接実行されない(
+できない)ということです。</p>
+<p data-v-6f1598ec>これはスクリプト言語では珍しいことではありません。独自の処理系をソフトウェアとして実装し、その処理系に向けたコードを与えれば、CPU
+で実行される機械語でなくともソフトウェア上で「実行する」ことは可能です。処理系がコードを解釈して、示される意味のとおりに、実際のCPUやOSを制御するように実装されていれば良いからです。
+Blueprint はこのタイプの言語であり、Unreal Engine の上に実装されたソフトウェアの処理系によって解釈・実行されます。こういったコードを解釈・実行するようなソフトウェアのことをVMと呼ぶこともあります。</p>
+<p data-v-6f1598ec>一方で、Blueprint はコンパイルもされる言語です。このことは上記の内容と矛盾しません。Blueprint はコンパイルされると、 <strong data-v-6f1598ec>Blueprint bytecode</strong>
+というバイト列形式の中間表現を吐き出します。上記で述べた処理系が直接扱うのは、この bytecode のほうであり、ノードによる表現は直接扱えないのです。なお、詳細は後述しますが、Blueprint
+bytecode を実行する処理系を <strong data-v-6f1598ec>Blueprint VM</strong> と言います。</p>
+<p data-v-6f1598ec>このような仕組みを取っているのは、主に実行時コストを落とすためだと思われます。ノードによる表現が作成する、接続関係によるネットワーク表現は人間にとっては直感的ですが、そのまま実行するには向きませんし、扱うデータが大きくなります。そのため、より実行時に処理しやすく軽量な中間表現として
+bytecode を事前に生成しておき、実行時には bytecode のみを処理するという形式を取っているのでしょう。</p>
+<div class="without-shadow" data-v-6f1598ec>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//blueprint-pipeline.png" data-v-6f1598ec></p>
+</div>
+<p data-v-6f1598ec>なお、他に bytecodeのような中間表現が用いられることのメリットは、中間表現を生成するコンパイラに選択肢を持たせることができることなどがあります。中間表現の仕様さえ満たしていれば、それを生成しているのがどんなコンパイラでも、中間表現を手書きできる謎の人間でも構わないわけです。このあたりの特性を利用している言語の例としては、.NET言語(
+C#, F#, ....)や<a href="https://ja.wikipedia.org/wiki/Java%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3" rel="nofollow noopener noreferrer" target="_blank" data-v-6f1598ec>JVM</a>言語(Java, Scala,
+Kotlin, ....)の実行系、あるいはコンパイラ基盤であるLLVMのLLVM-IR などに例があります。
+Blueprint も、Blueprint VM バイトコードを吐き出す別言語のコンパイラというものを作成するのは不可能ではないはずです。</p>
+<p data-v-6f1598ec>また、過去には Blueprint のコンパイルバックエンドに、C++のコードを吐き出す実装(ネイティブ化)
+が存在しました。<a href="https://docs.unrealengine.com/5.1/ja/compiler-overview-for-blueprints-visual-scripting-in-unreal-engine/" rel="nofollow noopener noreferrer" target="_blank" data-v-6f1598ec>こちらの公式ドキュメント</a>
+を参照すると、5.1現在も <code data-v-6f1598ec>FKismetCppBackend</code> がデバッグ用に存在していることになっていますが、これは誤りであり、コード上からは完全に削除されているため、現在ではあらゆる Blueprint
+は bytecode として実行されます。</p>
+<h2 id="cとの相互運用性" data-v-6f1598ec><a href="#c%E3%81%A8%E3%81%AE%E7%9B%B8%E4%BA%92%E9%81%8B%E7%94%A8%E6%80%A7" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>C++との相互運用性</h2>
+<p data-v-6f1598ec>C++との相互運用性は、Blueprint の極めて強力な特徴です。Unreal Engine が独自のスクリプト言語を持っていることの大きなメリットとも言えるでしょう。</p>
+<p data-v-6f1598ec>通常、複数言語の混在した開発において、言語間のデータの受け渡しや関数の呼び出しは大きな課題であり、そのためのレイヤや相互運用のためのライブラリがプロジェクトに導入されることも珍しくありません。</p>
+<p data-v-6f1598ec>しかし、Blueprint ははじめから Unreal Engine で使われることを想定して設計され、独自のビルドシステムや C++ 側の実装の存在を前提として実装されているので、ほとんど意識せずに
+C++ との相互運用が可能となっています。</p>
+<div class="without-shadow" data-v-6f1598ec>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//interoperability.png" data-v-6f1598ec></p>
+</div>
+<p data-v-6f1598ec>このことは Blueprint の言語設計にも影響を与えているはずです。たとえば、Blueprint はかなり強くオブジェクト指向を意識した言語です。C++で定義されたクラスや、作成されたオブジェクトの階層的な構造をそのまま持ち込もうとすると、必然的にそうなるのでしょう。もちろん、ゲーム開発においてオブジェクト指向が大きな実績を持っているということもあるとは思います。</p>
+<h2 id="型安全ではない弱い静的型付け" data-v-6f1598ec><a href="#%E5%9E%8B%E5%AE%89%E5%85%A8%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%84%E5%BC%B1%E3%81%84%E9%9D%99%E7%9A%84%E5%9E%8B%E4%BB%98%E3%81%91" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>型安全ではない、弱い静的型付け</h2>
+<p data-v-6f1598ec>これについてはあまり詳しく触れません。Blueprint は静的型付け言語ですが、型安全性は保証されていません。
+たとえば、ピンの型にWildcard(何でも入れられる)などを利用した場合、実行時に型の不一致でエラーが発生することがあります。
+一方で、基本的に型を意識して扱うことができ、これもやはりC++との相互運用性を考えたスクリプティング言語としての経緯が見えるところです(そうじゃなくても型ほしいですけど)。</p>
+<p data-v-6f1598ec>まあただ、Blueprint には UObject という <strong data-v-6f1598ec>†最強の基本クラス†</strong> がいるので、なんとも言えませんが。</p>
+<h1 id="blueprint-の歴史的背景と-unrealkismet" data-v-6f1598ec><a href="#blueprint-%E3%81%AE%E6%AD%B4%E5%8F%B2%E7%9A%84%E8%83%8C%E6%99%AF%E3%81%A8-unrealkismet" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>Blueprint の歴史的背景と UnrealKismet</h1>
+<p data-v-6f1598ec>Blueprint に関するコードを読んでいくと、<code data-v-6f1598ec>Kismet</code> という語がよく登場しますので、軽く紹介しておきます。
+Blueprint は、Unreal Engine 4から搭載された機能でした。しかし、Unreal Engine におけるノードベースのビジュアルスクリプティング言語の歴史は Unreal Engine 4 からではありません。</p>
+<p data-v-6f1598ec>Blueprint の系譜は Unreal Engine 3 から始まっています。残念ながら私は実際に触ったことはないのですが(当時10歳)、Unreal Engine 3 にも、 <strong data-v-6f1598ec>UnrealKismet</strong> というビジュアルスクリプティング言語が存在しました。
+そして、Unreal Engine 4 の機能として公開された Blueprint 実装のコードベースは、この Kismet の多くを引き継いだものなのです。この継承の歴史は Unreal Engine 5 になっても途絶えておらず、エンジン内の Blueprint に関連するコードの髄所に Kismet という語が認められます。また、 <code data-v-6f1598ec>K2Node</code> の <code data-v-6f1598ec>K2</code> なども、 <code data-v-6f1598ec>Kismet 2</code> の略であると思います。</p>
+<h1 id="blueprint-vm-概要" data-v-6f1598ec><a href="#blueprint-vm-%E6%A6%82%E8%A6%81" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>Blueprint VM 概要</h1>
+<p data-v-6f1598ec>さて、Blueprint の基本的な特徴を把握したところで、Blueprint が実際に実行されている実行系の構造を見ていきます。
+Blueprint の実行系とは、前述の Blueprint bytecode を読んで、それが意味するところの処理を実行してくれる実装のことです。このような解釈・実行系のことをVMと呼ぶこともあると言いましたが、Blueprint の該当する実装においてもコード上で <strong data-v-6f1598ec>Blueprint VM</strong> と書かれることがあり、端的でわかりやすいので、この用語を採用します。</p>
+<h2 id="計算モデル" data-v-6f1598ec><a href="#%E8%A8%88%E7%AE%97%E3%83%A2%E3%83%87%E3%83%AB" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>計算モデル</h2>
+<p data-v-6f1598ec><strong data-v-6f1598ec>Blueprint VM</strong> の特徴をつかむために、どのような計算モデルを採用しているのか知ることにはメリットがあります。
+この種の VM では<a href="https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF%E3%83%9E%E3%82%B7%E3%83%B3" rel="nofollow noopener noreferrer" target="_blank" data-v-6f1598ec>スタックマシン</a>などの計算モデルが採用されることが多いと思いますが、Blueprint がドメイン固有言語であり、C++と協調して動く、ゲームエンジン内の VM であるという特徴が、計算モデルにも影響を与えているように思われます。</p>
+<p data-v-6f1598ec>というのも、Blueprint VM はスタックマシンともレジスタマシンとも断定し難い、双方の特徴を持った独自の構造をしているように(僕の目には)見えます。
+このような構造になっているのには、Blueprint VM はデータがその内部に完結する必要がないという点の影響が大きいのではないかと個人的には思っています。この種の VM を汎用的な実行基盤として構築するのならば、そこで扱う全てのデータはVMが管理するレジスタなりメモリ上なりに収められ、規定のデータ構造や操作による管理で完結していなければなりません。
+しかし、Blueprint VM はC++が隣に存在することが前提の仮想機械であり、Blueprint VM が管理しないC++上に確保されているC++変数の値などに大きく依存しています。C++ はすでに完全な機能を備えた言語処理系を持つ言語ですので、Blueprint VM は単体で完全な機能を備える必要がないわけです。すると当然、独立した通常の VM 実装とは異なる点が出てくるということでしょう。</p>
+<h2 id="命令セット設計" data-v-6f1598ec><a href="#%E5%91%BD%E4%BB%A4%E3%82%BB%E3%83%83%E3%83%88%E8%A8%AD%E8%A8%88" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>命令セット設計</h2>
+<p data-v-6f1598ec>汎用 VM はそれだけであらゆる処理が実行できる(チューリング完全になる)ように構築されるので、(命令セットの設計思想によりますが)四則演算や論理演算などの基本的な命令を含む完結した命令セットを持ちます。これと比較すると、Blueprint VM の設計は非常に特殊です。</p>
+<p data-v-6f1598ec>たとえば、Blueprint VM は演算命令を一つも持ちません。「加算がしたければ加算処理を行う C++ 関数を呼び出せばよい」というような設計思想で作られているように思われます。実際、Blueprintにおける <code data-v-6f1598ec>int32</code> 同士の加算は、以下のように <code data-v-6f1598ec>UFUNCTION()</code> マクロで作成された C++ 関数で処理されます。</p>
+<div class="code-extra" data-v-6f1598ec><div class="filename" data-v-6f1598ec>int32同士の加算</div><pre data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec>/** Addition (A + B) */
+UFUNCTION(BlueprintPure, meta=(DisplayName = "int + int", CompactNodeTitle = "+", Keywords = "+ add plus", CommutativeAssociativeBinaryOperator = "true"), Category="Math|Integer")
+static int32 Add_IntInt(int32 A, int32 B = 1);
+
+KISMET_MATH_FORCEINLINE int32 UKismetMathLibrary::Add_IntInt(int32 A, int32 B)
+{
+	return A + B;
+}</code></pre></div>
+<p data-v-6f1598ec>また、いかなるメモリ管理も行いません。メモリ管理は Unreal Engine の GC に依存しています。</p>
+<p data-v-6f1598ec>代わりに、C++ との連携のための命令は豊富に持っています。たとえば、たった今見たような C++ で実装された関数は、 <code data-v-6f1598ec>EX_CallMath [0x67]</code> という命令によって呼び出すことができます。この命令は、ネイティブ関数として実装された <code data-v-6f1598ec>UFunction</code> も呼び出すことができる命令です。<code data-v-6f1598ec>UFunction</code> からネイティブ関数ポインタを取得し、引数や呼び出しコンテキストなどのデータと、戻り値を格納すべきアドレスをディスパッチした上で呼び出しを実行します。</p>
+<h2 id="blueprint-vm-命令表" data-v-6f1598ec><a href="#blueprint-vm-%E5%91%BD%E4%BB%A4%E8%A1%A8" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>Blueprint VM 命令表</h2>
+<p data-v-6f1598ec>ここで、Blueprint VM に搭載されている命令の一覧を提示しておきます。
+使われ方がわからないとピンとこないと思いますが、後の内容を読みつつ、必要に応じて参照する形で利用してください。</p>
+<p data-v-6f1598ec>かなり大きなテーブルになったので、折りたたんであります。</p>
+<details data-v-6f1598ec>
+<summary data-v-6f1598ec><b data-v-6f1598ec>Blueprint VM 命令セット</b></summary>
+<p data-v-6f1598ec>(一部編集中。ソースコードのコメントを元に翻訳したり、ソースを呼んで解説を追記する形で作成していますが、間に合わなくて空欄だったりコメント原文のままの箇所があります。)</p>
+<style type="text/css" data-v-6f1598ec>.tg{border-collapse:collapse;border-spacing:0}.tg td{border-color:#000;border-style:none;border-width:1px;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal}.tg th{border-color:#000;border-style:none;border-width:1px;font-size:14px;font-weight:400;overflow:hidden;padding:10px 5px;word-break:normal}.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}</style>
+<table class="tg" style="table-layout:fixed" data-v-6f1598ec>
+<colgroup data-v-6f1598ec>
+<col style="inline-size:12em" data-v-6f1598ec>
+<col style="inline-size:4em" data-v-6f1598ec>
+<col data-v-6f1598ec>
+</colgroup>
+<thead data-v-6f1598ec>
+  <tr data-v-6f1598ec>
+    <th class="tg-0pky" data-v-6f1598ec>命令名</th>
+    <th class="tg-0pky" data-v-6f1598ec>バイトコード</th>
+    <th class="tg-0pky" data-v-6f1598ec>説明</th>
+  </tr>
+</thead>
+<tbody data-v-6f1598ec>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LocalVariable</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x00</td>
+    <td class="tg-0pky" data-v-6f1598ec>関数のローカル変数を取得。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_InstanceVariable</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x01</td>
+    <td class="tg-0pky" data-v-6f1598ec>オブジェクト変数を取得。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_DefaultVariable</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x02</td>
+    <td class="tg-0pky" data-v-6f1598ec>コンテキストのオブジェクトのCDOを取得。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Return</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x04</td>
+    <td class="tg-0pky" data-v-6f1598ec>関数から戻る。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Jump</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x06</td>
+    <td class="tg-0pky" data-v-6f1598ec>ローカルアドレスに基づいて指定されたコード上の場所に Jump する。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_JumpIfNot</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x07</td>
+    <td class="tg-0pky" data-v-6f1598ec>式が false だったならば、ローカルアドレスに基づいて Jump する。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Assert</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x09</td>
+    <td class="tg-0pky" data-v-6f1598ec>アサートを発行。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Nothing</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x0B</td>
+    <td class="tg-0pky" data-v-6f1598ec>何もしない</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Let</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x0F</td>
+    <td class="tg-0pky" data-v-6f1598ec>FProperty を利用して、任意サイズの値の代入処理を行う。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ClassContext</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x12</td>
+    <td class="tg-0pky" data-v-6f1598ec>CDO を利用して、指定した UClass の CDO をコンテキストとして処理を実行する。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_MetaCast</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x13</td>
+    <td class="tg-0pky" data-v-6f1598ec>UClass 間のメタキャスト命令。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LetBool</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x14</td>
+    <td class="tg-0pky" data-v-6f1598ec>真偽値の代入命令。Bool 値変数は Bitfield にパックして保持されるため、専用の命令が用意されている。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndParmValue</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x15</td>
+    <td class="tg-0pky" data-v-6f1598ec>関数の任意引数デフォルト値の終了を示すようだが、5.1現在利用されているようには見えない。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndFunctionParms</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x16</td>
+    <td class="tg-0pky" data-v-6f1598ec>関数の呼び出し引数定義の終了。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Self</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x17</td>
+    <td class="tg-0pky" data-v-6f1598ec>Self オブジェクトを取得。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Skip</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x18</td>
+    <td class="tg-0pky" data-v-6f1598ec>スキップ可能な式を表すようだが、5.1現在利用されているようには見えない。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Context</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x19</td>
+    <td class="tg-0pky" data-v-6f1598ec>式を評価して作成した UObject のコンテキストで後続の処理を実行する。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Context_FailSilent</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x1A</td>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Context と同様だが、作成した UObject が無効値だった場合に例外をスローしない。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_VirtualFunction</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x1B</td>
+    <td class="tg-0pky" data-v-6f1598ec>仮想関数を引数付きで呼び出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_FinalFunction</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x1C</td>
+    <td class="tg-0pky" data-v-6f1598ec>完全に実装された通常の関数を引数付きで呼び出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_IntConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x1D</td>
+    <td class="tg-0pky" data-v-6f1598ec>int32 を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_FloatConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x1E</td>
+    <td class="tg-0pky" data-v-6f1598ec>float を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_StringConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x1F</td>
+    <td class="tg-0pky" data-v-6f1598ec>FString を実行スタックから読み出す。読み込む実行スタック上の文字列は、ヌル終端する ANSI char として扱われる。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ObjectConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x20</td>
+    <td class="tg-0pky" data-v-6f1598ec>UObject を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_NameConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x21</td>
+    <td class="tg-0pky" data-v-6f1598ec>FName を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_RotationConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x22</td>
+    <td class="tg-0pky" data-v-6f1598ec>FRotation を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_VectorConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x23</td>
+    <td class="tg-0pky" data-v-6f1598ec>FVector を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ByteConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x24</td>
+    <td class="tg-0pky" data-v-6f1598ec>実行スタックを 1 byte 読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_IntZero</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x25</td>
+    <td class="tg-0pky" data-v-6f1598ec>int32 の定数 0 を結果に書き込む。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_IntOne</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x26</td>
+    <td class="tg-0pky" data-v-6f1598ec>int32 の定数 1 を結果に書き込む。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_True</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x27</td>
+    <td class="tg-0pky" data-v-6f1598ec>bool の定数 true を結果に書き込む。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_False</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x28</td>
+    <td class="tg-0pky" data-v-6f1598ec>bool の定数 false を結果に書き込む。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_TextConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x29</td>
+    <td class="tg-0pky" data-v-6f1598ec>FText を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_NoObject</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x2A</td>
+    <td class="tg-0pky" data-v-6f1598ec>UObject* の定数 nullptr を結果に書き込む。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_TransformConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x2B</td>
+    <td class="tg-0pky" data-v-6f1598ec>FTransform を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_IntConstByte</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x2C</td>
+    <td class="tg-0pky" data-v-6f1598ec>実行スタックの 1 byte の値を読み出し、int32 で取得する。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_NoInterface</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x2D</td>
+    <td class="tg-0pky" data-v-6f1598ec>オブジェクトを保持していない TScriptInterface を結果に書き込む。<code data-v-6f1598ec>.SetObject(nullptr);</code> を呼び出した状態。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_DynamicCast</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x2E</td>
+    <td class="tg-0pky" data-v-6f1598ec>UObjectの dynamic cast を実行する。スタック上から `UClass` オブジェクトを読み出し、そのクラスに続く命令で評価される `UObject` がキャスト可能か(継承関係のチェック)を行う。キャスト可能であれば、有効な値を返し、キャスト不能であれば無効値を返す。この命令内では UObject 型しか扱っておらず、C++的な dynamic cast は行っていない。UClass の保持するリフレクション情報を元に、キャスト可能かどうかに基づいて、有効ならば評価された UObject を返すが、無効ならば返さないという処理である。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_StructConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x2F</td>
+    <td class="tg-0pky" data-v-6f1598ec>UScriptStruct を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndStructConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x30</td>
+    <td class="tg-0pky" data-v-6f1598ec><code data-v-6f1598ec>EX_StructConst</code> に対応して利用され、実行スタック上で <code data-v-6f1598ec>EX_StructConst</code> のデータの終了を示す。ただし、UScriptStruct から存在すべきプロパティは判明するため、実行時にはこれは利用されておらず、シリアライズなどのエディタ処理で利用されている。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_SetArray</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x31</td>
+    <td class="tg-0pky" data-v-6f1598ec>渡された TArray へのセットを開始する。実行スタックから評価された Array プロパティとオブジェクトアドレス、続いて <code data-v-6f1598ec>EX_EndArray</code> が現れるまで要素の値を読み取り順次 Array に追加する。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndArray</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x32</td>
+    <td class="tg-0pky" data-v-6f1598ec><code data-v-6f1598ec>EX_SetArray</code> に対応して利用され、TArray のセットの終了を示す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_PropertyConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x33</td>
+    <td class="tg-0pky" data-v-6f1598ec>FProperty を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_UnicodeStringConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x34</td>
+    <td class="tg-0pky" data-v-6f1598ec>FString を実行スタックから読み出す。読み込む実行スタック上の文字列は、ヌル終端する UTF-16 バイト列として扱われる。サロゲートペアを考慮して読み込まれる。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Int64Const</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x35</td>
+    <td class="tg-0pky" data-v-6f1598ec>int64 を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_UInt64Const</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x36</td>
+    <td class="tg-0pky" data-v-6f1598ec>uint64 を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_DoubleConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x37</td>
+    <td class="tg-0pky" data-v-6f1598ec>double を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Cast</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x38</td>
+    <td class="tg-0pky" data-v-6f1598ec>スタックからキャストコード(キャストする型の組み合わせと方向)を読み取り、そのコードに紐付けられたネイティブ関数を呼び出し、処理を引き継ぐ。呼び出されたネイティブ関数の中では、後続のスタック上のバイトを特定の型と見做して変換処理を実行する。この命令はBlueprint 実行処理の内部でキャストの必要が発生した際に利用されているようで、普段Blueprintを記述するときに直接利用することはない。たとえば、EX_Castには FloatToDouble の処理を行う関数があるが、Blueprint Graph 上で配置する Float to Cast のキャストノードは通常のC++関数であり、関連はない。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_SetSet</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x39</td>
+    <td class="tg-0pky" data-v-6f1598ec>渡された TSet へのセットを開始する。実行スタックから評価された Set プロパティとオブジェクトアドレス、要素数を読み取り、続いて <code data-v-6f1598ec>EX_EndSet</code> が現れるまで要素の値を読み取り順次 Set に追加する。要素数が 0 であれば空の Set の作成のみが行われ、値の読み取りなしに実行スタックに <code data-v-6f1598ec>EX_EndSet</code> が現れなければならない。ただし、実装的には要素数は 1 以上かそれ未満かしか見ておらず、続く要素数ではなく追加していく Set の初期 Slack サイズを示している。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndSet</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x3A</td>
+    <td class="tg-0pky" data-v-6f1598ec><code data-v-6f1598ec>EX_SetSet</code> に対応して利用され、TSet のセットの終了を示す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_SetMap</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x3B</td>
+    <td class="tg-0pky" data-v-6f1598ec>渡された TMap へのセットを開始する。実行スタックから評価された Map プロパティとオブジェクトアドレス、要素数を読み取り、続いて <code data-v-6f1598ec>EX_EndMap</code> が現れるまで要素の値を読み取り順次 Map に追加する。 要素の値は K, V, K, V... の順で実行スタックに積まれている。要素数が 0 であれば空の Map の作成のみが行われ、値の読み取りなしに実行スタックに <code data-v-6f1598ec>EX_EndSet</code> が現れなければならない。ただし、実装的には要素数は 1 以上かそれ未満かしか見ておらず、続く要素数ではなく追加していく Map の初期 Slack サイズを示している。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndMap</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x3C</td>
+    <td class="tg-0pky" data-v-6f1598ec><code data-v-6f1598ec>EX_SetMap</code> に対応して利用され、TMap のセットの終了を示す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_SetConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x3D</td>
+    <td class="tg-0pky" data-v-6f1598ec>TSet を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndSetConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x3E</td>
+    <td class="tg-0pky" data-v-6f1598ec><code data-v-6f1598ec>EX_SetConst</code>と対応して利用され、実行スタック上の値データ列の終了を示す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_MapConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x3F</td>
+    <td class="tg-0pky" data-v-6f1598ec>TMap を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndMapConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x40</td>
+    <td class="tg-0pky" data-v-6f1598ec><code data-v-6f1598ec>EX_MapConst</code>と対応して利用され、実行スタック上の値データ列の終了を示す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Vector3fConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x41</td>
+    <td class="tg-0pky" data-v-6f1598ec>FVector3f を実行スタックから読み出す。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_StructMemberContext</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x42</td>
+    <td class="tg-0pky" data-v-6f1598ec>スタック上の構造体メンバ Property と、続く命令で評価される構造体のオブジェクトを元に、Property が示すメンバのコンテキストを取得・設定する。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LetMulticastDelegate</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x43</td>
+    <td class="tg-0pky" data-v-6f1598ec>Assignment to a multi-cast delegate</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LetDelegate</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x44</td>
+    <td class="tg-0pky" data-v-6f1598ec>Assignment to a delegate</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LocalVirtualFunction</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x45</td>
+    <td class="tg-0pky" data-v-6f1598ec>Special instructions to quickly call a virtual function that we know is going to run only locally</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LocalFinalFunction</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x46</td>
+    <td class="tg-0pky" data-v-6f1598ec>Special instructions to quickly call a final function that we know is going to run only locally</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LocalOutVariable</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x48</td>
+    <td class="tg-0pky" data-v-6f1598ec>local out (pass by reference) function parameter</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_DeprecatedOp4A</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x4A</td>
+    <td class="tg-0pky" data-v-6f1598ec></td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_InstanceDelegate</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x4B</td>
+    <td class="tg-0pky" data-v-6f1598ec>const reference to a delegate or normal function object</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_PushExecutionFlow</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x4C</td>
+    <td class="tg-0pky" data-v-6f1598ec>push an address on to the execution flow stack for future execution when a EX_PopExecutionFlow is executed. Execution continues on normally and doesn't change to the pushed address.</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_PopExecutionFlow</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x4D</td>
+    <td class="tg-0pky" data-v-6f1598ec>continue execution at the last address previously pushed onto the execution flow stack.</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ComputedJump</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x4E</td>
+    <td class="tg-0pky" data-v-6f1598ec>実行スタックの続く命令を評価して得られたオフセットを元にジャンプを行う。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_PopExecutionFlowIfNot</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x4F</td>
+    <td class="tg-0pky" data-v-6f1598ec>continue execution at the last address previously pushed onto the execution flow stack, if the condition is not true.</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Breakpoint</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x50</td>
+    <td class="tg-0pky" data-v-6f1598ec>Breakpoint 命令。エディタ上のコンパイルでのみ存在し、それ以外では <code data-v-6f1598ec>EX_Nothing</code> のように振る舞う。</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_InterfaceContext</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x51</td>
+    <td class="tg-0pky" data-v-6f1598ec>Call a function through a native interface variable</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ObjToInterfaceCast</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x52</td>
+    <td class="tg-0pky" data-v-6f1598ec>Converting an object reference to native interface variable</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndOfScript</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x53</td>
+    <td class="tg-0pky" data-v-6f1598ec>Last byte in script code</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_CrossInterfaceCast</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x54</td>
+    <td class="tg-0pky" data-v-6f1598ec>Converting an interface variable reference to native interface variable</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_InterfaceToObjCast</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x55</td>
+    <td class="tg-0pky" data-v-6f1598ec>Converting an interface variable reference to an object</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_WireTracepoint</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x5A</td>
+    <td class="tg-0pky" data-v-6f1598ec>Trace point. Only observed in the editor, otherwise it behaves like EX_Nothing.</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_SkipOffsetConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x5B</td>
+    <td class="tg-0pky" data-v-6f1598ec>A CodeSizeSkipOffset constant</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_AddMulticastDelegate</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x5C</td>
+    <td class="tg-0pky" data-v-6f1598ec>Adds a delegate to a multicast delegate's targets</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ClearMulticastDelegate</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x5D</td>
+    <td class="tg-0pky" data-v-6f1598ec>Clears all delegates in a multicast target</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_Tracepoint</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x5E</td>
+    <td class="tg-0pky" data-v-6f1598ec>Trace point. Only observed in the editor, otherwise it behaves like EX_Nothing.</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LetObj</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x5F</td>
+    <td class="tg-0pky" data-v-6f1598ec>assign to any object ref pointer</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LetWeakObjPtr</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x60</td>
+    <td class="tg-0pky" data-v-6f1598ec>assign to a weak object pointer</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_BindDelegate</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x61</td>
+    <td class="tg-0pky" data-v-6f1598ec>bind object and name to delegate</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_RemoveMulticastDelegate</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x62</td>
+    <td class="tg-0pky" data-v-6f1598ec>Remove a delegate from a multicast delegate's targets</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_CallMulticastDelegate</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x63</td>
+    <td class="tg-0pky" data-v-6f1598ec>Call multicast delegate</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_LetValueOnPersistentFrame</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x64</td>
+    <td class="tg-0pky" data-v-6f1598ec></td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ArrayConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x65</td>
+    <td class="tg-0pky" data-v-6f1598ec></td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_EndArrayConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x66</td>
+    <td class="tg-0pky" data-v-6f1598ec></td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_SoftObjectConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x67</td>
+    <td class="tg-0pky" data-v-6f1598ec></td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_CallMath</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x68</td>
+    <td class="tg-0pky" data-v-6f1598ec>static pure function from on local call space</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_SwitchValue</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x69</td>
+    <td class="tg-0pky" data-v-6f1598ec></td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_InstrumentationEvent</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x6A</td>
+    <td class="tg-0pky" data-v-6f1598ec>Instrumentation event</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ArrayGetByRef</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x6B</td>
+    <td class="tg-0pky" data-v-6f1598ec></td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_ClassSparseDataVariable</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x6C</td>
+    <td class="tg-0pky" data-v-6f1598ec>Sparse data variable</td>
+  </tr>
+  <tr data-v-6f1598ec>
+    <td class="tg-0pky" data-v-6f1598ec>EX_FieldPathConst</td>
+    <td class="tg-0pky" data-v-6f1598ec>0x6D</td>
+    <td class="tg-0pky" data-v-6f1598ec></td>
+  </tr>
+</tbody>
+</table>
+</details>
+<p data-v-6f1598ec>ざっと見ても、C++ で定義された、かなり高級な型の値を実行スタックから読み出す命令や、同じく高級な型の代入命令などが多数存在します。また、特定の値を示すリテラルのように働き、固定の値を結果として書き込む命令も多いです。</p>
+<h2 id="blueprint-vm--デカい-c-の-wrapper" data-v-6f1598ec><a href="#blueprint-vm--%E3%83%87%E3%82%AB%E3%81%84-c-%E3%81%AE-wrapper" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>Blueprint VM ≒ デカい C++ の Wrapper</h2>
+<p data-v-6f1598ec>繰り返し述べたように、Blueprint VM は独立した VM とは言いにくい実装になっています。それ自体が困難ですが、仮に C++ と Unreal Engine から Blueprint VM を引き剥がしてスタンドアロンで動かしたとすると、四則演算も比較もできなくなりますから、まともな処理を動かすことはできないでしょう。
+代わりに、C++ や Unreal Engine のシステムと深く結びついているため、Blueprint ではコンテンツ制作はもちろん、エディタに関するスクリプティングなどについても高い自由度を提供できているといえるかもしれません。</p>
+<h1 id="blueprint-vm-詳解" data-v-6f1598ec><a href="#blueprint-vm-%E8%A9%B3%E8%A7%A3" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>Blueprint VM 詳解</h1>
+<p data-v-6f1598ec>そもそも、Blueprint の処理はどのように呼び出されるのでしょうか。UEngine は C++ のエントリポイントから起動しますから、Blueprint に処理を任せるために C++ と Blueprint を接続している仕組みがあるはずです。</p>
+<p data-v-6f1598ec>この章では、Blueprint が実行される大きな流れについての説明を行います。</p>
+<h2 id="連携の本質は関数呼び出し" data-v-6f1598ec><a href="#%E9%80%A3%E6%90%BA%E3%81%AE%E6%9C%AC%E8%B3%AA%E3%81%AF%E9%96%A2%E6%95%B0%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>連携の本質は関数呼び出し</h2>
+<p data-v-6f1598ec>Unreal Engine 内部で Blueprint の処理が開始される場合、その多くは「Blueprint の関数を呼び出す」という操作に対応しています。
+これはあらゆる処理において言えることです。Blueprint の Event についても、コンパイル時には関数に変換されており、C++ から呼び出されるときには直接的には関数として扱われています。</p>
+<p data-v-6f1598ec>たとえば、Event の代表格である <code data-v-6f1598ec>Tick</code> や <code data-v-6f1598ec>BeginPlay</code> などは、コンパイル時に以下のような中間グラフ上の関数(Function stub)に変換されてからコンパイルされます。</p>
+<div class="without-shadow" data-v-6f1598ec>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//event-nodes.png" data-v-6f1598ec></p>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//event-stub-tick.png" data-v-6f1598ec></p>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//event-stub-beginplay.png" data-v-6f1598ec></p>
+</div>
+<p data-v-6f1598ec>また、Blueprint から C++ の処理を呼び出したいときもあります。このときにも、対応するのは C++ の関数を呼び出すという操作です。
+ということで、Blueprint と C++ の連携を紐解く切り口として、相互に関数が呼び出される仕組みを見ていきましょう。</p>
+<h2 id="ufunction" data-v-6f1598ec><a href="#ufunction" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>UFunction</h2>
+<p data-v-6f1598ec>Unreal Engine においての Blueprint / C++ の相互関数呼び出しには、 UFunction というクラスが大きな役割を果たしています。
+UFunctionを一言で説明すると、「Blueprint か C++ の関数を表す関数オブジェクト」です。</p>
+<p data-v-6f1598ec>C++ の関数オブジェクトといえば、Unreal C++ なら <code data-v-6f1598ec>TFunction&lt;></code>、STL なら <code data-v-6f1598ec>&lt;function></code> の <code data-v-6f1598ec>std::function&lt;></code> などが思い浮かぶでしょう。これらは、C++ の関数様のオブジェクトを取り回すのに特化したクラスです。一方、<code data-v-6f1598ec>UFunction</code> は、Blueprint と C++ の双方で呼び出し可能な関数を表すクラスなのです。</p>
+<h3 id="ufunction-の内側" data-v-6f1598ec><a href="#ufunction-%E3%81%AE%E5%86%85%E5%81%B4" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>UFunction の内側</h3>
+<p data-v-6f1598ec>とはいえ、C++ の関数と Blueprint の関数はコンパイル後の内部表現が全く異なりますから、完全に共通化したデータを保持しているわけではありません。以下は、<code data-v-6f1598ec>UFunction</code> のなかで関数呼び出しに関わるメンバを示した図です。</p>
+<div class="without-shadow" data-v-6f1598ec>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//ufunction-structure.png" data-v-6f1598ec></p>
+</div>
+<p data-v-6f1598ec><code data-v-6f1598ec>UFunction</code> は <code data-v-6f1598ec>UStruct</code> を継承した型であり、<code data-v-6f1598ec>UStruct</code> のほうにも重要な情報が保持されています。
+これらのパラメータのうち、C++ の関数と Blueprint の関数で使われ方が大きく異なるのは、 <code data-v-6f1598ec>Func</code> と <code data-v-6f1598ec>Script</code> です。</p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>Func
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>C++ の関数である時にのみ有効で、それ以外の場合には nullptr。</li>
+<li data-v-6f1598ec>C++ の関数ポインタを保持する。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>Script
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>バイト列を保持する <code data-v-6f1598ec>TArray&lt;uint8></code> メンバ。</li>
+<li data-v-6f1598ec>Blueprint の関数であるときにのみ長さが1以上となり、Blueprint バイトコードを保持する。</li>
+</ul>
+</li>
+</ul>
+<p data-v-6f1598ec><code data-v-6f1598ec>UFunction</code> の呼び出し処理では、その <code data-v-6f1598ec>UFunction</code> が C++ 関数を表しているのか Blueprint 関数を表しているのかによって処理を分岐し、結果として共通した使用法で双方の関数を呼び出せるようにしているのです。</p>
+<p data-v-6f1598ec>上図に示したそれ以外のメンバの役割は以下です。こちらは Blueprint / C++ 共通で利用されます。</p>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>FunctionFlags
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><a href="https://docs.unrealengine.com/5.1/en-US/API/Runtime/CoreUObject/UObject/EFunctionFlags/" rel="nofollow noopener noreferrer" target="_blank" data-v-6f1598ec>EFunctionFlags</a>で定義されたフラグをビットフィールドとして保持する。C++ 関数であるかを表す <code data-v-6f1598ec>FUNC_Native</code> なども定義されており、関数の属性を判別するのに多用される。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>NumParams
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>関数の引数や戻り値などは、関数のパラメータとして扱われる。それらの総数を表す。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>ParamsSize
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>関数のパラメータが総計で占めることになるメモリ上のサイズを表す。関数呼び出しの際に、パラメータのために確保すべき領域を知るためなどに利用される。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>ChildProperties
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>FProperty のリンクリスト。<code data-v-6f1598ec>UFunction</code> の場合は、関数のパラメータのリフレクション情報を保持する。これにより、引数の具体的な型や、オブジェクト上での配置位置オフセットなどが判明し、パラメータの利用が可能となる。</li>
+</ul>
+</li>
+</ul>
+<p data-v-6f1598ec>このように、<code data-v-6f1598ec>UFunction</code> は Blueprint / C++ の関数のシグニチャのための共通した表現を持ち、その処理の実体のみを個別に扱うことで、Blueprint / C++ どちらからも呼び出し可能な関数を実現しているクラスなのです。</p>
+<h3 id="ufunction-マクロの役割-thunk--customthunk" data-v-6f1598ec><a href="#ufunction-%E3%83%9E%E3%82%AF%E3%83%AD%E3%81%AE%E5%BD%B9%E5%89%B2-thunk--customthunk" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>UFUNCTION() マクロの役割 Thunk / CustomThunk</h3>
+<p data-v-6f1598ec><code data-v-6f1598ec>UFunction</code> と聞いて、いつも Unreal C++ で書いている <code data-v-6f1598ec>UFUNCTION</code> マクロを付けたメンバ変数のことを連想したのに、なにか違うものの説明をされて戸惑っている人がいるかもしれません。</p>
+<p data-v-6f1598ec>公式ドキュメント含め厳密に言うと、<code data-v-6f1598ec>UFUNCTION</code> マクロを付けた関数自体が <code data-v-6f1598ec>UFunction</code> になるわけではありません。中身が書き換わるわけでもありませんし、実装はそのまま利用されます。しかし、 <code data-v-6f1598ec>UFUNCTION</code> マクロを付けた関数には、その関数を <code data-v-6f1598ec>UFunction</code> の <code data-v-6f1598ec>Func</code> メンバとして取り扱い可能にする(シグニチャをあわせて引数のディスパッチを行う)ためのラッパー関数が外部に生成されます。この生成は Unreal Header Tool によってビルド前に行われます。</p>
+<p data-v-6f1598ec>ラッパー関数を生成する目的は、呼び出しのシグニチャを統一することです。<code data-v-6f1598ec>UFUNCTION</code> マクロは様々な引数や戻り値を持った関数に付けられますが、 <code data-v-6f1598ec>UFunction</code> の <code data-v-6f1598ec>Func</code> メンバが保持できるシグニチャは一定です。そこで、<code data-v-6f1598ec>Func</code> が保持できるシグニチャを持ったラッパー関数で包み、内部で引数の値や戻り値の処理を個別に行うことで、どんな関数でも <code data-v-6f1598ec>Func</code> で保持できるように差異を吸収するのです。</p>
+<p data-v-6f1598ec>このラッパー関数によって、<code data-v-6f1598ec>UFUNCTION</code> マクロを付けた任意の C++ 関数を <code data-v-6f1598ec>UFunction</code> で保持することができるようになります。すると、C++ で実装した関数が Blueprint / C++ で扱えるようになるという仕組みなのです。</p>
+<div class="without-shadow" data-v-6f1598ec>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//what-ufunction.png" data-v-6f1598ec></p>
+</div>
+<p data-v-6f1598ec>ちなみに、このラッパー関数のことを、Unreal Engine では Thunk function (サンク関数) と呼んでいるようです。この名前に「オッ」となった人はいるでしょうか。そうです。出会って戸惑うUFUNCTION() 指定子ランキングトップの <code data-v-6f1598ec>UFUNCTION(CustomThunk)</code> とは、このサンク関数をUHTに自動生成させることを抑制し、自分自身でカスタムのサンク関数を記述するための指定子なのです。
+CustomThunkの使い方については、別の記事を書こうと思っています。</p>
+<h2 id="ufunctionの呼び出しと大きな流れ" data-v-6f1598ec><a href="#ufunction%E3%81%AE%E5%91%BC%E3%81%B3%E5%87%BA%E3%81%97%E3%81%A8%E5%A4%A7%E3%81%8D%E3%81%AA%E6%B5%81%E3%82%8C" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>UFunctionの呼び出しと大きな流れ</h2>
+<p data-v-6f1598ec><code data-v-6f1598ec>UFunction</code> はローカルだけでなくリモート(サーバーなど)で実行されることもあるので、エンジン内でも様々な方法の実行処理が記述されています。ここでは、ローカル関数に特化した呼び出しの流れを見てみます。簡単のため、一部コードは省いて、コメントを追記しました。</p>
+<div class="code-extra" data-v-6f1598ec><div class="filename" data-v-6f1598ec>ScriptCore.cpp</div><pre data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec>#define RESULT_PARAM Z_Param__Result
+#define RESULT_DECL void* const RESULT_PARAM
+
+void ProcessLocalFunction(UObject* Context, UFunction* Fn, FFrame& Stack, RESULT_DECL)
+{
+  // UFunction の有効性をチェック
+	checkSlow(Fn);
+  // C++関数か？
+	if(Fn->HasAnyFunctionFlags(FUNC_Native))
+	{
+    // C++の関数を直接呼び出し
+		Fn->Invoke(Context, Stack, RESULT_PARAM);
+	}
+	else
+	{
+    // UFunction が持つ Script メンバに保持された Blueprint バイトコードを実行
+		ProcessScriptFunction(Context, Fn, Stack, RESULT_PARAM, ProcessLocalScriptFunction);
+	}
+}</code></pre></div>
+<h3 id="c-関数に対する処理" data-v-6f1598ec><a href="#c-%E9%96%A2%E6%95%B0%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%87%A6%E7%90%86" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>C++ 関数に対する処理</h3>
+<p data-v-6f1598ec><code data-v-6f1598ec>UFunction</code> には <code data-v-6f1598ec>Invoke()</code> という、<code data-v-6f1598ec>Func</code> に保持する C++ 関数を呼び出すための専用メンバが存在します。C++ 関数に対する呼び出しは、このメンバを呼び出すだけで対応されています。</p>
+<p data-v-6f1598ec>「この呼び出し方では様々な引数の関数に対応できないのでは？」と思うかもしれませんが、問題ありません。 <a href="#ufunction-%E3%83%9E%E3%82%AF%E3%83%AD%E3%81%AE%E5%BD%B9%E5%89%B2-thunk--customthunk" data-v-6f1598ec>UFunction の説明の項</a> で述べた通り、C++ のネイティブ関数を <code data-v-6f1598ec>UFunction</code> で利用する場合、必ずシグニチャが統一されたラッパーである Thunk 関数が存在します。
+最終的に関数に渡される引数の値や、その関数が紐づくオブジェクトは、すべてここで渡されている <code data-v-6f1598ec>Context</code> や <code data-v-6f1598ec>Stack</code> から Thunk 関数が取り出し、最終的な引数として決定します。
+また、関数の戻り値は <code data-v-6f1598ec>RESULT_DECL</code> に格納されます。コード上部に定義を引用しましたが、<code data-v-6f1598ec>RESULT_DECL</code> は <code data-v-6f1598ec>void* const</code> を表すので、任意の戻り値のアドレスを受けることができます。</p>
+<p data-v-6f1598ec>例として、Blueprint における Int 同士の加算を定義している以下の関数を保持する <code data-v-6f1598ec>UFunction</code> を <code data-v-6f1598ec>Invoke()</code> した場合を見てみます。</p>
+<div class="code-extra" data-v-6f1598ec><div class="filename" data-v-6f1598ec>Add_IntInt()</div><pre data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec>static int32 Add_IntInt(int32 A, int32 B = 1);</code></pre></div>
+<p data-v-6f1598ec>UHT によって以下の Thunk 関数が自動生成され、<code data-v-6f1598ec>UFunction</code> の <code data-v-6f1598ec>Func</code> に保持されているので、<code data-v-6f1598ec>Invoke()</code> で実行されるのもこの Thunk 関数です。</p>
+<div class="code-extra" data-v-6f1598ec><div class="filename" data-v-6f1598ec>Thunk関数</div><pre data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec>// static int32 Add_IntInt(int32 A, int32 B) の Thunk 関数
+void UKismetMathLibrary::execAdd_IntInt(UObject* Context, FFrame& Stack, void* const Z_Param__Result)
+{
+	FIntProperty::TCppType Z_Param_A = FIntProperty::GetDefaultPropertyValue();
+	// 第1引数を Stack.Code のバイトコードを評価して取得する。Codeが進む。
+	Stack.StepCompiledIn&lt;FIntProperty>(&Z_Param_A);;
+
+	FIntProperty::TCppType Z_Param_B = FIntProperty::GetDefaultPropertyValue();
+	// 第2引数を Stack.Code のバイトコードを評価して取得する。Codeが進む。
+	Stack.StepCompiledIn&lt;FIntProperty>(&Z_Param_B);;
+
+	// 次の Stack.Code が nullptr でなければ、1つ Code を進める。
+	Stack.Code += !!Stack.Code;;
+
+	// 引数を C++関数にディスパッチ。値を結果格納用の引数に書き込んで終了。
+	*(int32*)Z_Param__Result = UKismetMathLibrary::Add_IntInt(Z_Param_A, Z_Param_B);
+}</code></pre></div>
+<p data-v-6f1598ec><code data-v-6f1598ec>Stack</code> から C++ 関数に渡すべき引数の値などを読み出し、全ての準備が整ってから実際の C++関数の呼び出しを行っていることがわかります。</p>
+<h3 id="blueprint-関数に対する処理" data-v-6f1598ec><a href="#blueprint-%E9%96%A2%E6%95%B0%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8B%E5%87%A6%E7%90%86" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>Blueprint 関数に対する処理</h3>
+<p data-v-6f1598ec>Blueprint 関数は、ネイティブ実行可能なコードではなく Blueprint VM のバイトコードなので、単純に呼び出すことはできず、逐次バイトコードを処理していく必要があります。</p>
+<p data-v-6f1598ec>上のコードで利用されている <code data-v-6f1598ec>ProcessScriptFunction()</code> のシグニチャは以下です。</p>
+<div class="remark-highlight" data-v-6f1598ec><pre class="language-cpp" data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec><span class="token keyword" data-v-6f1598ec>template</span><span class="token operator" data-v-6f1598ec>&lt;</span><span class="token keyword" data-v-6f1598ec>typename</span> <span class="token class-name" data-v-6f1598ec>Exec</span><span class="token operator" data-v-6f1598ec>></span>
+<span class="token keyword" data-v-6f1598ec>void</span> <span class="token function" data-v-6f1598ec>ProcessScriptFunction</span><span class="token punctuation" data-v-6f1598ec>(</span>UObject<span class="token operator" data-v-6f1598ec>*</span> <span class="token keyword type-opencl-host-cpp" data-v-6f1598ec>Context</span><span class="token punctuation" data-v-6f1598ec>,</span> UFunction<span class="token operator" data-v-6f1598ec>*</span> Function<span class="token punctuation" data-v-6f1598ec>,</span> FFrame<span class="token operator" data-v-6f1598ec>&</span> Stack<span class="token punctuation" data-v-6f1598ec>,</span> RESULT_DECL<span class="token punctuation" data-v-6f1598ec>,</span> Exec ExecFtor<span class="token punctuation" data-v-6f1598ec>)</span>
+</code></pre></div>
+<p data-v-6f1598ec><code data-v-6f1598ec>ProcessScriptFunction()</code> は、Blueprint 関数の呼び出しの前処理と、呼び出しまでを行ってくれるヘルパー関数です。
+Blueprint 関数の引数や戻り値パラメータを保持するメモリ領域は、C++ の関数と異なり自動で確保されないので、呼び出す前に明示的に確保を行う必要があります。また、関数呼び出しに際しては、確保したメモリ領域や、関数の処理の実行状況、実行しているバイトコードへの命令カウンタなどをまとめて管理するスタックフレーム(のようなもの)を新たに構築する必要があります。</p>
+<p data-v-6f1598ec><code data-v-6f1598ec>ProcessScriptFunction()</code> が行う前処理の中では、渡された <code data-v-6f1598ec>UFunction</code> のプロパティ情報などを元に、必要なメモリの確保や初期化を行い、スタックフレーム(のようなもの)の構築までを行ってくれます。これは、 <code data-v-6f1598ec>FFrame</code> 型の変数として引き継がれていきます。<code data-v-6f1598ec>FFrame</code> については後ほど詳しく触れます。</p>
+<p data-v-6f1598ec>第5引数の型がテンプレート型引数によって指定されており、ここに渡した関数が最後のバイトコード実行の処理として利用されます。
+また、第5引数(最後の引数)に渡されているのは以下の関数です。簡単のため、例外処理は削除しています。</p>
+<div class="remark-highlight" data-v-6f1598ec><pre class="language-cpp" data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec><span class="token keyword" data-v-6f1598ec>void</span> <span class="token function" data-v-6f1598ec>ProcessLocalScriptFunction</span><span class="token punctuation" data-v-6f1598ec>(</span>UObject<span class="token operator" data-v-6f1598ec>*</span> <span class="token keyword type-opencl-host-cpp" data-v-6f1598ec>Context</span><span class="token punctuation" data-v-6f1598ec>,</span> FFrame<span class="token operator" data-v-6f1598ec>&</span> Stack<span class="token punctuation" data-v-6f1598ec>,</span> RESULT_DECL<span class="token punctuation" data-v-6f1598ec>)</span>
+<span class="token punctuation" data-v-6f1598ec>{</span>
+	UFunction<span class="token operator" data-v-6f1598ec>*</span> Function <span class="token operator" data-v-6f1598ec>=</span> <span class="token punctuation" data-v-6f1598ec>(</span>UFunction<span class="token operator" data-v-6f1598ec>*</span><span class="token punctuation" data-v-6f1598ec>)</span>Stack<span class="token punctuation" data-v-6f1598ec>.</span>Node<span class="token punctuation" data-v-6f1598ec>;</span>
+	<span class="token comment" data-v-6f1598ec>// No POD struct can ever be stored in this buffer. </span>
+	<span class="token function" data-v-6f1598ec>MS_ALIGN</span><span class="token punctuation" data-v-6f1598ec>(</span><span class="token number" data-v-6f1598ec>16</span><span class="token punctuation" data-v-6f1598ec>)</span> uint8 <span class="token keyword type-opencl-host-cpp" data-v-6f1598ec>Buffer</span><span class="token punctuation" data-v-6f1598ec>[</span>MAX_SIMPLE_RETURN_VALUE_SIZE<span class="token punctuation" data-v-6f1598ec>]</span> <span class="token function" data-v-6f1598ec>GCC_ALIGN</span><span class="token punctuation" data-v-6f1598ec>(</span><span class="token number" data-v-6f1598ec>16</span><span class="token punctuation" data-v-6f1598ec>)</span><span class="token punctuation" data-v-6f1598ec>;</span>
+
+	<span class="token comment" data-v-6f1598ec>// バイトコードの実行。EX_Return 命令が現れるまで実行し続ける。</span>
+	<span class="token keyword" data-v-6f1598ec>while</span> <span class="token punctuation" data-v-6f1598ec>(</span><span class="token operator" data-v-6f1598ec>*</span>Stack<span class="token punctuation" data-v-6f1598ec>.</span>Code <span class="token operator" data-v-6f1598ec>!=</span> EX_Return<span class="token punctuation" data-v-6f1598ec>)</span>
+	<span class="token punctuation" data-v-6f1598ec>{</span>
+    <span class="token comment" data-v-6f1598ec>// 後続のバイトコードを一つ読み取り、その命令を実行する。内部では処理に依存した数だけ Stack.Code が進む。</span>
+		Stack<span class="token punctuation" data-v-6f1598ec>.</span><span class="token function" data-v-6f1598ec>Step</span><span class="token punctuation" data-v-6f1598ec>(</span>Stack<span class="token punctuation" data-v-6f1598ec>.</span>Object<span class="token punctuation" data-v-6f1598ec>,</span> <span class="token keyword type-opencl-host-cpp" data-v-6f1598ec>Buffer</span><span class="token punctuation" data-v-6f1598ec>)</span><span class="token punctuation" data-v-6f1598ec>;</span>
+	<span class="token punctuation" data-v-6f1598ec>}</span>
+
+  <span class="token comment" data-v-6f1598ec>// 処理が終わったので一つコードを進め(EX_Return命令をステップオーバー)、終了処理に入る</span>
+  Stack<span class="token punctuation" data-v-6f1598ec>.</span>Code<span class="token operator" data-v-6f1598ec>++</span><span class="token punctuation" data-v-6f1598ec>;</span>
+
+  <span class="token keyword" data-v-6f1598ec>if</span> <span class="token punctuation" data-v-6f1598ec>(</span><span class="token operator" data-v-6f1598ec>*</span>Stack<span class="token punctuation" data-v-6f1598ec>.</span>Code <span class="token operator" data-v-6f1598ec>!=</span> EX_Nothing<span class="token punctuation" data-v-6f1598ec>)</span>
+  <span class="token punctuation" data-v-6f1598ec>{</span>
+    <span class="token comment" data-v-6f1598ec>// 次の命令が EX_Nothing でなければ、後続の命令を評価し、RESULT_PARAM に関数の結果を格納する</span>
+    Stack<span class="token punctuation" data-v-6f1598ec>.</span><span class="token function" data-v-6f1598ec>Step</span><span class="token punctuation" data-v-6f1598ec>(</span>Stack<span class="token punctuation" data-v-6f1598ec>.</span>Object<span class="token punctuation" data-v-6f1598ec>,</span> RESULT_PARAM<span class="token punctuation" data-v-6f1598ec>)</span><span class="token punctuation" data-v-6f1598ec>;</span>
+  <span class="token punctuation" data-v-6f1598ec>}</span>
+  <span class="token keyword" data-v-6f1598ec>else</span>
+  <span class="token punctuation" data-v-6f1598ec>{</span>
+    <span class="token comment" data-v-6f1598ec>// EX_Nothing なら、命令カウンタを一つ進めて(EX_Nothingをステップオーバー)終了</span>
+    Stack<span class="token punctuation" data-v-6f1598ec>.</span>Code<span class="token operator" data-v-6f1598ec>++</span><span class="token punctuation" data-v-6f1598ec>;</span>
+  <span class="token punctuation" data-v-6f1598ec>}</span>
+<span class="token punctuation" data-v-6f1598ec>}</span>
+</code></pre></div>
+<p data-v-6f1598ec><code data-v-6f1598ec>ProcessLocalScriptFunction()</code> はローカルでバイトコードを実行する関数です。
+この関数には、<code data-v-6f1598ec>ProcessScriptFunction()</code> が整えてくれた <code data-v-6f1598ec>FFrame& Stack</code> が渡されてきます。<code data-v-6f1598ec>Stack.Code</code> は <code data-v-6f1598ec>UFunction</code> の保持するバイトコード上の位置を示すポインタで、いわゆるプログラムカウンタの役割を果たします(後述)。処理をみると、<code data-v-6f1598ec>Stack.Code</code> を進めることで命令の処理位置が進んでいき、<code data-v-6f1598ec>EX_Return</code> まで実行され続けることがわかります。</p>
+<h2 id="fframe" data-v-6f1598ec><a href="#fframe" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>FFrame</h2>
+<p data-v-6f1598ec>さて、<code data-v-6f1598ec>UFunction</code> の実行にも登場しましたが、Blueprint VM の実行処理をより詳しく見ていくためには、<code data-v-6f1598ec>FFrame</code> のことを知る必要があります。</p>
+<p data-v-6f1598ec><code data-v-6f1598ec>FFrame</code> は、C / C++ など言語にも存在するスタックフレームに近い役割を果たすクラスです。スタックフレームとは、関数呼び出しのためにスタック領域に構築される、ローカル変数、リターンアドレス(呼び出し元のアドレス)、引数などの情報を持ったデータ構造です。関数が呼び出されると、その関数の命令を実行するための作業領域がメモリ上に必要ですし、自分がどこから呼ばれたのかがわからなければ関数からの return ができないので、それらの情報を扱うためのデータ構造を関数の呼び出し時に構築しているのです。</p>
+<p data-v-6f1598ec><code data-v-6f1598ec>FFrame</code> はスタックフレーム同様、関数呼び出しのたびに構築され、関数が終了すると破棄されるので、呼び出しがネストすると多段的に存在することもありますが、特定の関数呼び出しに対応する <code data-v-6f1598ec>FFrame</code> は一つであると考えてよいです。</p>
+<p data-v-6f1598ec><code data-v-6f1598ec>FFrame</code> はスタック領域に確保されるわけではありませんし、データ構造としてもスタックではありません。プログラムカウンタの役割を持つ変数や、直近の命令の結果を保持する変数などもメンバに持つので、それらはレジスタ的であるとも言えます。
+下図は、<code data-v-6f1598ec>FFrame</code> の主要なメンバ変数を示したものです。典型的なスタックフレームにありそうなものを青、レジスタ的な働きをしているものを橙に塗り分けたので、参考程度に御覧ください。</p>
+<div class="without-shadow" data-v-6f1598ec>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//fframe-structure.png" data-v-6f1598ec></p>
+</div>
+<h3 id="典型的なスタックフレームっぽいやつ" data-v-6f1598ec><a href="#%E5%85%B8%E5%9E%8B%E7%9A%84%E3%81%AA%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%81%A3%E3%81%BD%E3%81%84%E3%82%84%E3%81%A4" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>典型的なスタックフレームっぽいやつ</h3>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>UFunction* Node
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>現在の <code data-v-6f1598ec>FFrame</code> に対応する <code data-v-6f1598ec>UFunction</code> のポインタを保持する。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>UObject* Object
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>現在の <code data-v-6f1598ec>FFrame</code> に対応するコンテキストオブジェクト。多くの場合、関数が属する <code data-v-6f1598ec>UObject</code> のインスタンスと考えてもよい。ローカル変数へのアクセスなどに利用される。一部の命令の実行において、暗黙的に <code data-v-6f1598ec>this</code> と同等の役割として扱われる。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>uint8* Locals
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>現在の <code data-v-6f1598ec>FFrame</code> に対応する <code data-v-6f1598ec>UFunction</code> のローカル変数を保持しているメモリ領域の先頭アドレス。複数のローカル変数が連続して配置されることがあるが、別途得られたローカル変数の <code data-v-6f1598ec>FProperty</code> の情報を元に先頭アドレスからのオフセットを計算し、任意のローカル変数にアクセスできるようになっている。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>FOutParamRec* OutParams
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>ミュータブルな参照渡しなどによって、戻り値以外の出力パラメータと認識される引数がある場合、その引数は <code data-v-6f1598ec>CPF_OutParm</code> というフラグを持つようになる。<code data-v-6f1598ec>OutParams</code> は、<code data-v-6f1598ec>FOutParmRec</code> のメンバとして、最初の追加出力引数の <code data-v-6f1598ec>FProperty</code> へのポインタ、その <code data-v-6f1598ec>FProperty</code> へのデータの保存先アドレス、および次の追加出力パラメータを保持する。リンクリストになっているので、一つずつ辿っていくことで、すべての追加出力パラメータにアクセスできる。</li>
+<li data-v-6f1598ec>戻り値を格納すべき領域は OutParams のように <code data-v-6f1598ec>FFrame</code> のメンバとしてではなく、<code data-v-6f1598ec>RESULT_DECL</code> のように、命令を処理する関数の引数として既定のものが渡されてくる。</li>
+</ul>
+</li>
+</ul>
+<h3 id="レジスタっぽいやつ" data-v-6f1598ec><a href="#%E3%83%AC%E3%82%B8%E3%82%B9%E3%82%BF%E3%81%A3%E3%81%BD%E3%81%84%E3%82%84%E3%81%A4" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>レジスタっぽいやつ</h3>
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>uint8* Code
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>いわゆるプログラムカウンタのような変数。実行中のバイトコードの実体は <code data-v-6f1598ec>UFunction</code> のメモリ領域などに配置されているが、 <code data-v-6f1598ec>Code</code> はそのバイトコード上の特定の位置をポイントすることで、現在実行中の命令位置を保持する。この変数の指す位置をインクリメントすることで、バイトコードの実行が進む。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>FProperty* MostRecentProperty
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec>直近の命令でアクセスされた <code data-v-6f1598ec>FProperty</code> のアドレスを保持する。これにより、Blueprint VM は、続く命令で前の命令で得られたプロパティに対するアクセスが可能になる。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>uint8* MostRecentPropertyAddress
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><code data-v-6f1598ec>MostRecentProperty</code> のデータの実体が配置されたメモリ領域の先頭アドレス。 <code data-v-6f1598ec>FProperty</code> は型のリフレクション情報であり、値そのものは持たないので、<code data-v-6f1598ec>FProperty</code> の情報やメソッドを利用してこのメモリ領域から値を読み出すことで、実値へのアクセスが可能となる。</li>
+</ul>
+</li>
+<li data-v-6f1598ec>uint8* MostRecentPropertyContainer
+<ul data-v-6f1598ec>
+<li data-v-6f1598ec><code data-v-6f1598ec>MostRecentPropertyContainer</code> は、直近の命令でアクセスされた <code data-v-6f1598ec>FProperty</code> コンテナのメモリ領域の先頭アドレスを保持する。処理のステップによっては、「あるメンバプロパティのアドレス位置はまだわからないが、そのプロパティを持っているオブジェクトのアドレスはわかる」といったシチュエーションがよくある。プロパティを保持するオブジェクトのことを Property Container と呼んでおり、追加で Property Container のアドレスにオフセットをかけることでメンバのアドレスに到達できる。<code data-v-6f1598ec>FProperty</code> が保持するリフレクション情報には、オブジェクト内での自身のメモリ配置のオフセット情報が含まれているが、それは相対的な値であるため、オフセットをかける対象となる絶対アドレスとして <code data-v-6f1598ec>MostRecentPropertyContainer</code> が必要となる。</li>
+</ul>
+</li>
+</ul>
+<h2 id="fframe-による-blueprint-vm-命令のステップ実行" data-v-6f1598ec><a href="#fframe-%E3%81%AB%E3%82%88%E3%82%8B-blueprint-vm-%E5%91%BD%E4%BB%A4%E3%81%AE%E3%82%B9%E3%83%86%E3%83%83%E3%83%97%E5%AE%9F%E8%A1%8C" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>FFrame による Blueprint VM 命令のステップ実行</h2>
+<p data-v-6f1598ec>Blueprint VM のバイトコード実行の実体は、<code data-v-6f1598ec>FFrame</code> による <code data-v-6f1598ec>Code</code> ポインタのインクリメントです。 バイトコードには命令のほか、オブジェクトのバイト表現が埋め込まれたり、値リテラルを表すバイトが埋め込まれたりします。それらを処理次第、バイト数分だけ <code data-v-6f1598ec>Code</code> を進めるのです。</p>
+<p data-v-6f1598ec>処理の実行に最も多用される <code data-v-6f1598ec>FFrame</code> のメンバ関数は、以下の <code data-v-6f1598ec>FFrame::Step()</code>です。</p>
+<div class="remark-highlight" data-v-6f1598ec><pre class="language-cpp" data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec><span class="token keyword" data-v-6f1598ec>void</span> <span class="token class-name" data-v-6f1598ec>FFrame</span><span class="token punctuation double-colon" data-v-6f1598ec>::</span><span class="token function" data-v-6f1598ec>Step</span><span class="token punctuation" data-v-6f1598ec>(</span>UObject<span class="token operator" data-v-6f1598ec>*</span> <span class="token keyword type-opencl-host-cpp" data-v-6f1598ec>Context</span><span class="token punctuation" data-v-6f1598ec>,</span> RESULT_DECL<span class="token punctuation" data-v-6f1598ec>)</span>
+<span class="token punctuation" data-v-6f1598ec>{</span>
+	int32 B <span class="token operator" data-v-6f1598ec>=</span> <span class="token operator" data-v-6f1598ec>*</span>Code<span class="token operator" data-v-6f1598ec>++</span><span class="token punctuation" data-v-6f1598ec>;</span>
+	<span class="token punctuation" data-v-6f1598ec>(</span>GNatives<span class="token punctuation" data-v-6f1598ec>[</span>B<span class="token punctuation" data-v-6f1598ec>]</span><span class="token punctuation" data-v-6f1598ec>)</span><span class="token punctuation" data-v-6f1598ec>(</span><span class="token keyword type-opencl-host-cpp" data-v-6f1598ec>Context</span><span class="token punctuation" data-v-6f1598ec>,</span><span class="token operator" data-v-6f1598ec>*</span><span class="token keyword" data-v-6f1598ec>this</span><span class="token punctuation" data-v-6f1598ec>,</span>RESULT_PARAM<span class="token punctuation" data-v-6f1598ec>)</span><span class="token punctuation" data-v-6f1598ec>;</span>
+<span class="token punctuation" data-v-6f1598ec>}</span>
+</code></pre></div>
+<p data-v-6f1598ec>このメンバは、一つ先のバイトコードを読み出し、そのバイト値を関数ポインタの配列 <code data-v-6f1598ec>GNatives[]</code> のインデックスとすることで、命令コードによる命令関数の呼び出しを実現している関数です。先に命令表で示した命令コードが、ここでの変数 <code data-v-6f1598ec>B</code> に数値として読み出されるということです。</p>
+<p data-v-6f1598ec><code data-v-6f1598ec>GNatives[]</code> は以下のように定義されます。</p>
+<div class="remark-highlight" data-v-6f1598ec><pre class="language-cpp" data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec>COREUOBJECT_API FNativeFuncPtr GNatives<span class="token punctuation" data-v-6f1598ec>[</span>EX_Max<span class="token punctuation" data-v-6f1598ec>]</span><span class="token punctuation" data-v-6f1598ec>;</span>
+</code></pre></div>
+<p data-v-6f1598ec>この配列に対して、命令処理を実装した関数が、各々追加されています。以下は単純な <code data-v-6f1598ec>EX_Jump</code> 命令の実装です。</p>
+<div class="code-extra" data-v-6f1598ec><div class="filename" data-v-6f1598ec>EX_Jump</div><pre data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec>void UObject::execJump( UObject* Context, FFrame& Stack, RESULT_DECL )
+{
+  // 現在の Stack.Code 位置から、CodeSkipSizeType のサイズのメモリを読み出し、CodeSkipSizeType として解釈して返す。
+  // sizeof(CodeSkipSizeType) だけ Stack.Code が進む。 
+	CodeSkipSizeType Offset = Stack.ReadCodeSkipCount();
+  // 現在の Stack.Code を、`UFunction` の保持するバイトコードへの特定オフセット位置に置き換える
+	Stack.Code = &Stack.Node->Script[Offset];
+}
+IMPLEMENT_VM_FUNCTION( EX_Jump, execJump ); // GNatives に EX_Jump の値(列挙型であり命令コードを示す)で登録</code></pre></div>
+<p data-v-6f1598ec>なお、 <code data-v-6f1598ec>CodeSkipSizeType</code> とはバイトコード上のオフセットを表すのに十分なサイズの数値型で、多くのプラットフォームでは <code data-v-6f1598ec>uint32</code> です。
+この処理によって、バイトコード上に示されたジャンプ位置に現在の <code data-v-6f1598ec>Stack.Code</code> を書き換え、後続する命令の内容を変更することができます。
+<code data-v-6f1598ec>CodeSkipSizeType</code> が <code data-v-6f1598ec>uint32</code> であると仮定したときのバイトコードを図示するなら、以下のようになるでしょう。</p>
+<div class="without-shadow" data-v-6f1598ec>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//ex-jump.png" data-v-6f1598ec></p>
+</div>
+<p data-v-6f1598ec>また、もう少し複雑な例として、条件付きジャンプ <code data-v-6f1598ec>EX_JumpIfNot</code> も見てみましょう。</p>
+<div class="code-extra" data-v-6f1598ec><div class="filename" data-v-6f1598ec>EX_JumpIfNot</div><pre data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec>void UObject::execJumpIfNot( UObject* Context, FFrame& Stack, RESULT_DECL )
+{
+	CHECK_RUNAWAY;
+
+  // 希望されるジャンプ先のオフセット位置をバイトコードから読み出す
+	CodeSkipSizeType Offset = Stack.ReadCodeSkipCount();
+
+	// 続く命令を Step で評価する。その結果を第二引数の `Value` に受け取る。
+	bool Value = 0;
+	Stack.Step( Stack.Object, &Value );
+
+  // `Value` の値によってジャンプするか否かを分岐
+	if( !Value )
+	{
+		Stack.Code = &Stack.Node->Script[ Offset ];
+	}
+}
+IMPLEMENT_VM_FUNCTION( EX_JumpIfNot, execJumpIfNot );</code></pre></div>
+<p data-v-6f1598ec><code data-v-6f1598ec>EX_JumpIfNot</code> では、<code data-v-6f1598ec>FFrame::Step()</code> で実行された <code data-v-6f1598ec>execJumpIfNot()</code> の中で、更に <code data-v-6f1598ec>FFrame::Step()</code> を呼び出しています。
+このパターンは多くの命令の実装で見られるもので、バイトコードの表現の自由度を向上させています。 <code data-v-6f1598ec>EX_JumpIfNot</code> は、<code data-v-6f1598ec>Value</code> を評価式に持つ単純な分岐命令などに利用できるものです。しかし、<code data-v-6f1598ec>Value</code> の値の決定を命令処理内部で更に <code data-v-6f1598ec>FFrame::Step()</code> することで、ジャンプするか否かの決定を、後続の任意のバイトコードの実行結果によって決定できるようになっているのです。
+<code data-v-6f1598ec>Value</code> の値を決定するのはもしかすると単にバイトコード上に埋め込まれた定数かもしれませんし、複雑な処理の結果かもしれません。</p>
+<div class="without-shadow" data-v-6f1598ec>
+<p data-v-6f1598ec><img alt="" src="/article-assets/unrealengine/a-little-harder-introduction-to-blueprint//ex-jump-if-not.png" data-v-6f1598ec></p>
+</div>
+<p data-v-6f1598ec>続いて、<code data-v-6f1598ec>MostRecentProperty</code> などを利用する命令の例として、ローカル変数へのアクセス命令 <code data-v-6f1598ec>EX_LocalVariable</code> も見ておきます。
+(例のごとく例外処理は省いています)</p>
+<div class="code-extra" data-v-6f1598ec><div class="filename" data-v-6f1598ec>EX_LocalVariable</div><pre data-v-6f1598ec><code class="language-cpp" data-v-6f1598ec>void UObject::execLocalVariable( UObject* Context, FFrame& Stack, RESULT_DECL )
+{
+  // バイトコードから、読み出したいプロパティを表す `FProperty` を読み出す。その分 Code は進む。
+	FProperty* VarProperty = Stack.ReadProperty();
+  // `Stack.Locals` が指すローカル変数メモリ領域に対して、`FProperty` のメモリ配置情報を適用し、読み出したいプロパティデータのアドレスを決定する。そのアドレスを `MostRecentProeprtyAddress` に入れておく。
+  Stack.MostRecentPropertyAddress = VarProperty->ContainerPtrToValuePtr&lt;uint8>(Stack.Locals);
+  // ↑ で `MostRecentProeprtyAddress` を更新したので、そのプロパティのコンテナである `Stack.Locals` のアドレスに `MostRecentPropertyContainer` も更新しておく
+  Stack.MostRecentPropertyContainer = Stack.Locals;
+
+  if (RESULT_PARAM)
+  {
+    // プロパティに Getter が定義されているか
+    if (VarProperty->HasGetter())
+    {
+      // されていたら Getter で読み出し、RESULT_PARAM に受け取る
+      VarProperty->GetValue_InContainer(Stack.MostRecentPropertyContainer, RESULT_PARAM);
+    }
+    else
+    {
+      // されていなかったら、プロパティデータのアドレスからデータを RESULT_PARAM にコピーして値を読み出す
+      VarProperty->CopyCompleteValueToScriptVM(RESULT_PARAM, Stack.MostRecentPropertyAddress);
+    }
+  }
+}
+IMPLEMENT_VM_FUNCTION( EX_LocalVariable, execLocalVariable );</code></pre></div>
+<p data-v-6f1598ec>このように、プロパティに直接アクセスする命令の中では、アクセスしたプロパティの履歴を <code data-v-6f1598ec>FFrame</code> の Recent~ 系のメンバに記録してくれるのです。これにより、<code data-v-6f1598ec>FFrame</code> を共用する後続の命令もそのプロパティにアクセス可能になるので、プロパティアクセスに頻繁に利用されます。</p>
+<p data-v-6f1598ec>これらの命令が読めれば、大抵の命令の処理は読むことができます。 <code data-v-6f1598ec>ScriptCore.cpp</code> に実装がありますので、気になる命令は見てみるとよいでしょう。</p>
+<h2 id="blueprint-vm-命令の定義" data-v-6f1598ec><a href="#blueprint-vm-%E5%91%BD%E4%BB%A4%E3%81%AE%E5%AE%9A%E7%BE%A9" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>Blueprint VM 命令の定義</h2>
+<p data-v-6f1598ec><a href="#blueprint-vm-%E5%91%BD%E4%BB%A4%E8%A1%A8" data-v-6f1598ec>Blueprint VM 命令表</a> で、定義されている命令とその役割は記載しましたが、実際にはどこにどうやって定義されているのかについてはまだ触れていませんでした。</p>
+<p data-v-6f1598ec>これは、 <code data-v-6f1598ec>Runtime/CoreUObject/Public/UObject/Script.h</code> をみるとすぐにわかります。公式ドキュメントにも記載のある、 <a href="https://docs.unrealengine.com/5.1/en-US/API/Runtime/CoreUObject/UObject/EExprToken/" rel="nofollow noopener noreferrer" target="_blank" data-v-6f1598ec><code data-v-6f1598ec>EExprToken</code></a> が、Blueprint VM の命令のコードを決定しています。
+ここで定義した列挙型の値を、一つ前の項でも見た命令の実装と紐づけて、 <code data-v-6f1598ec>GNatives[]</code> に入れておくことで、命令の呼び出しを実現しているようです。</p>
+
+<h1 id="この知識何に使えるの" data-v-6f1598ec><a href="#%E3%81%93%E3%81%AE%E7%9F%A5%E8%AD%98%E4%BD%95%E3%81%AB%E4%BD%BF%E3%81%88%E3%82%8B%E3%81%AE" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>この知識、何に使えるの？</h1>
+<p data-v-6f1598ec>普段意識する必要は全く無いでしょう。しかし、記事中でも少し触れた <code data-v-6f1598ec>CustomThunk</code> などの Thunk 関数を自作するようなコードは非常に強力です。というのも、本来は Blueprint VM 側に処理が隠されてしまい、結果の引数しか受け取れないはずの C++ 実装で、実行中の Blueprint VM の <code data-v-6f1598ec>FFrame</code> に直接操作を加えることができるのです。このため、ある種のメタプログラミングのようなことが可能になります。
+代表格は <code data-v-6f1598ec>Wildcard</code> ピンなどです。たまに見かける、繋いではじめて型が確定する灰色のピンがあると思いますが、あれが <code data-v-6f1598ec>Wildcard</code> ピンで、そういった特殊な機能を気軽に利用できるようになります。</p>
+<p data-v-6f1598ec>また、最適化などの面でもかなり役立つと思います。Blueprint VM を見ていると、案外まだ最適化の余地がありそうな実装がちらほら見受けられます。エンジンに手を加えずとも、Blueprint VM に様々な命令を実行させることはプロジェクトからも可能ですから、「さいきょうの最適化ノード」を構築することもできるでしょう。</p>
+<p data-v-6f1598ec>今回の記事では間に合いませんでしたが、バイトコードを生成しているコンパイラに対して手を加えることもできます。Blueprint Compiler には CompilerExtension というコンパイラ拡張用のAPIが存在しており、コンパイラ側から実行したいバイトコードを変更することができます。K2_Node を深いレベルから実装する場合、<code data-v-6f1598ec>FNodeHandlingFunctor::Compile()</code> という、ノードの動作を Blueprint Compiler が処理できるステートメントに記述し直す処理を実装する必要があります。この場合にも Blueprint VM の知識は大いに役立つでしょう。</p>
+<h1 id="まとめ" data-v-6f1598ec><a href="#%E3%81%BE%E3%81%A8%E3%82%81" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>まとめ</h1>
+<p data-v-6f1598ec>Blueprint VM は、Unreal Engine でのコンテンツ制作に特化したドメイン固有言語であるということが、実装からもよくわかりました。
+高速化のためにバイトコードに変換されていますが、C++ との連携機能は柔軟かつ強力であり、我々が遊ぶ余地も沢山ありそうです。
+みなさんもどんどん 「Blueprint を書いて」いきましょう！</p>
+<h1 id="おわりに" data-v-6f1598ec><a href="#%E3%81%8A%E3%82%8F%E3%82%8A%E3%81%AB" aria-hidden="true" tabindex="-1" data-v-6f1598ec><span class="icon icon-link" data-v-6f1598ec></span></a>おわりに</h1>
+<p data-v-6f1598ec>コンパイラまで書こうと思ったけど間に合わなかったよ！！！</p>
+<p data-v-6f1598ec>ところで、そろそろ公式に動きがありそうな新スクリプト言語 Verse が気になります。現時点の情報として、エンジンをまたいで利用可能なスクリプト言語であるとのことなので、Blueprint VM とは全く別の実行基盤が搭載されると考えたほうがよさそうです。
+一応コンテンツ制作向けということで DSL とも言えるのかもしれませんが、汎化の具合によっては一つの汎用言語として、Blueprint VM の実装思想とはかなり異なるものなのかもしれません。待ち遠しいですね。</p>
+<p data-v-6f1598ec>明日は <a href="https://qiita.com/dgtanaka" rel="nofollow noopener noreferrer" target="_blank" data-v-6f1598ec>@dgtanake</a> さんの『UEのPCゲーム対応について』です。楽しみですね。
+　</p></div></div></div></article> <section data-v-6bc0f40a data-v-2f2c1355><h2 data-v-6bc0f40a>share</h2> <ul class="share-list" data-v-6bc0f40a><li data-v-6bc0f40a><a href="https://twitter.com/share?
+url=https://strv.dev/blog/unrealengine--a-little-harder-introduction-to-blueprint&
+text=すこし厳しい Blueprint 入門&
+via=strvert" rel="nofollow" target="_blank" data-v-6bc0f40a><span class="im icon" data-v-6bc0f40a></span></a></li> <li data-v-6bc0f40a><a href="http://www.facebook.com/share.php?u=https://strv.dev/blog/unrealengine--a-little-harder-introduction-to-blueprint" rel="nofollow" target="_blank" data-v-6bc0f40a><span class="im icon" data-v-6bc0f40a></span></a></li></ul></section> <div class="surround-menu" data-v-6f1598ec data-v-2f2c1355><section data-fetch-key="data-v-08b63208:0" class="wrapper" data-v-08b63208 data-v-2f2c1355><div class="prev button" data-v-08b63208><!----></div> <div class="seriesname button" data-v-08b63208><a href="/blog/series/undefined" data-v-08b63208>
+      
+    </a></div> <div class="next button" data-v-08b63208><!----></div></section></div> <article class="giscus-wrapper" data-v-6f1598ec data-v-2f2c1355><div data-v-2f2c1355><div class="giscus"></div></div></article></div></div></div></div></main> <div class="footer-wrapper" data-v-194ed6b2 data-v-32d9e426><footer class="footer-main" data-v-194ed6b2><section class="contact" data-v-b716246c data-v-194ed6b2><h2 data-v-b716246c>コンタクト</h2> <address data-v-b716246c><p data-v-b716246c><span class="im icon" data-v-b716246c></span> <span data-v-b716246c><a href="https://github.com/strvert" class="display" data-v-b716246c>strvert</a></span></p><p data-v-b716246c><span class="im icon" data-v-b716246c></span> <span data-v-b716246c><a href="https://twitter.com/strvert" class="display" data-v-b716246c>@strvert</a></span></p><p data-v-b716246c><span class="im icon" data-v-b716246c></span> <span class="display" data-v-b716246c><div class="container msgbox" data-v-e0d516b2 data-v-753eb174 data-v-4e732b52 data-v-b716246c><div class="msgbox hide" data-v-e0d516b2><span data-v-e0d516b2>コピー完了！</span></div> <div data-v-e0d516b2><div class="content" data-v-e0d516b2 data-v-753eb174><span data-v-e0d516b2 data-v-4e732b52><span class="head" data-v-e0d516b2 data-v-4e732b52>strv</span><span class="tail" data-v-e0d516b2 data-v-4e732b52>strv.dev</span></span></div></div></div></span></p></address></section> <div class="infos" data-v-194ed6b2><p data-v-194ed6b2><span class="copyright" data-v-194ed6b2>© 2021 stonriver (Riku Ishikawa).</span></p></div></footer></div></div></div></div><script defer src="/_nuxt/static/1671344635/blog/unrealengine--a-little-harder-introduction-to-blueprint/state.js"></script><script src="/_nuxt/runtime.5a58625.js" defer></script><script src="/_nuxt/pages/blog/_blogpost.970c9d9.js" defer></script><script src="/_nuxt/components/atoms-blogpost-frame.b3ab725.js" defer></script><script src="/_nuxt/commons/app.98a0816.js" defer></script><script src="/_nuxt/vendors/app.070d0bc.js" defer></script><script src="/_nuxt/app.541b271.js" defer></script>
+  </body>
+</html>
