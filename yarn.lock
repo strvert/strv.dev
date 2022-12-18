@@ -2263,7 +2263,7 @@
   resolved "https://registry.yarnpkg.com/@types/less/-/less-3.0.2.tgz#2761d477678c8374cb9897666871662eb1d1115e"
   integrity sha512-62vfe65cMSzYaWmpmhqCMMNl0khen89w57mByPi1OseGfcV/LV03fO8YVrNj7rFQsRWNJo650WWyh6m7p8vZmA==
 
-"@types/mdast@^3.0.0":
+"@types/mdast@^3.0.0", "@types/mdast@^3.0.3":
   version "3.0.10"
   resolved "https://registry.yarnpkg.com/@types/mdast/-/mdast-3.0.10.tgz#4724244a82a4598884cbbe9bcfd73dff927ee8af"
   integrity sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==
@@ -6136,7 +6136,7 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
 
-extend@^3.0.0:
+extend@^3.0.0, extend@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
   integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
@@ -6709,6 +6709,11 @@ github-slugger@^1.0.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/github-slugger/-/github-slugger-1.4.0.tgz#206eb96cdb22ee56fdc53a28d5a302338463444e"
   integrity sha512-w0dzqw/nt51xMVmlaV1+JRzN+oCa1KfcgGEWhxUG16wbdA+Xnt/yoFO8Z8x/V82ZcZ0wy6ln9QDup5avbhiDhQ==
+
+github-slugger@^1.2.1:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/github-slugger/-/github-slugger-1.5.0.tgz#17891bbc73232051474d68bd867a34625c955f7d"
+  integrity sha512-wIh+gKBI9Nshz2o46B0B3f5k/W+WI9ZAv6y5Dn5WJ5SK1t0TnDimB4WE5rmTD05ZAIn8HALCZVmCsvj0w0v0lw==
 
 glob-parent@^3.1.0:
   version "3.1.0"
@@ -9196,6 +9201,19 @@ mdast-util-to-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/mdast-util-to-string/-/mdast-util-to-string-2.0.0.tgz#b8cfe6a713e1091cb5b728fc48885a4767f8b97b"
   integrity sha512-AW4DRS3QbBayY/jJmD8437V1Gombjf8RSOUCMFBuo5iHi58AGEgVCKQ+ezHkZZDpAQS75hcBMpLqjpJTjtUL7w==
+
+mdast-util-toc@^5.0.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/mdast-util-toc/-/mdast-util-toc-5.1.0.tgz#3af0f9c9a764b993538af03f1f79f4e3cec22736"
+  integrity sha512-csimbRIVkiqc+PpFeKDGQ/Ck2N4f9FYH3zzBMMJzcxoKL8m+cM0n94xXm0I9eaxHnKdY9n145SGTdyJC7i273g==
+  dependencies:
+    "@types/mdast" "^3.0.3"
+    "@types/unist" "^2.0.3"
+    extend "^3.0.2"
+    github-slugger "^1.2.1"
+    mdast-util-to-string "^2.0.0"
+    unist-util-is "^4.0.0"
+    unist-util-visit "^2.0.0"
 
 mdn-data@2.0.14:
   version "2.0.14"
@@ -12235,6 +12253,14 @@ remark-squeeze-paragraphs@^4.0.0:
   integrity sha512-8qRqmL9F4nuLPIgl92XUuxI3pFxize+F1H0e/W3llTk0UsjJaj01+RrirkMw7P21RKe4X6goQhYRSvNWX+70Rw==
   dependencies:
     mdast-squeeze-paragraphs "^4.0.0"
+
+remark-toc@7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/remark-toc/-/remark-toc-7.2.0.tgz#1c5159e9091826150db14c97ac00c2ad5a7f1523"
+  integrity sha512-ppHepvpbg7j5kPFmU5rzDC4k2GTcPDvWcxXyr/7BZzO1cBSPk0stKtEJdsgAyw2WHKPGxadcHIZRjb2/sHxjkg==
+  dependencies:
+    "@types/unist" "^2.0.3"
+    mdast-util-toc "^5.0.0"
 
 remark-video@./remarks/remark-video:
   version "0.0.1"
