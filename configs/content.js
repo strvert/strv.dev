@@ -7,6 +7,7 @@ const content = {
     },
     remarkPlugins: [
       'remark-math',
+      ['remark-toc', {heading: "目次"}],
       'remark-directive',
       [
         'remark-directive-webcomponents',
