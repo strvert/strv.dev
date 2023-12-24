@@ -1,1 +1,0 @@
-window.__NUXT__=(function(a){return {staticAssetsBase:"\u002F_nuxt\u002Fstatic\u002F1671350892",layout:"default",error:a,serverRendered:true,routePath:"\u002Fblog\u002Funrealengine--about-the-if-material-node-in-hlsl",config:{_app:{basePath:"\u002F",assetsPath:"\u002F_nuxt\u002F",cdnURL:a},content:{dbHash:"d6d63f66"}},_asyncData:{},_errors:{}}}(null));
