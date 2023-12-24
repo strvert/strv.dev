@@ -457,8 +457,8 @@ FORCENOINLINE FScreenPassTexture FStaticMeshRendererSceneViewExtension::AfterTon
 }
 ```
 
-ここでは、 `SubscribeToPostProcessingPass()` をオーバーライドして、 `AfterTonePass` のタイミングにパスの追加処理を行うようにしています。
-パスの追加処理では、 RDG が提供している `AddDrawScreenPass()` というスクリーンパス(画面全体に対して処理をするPixelShaderが主役のパス)向けの追加関数を使うことで、簡潔に追加処理を記述できています。
+ここでは、 `SubscribeToPostProcessingPass()` をオーバーライドして、 ポスプロの`ToneMap` のタイミングにパスの処理を行うようにしています。
+パスの処理では、 RDG が提供している `AddDrawScreenPass()` というスクリーンパス(画面全体に対して処理をするPixelShaderが主役のパス)向けの追加関数を使うことで、簡潔に追加処理を記述できています。
 `Context` は、多数の SceneViewExtension の中からこの Extension を選択するためのマーカーとして実装しています。
 
 Module の Startup で Extension を登録するようにしておきます。
