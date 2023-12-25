@@ -1,5 +1,5 @@
 ---
-title: '単一 Static Meshレンダラを実装する (FPreviewScene編)'
+title: '単一 Static Meshレンダラを FPreviewScene で実装する'
 description: 'アイテムの描画とか、一つだけのメッシュをレンダリングするのに便利なツールを実装してみる記事'
 enforceCreatedAt: 2023/12/24
 enforceUpdatedAt: 2023/12/24
