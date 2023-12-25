@@ -18,7 +18,7 @@ advent_calendar:
 
 # Introduction
 
-この記事は、昨日投稿した記事、『[単一 Static Meshレンダラを実装する (FPreviewScene編)](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer)』の続編です。
+この記事は、昨日投稿した記事、『[単一 Static Meshレンダラを FPreviewScene で実装する](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer)』の続編です。
 昨日の記事では、FPreviewScene という機能を利用し、裏に別の World / Scene を用意して、そちらでメッシュをレンダリングする実験をしました。
 
 前回の手法には課題も多かったので、より単独メッシュのレンダリングに特化した独自のメッシュパスを追加することで、高速にメッシュ画像を得る記事を書こうと思いました。
@@ -78,7 +78,7 @@ UE の Material は、ノードベースでシェーダーを書けるように�
 UE には、レンダリング処理にメッシュ情報を渡すための処理を行う `FVertexFactory` というクラスがあります。 `FMeshMaterialShader` は、 `FVertexFactory` が提供する頂点バッファ情報やレイアウト情報をシェーダーのパラメータとしてバインディングすることができます。
 
 # シェーダーのコンパイル設定
-`FShader` の派生を実装するとき、そのシェーダーのコンパイル設定を行いたいことがあります。たとえば、.ush / .ush 内のマクロの定義を変更したいとか、 コンパイル結果の検証を追加したいとかです。
+`FShader` の派生を実装するとき、そのシェーダーのコンパイル設定を行いたいことがあります。たとえば、.ush / .usf 内のマクロの定義を変更したいとか、 コンパイル結果の検証を追加したいとかです。
 そのような場合には、 `FShader` の以下の static メンバ関数をオーバーライドすることができます。
 
 ```cpp title=Shader.h
