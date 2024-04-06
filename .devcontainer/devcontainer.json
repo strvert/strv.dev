@@ -1,0 +1,8 @@
+{
+    "name": "strv.dev",
+    "build": {
+        "dockerfile": "./Dockerfile"
+    },
+    "postCreateCommand": "yarn install",
+    "containerUser": "ubuntu"
+}
