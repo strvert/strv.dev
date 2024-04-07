@@ -6,10 +6,6 @@
   "engines": {
     "node": "17.x"
   },
-  "nuxt": {
-    "host": "0.0.0.0",
-    "port": "3000"
-  },
   "scripts": {
     "dev": "NODE_OPTIONS=--openssl-legacy-provider nuxt dev",
     "export": "NODE_OPTIONS=--openssl-legacy-provider BASE_URL=https://strv.dev nuxt export",
