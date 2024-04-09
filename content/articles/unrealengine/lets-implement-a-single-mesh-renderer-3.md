@@ -39,7 +39,7 @@ assets: '/article-assets/unrealengine/lets-implement-a-single-mesh-renderer-3'
 
 # 目次
 
-# レンダラの実装
+# 軽量な単一 StaticMesh レンダラの実装
 UE の デスクトップやハイエンドコンソール向けのレンダリング機能は、 `FDeferredShadingSceneRenderer` というクラスを中心に構成されています。このクラスは、名前の通り Deferred Rendering による描画機能を提供します。しかし、Deferred Rendering は多数のメッシュや光源を描画したり、高度なポストプロセスを適用したりするのには有益ですが、今回のようなシンプルな単一メッシュの描画には不要かもしれません。そこで、今回はデフォルトのレンダラを使わず、単一のパスでライティングまでを行う Forward Rendering によるレンダラを実装してみます。また、 UWorld や FScene といったシーン表現もオーバースペックなので利用せず、StaticMesh アセットを直接処理して描画することにします。
 
 
@@ -60,7 +60,7 @@ public:
 	// コンストラクタ。FSceneViewFamilyを受け取る
 	explicit FTinyRenderer(const FSceneViewFamily& InViewFamily);
 	// StaticMesh およびその変換行列を設定する
-	void SetStaticMesh(UStaticMesh* InStaticMesh, const FMatrix& InTransform);
+	void SetStaticMesh(UStaticMesh* InStaticMesh, const int32 InLODIndex, const FMatrix& InTransform);
 	// 描画命令を発行する
 	void Render(FRDGBuilder& GraphBuilder);
 
@@ -94,6 +94,7 @@ private:
 	FSceneUniformBuffer SceneUniforms;
 	TWeakObjectPtr<UStaticMesh> StaticMesh;
 	FMatrix LocalToWorld;
+	int32 LODIndex;
 };
 ```
 
@@ -165,7 +166,7 @@ void FTinyRenderer::RenderBasePass(FRDGBuilder& GraphBuilder, const FTinySceneTe
 	// StaticMesh から MeshBatch を作成
 	TArray<FMeshBatch> MeshBatches;
 	FMeshBatchesRequiredFeatures RequiredFeatures;
-	if (!CreateMeshBatch(Mesh, 0, MeshBatches, RequiredFeatures))
+	if (!CreateMeshBatch(Mesh, LODIndex, MeshBatches, RequiredFeatures))
 	{
 		UE_LOG(LogTinyRenderer, Warning, TEXT("Failed to create mesh batch"));
 		return;
@@ -331,9 +332,10 @@ UE のマテリアルはビジュアルシェーダー言語であるため、�
 ここでは StaticMesh が利用する頂点ファクトリである `FLocalVertexFactory` を前提として MeshBatch を作成しています。
 
 ## GPUScene のためのパラメータをセットアップする
-GPUScene とは、GPU 側にプリミティブの配置情報などのシーン情報を表すバッファを持つことで、一度のドローコールで複数のメッシュを描画したりできる機能です。特に、同一のプリミティブを多数描画する場合などに命令をまとめ、描画コストを削減することができます。いわゆる GPU Instancing と呼ばれるものなどはこれによって実現されています。
+GPUScene は、GPU 側にプリミティブやそのインスタンスの配置情報を表すバッファを持つことで、プリミティブの GPU への送信回数を最適化したり、一度のドローコールで複数のメッシュを描画したりできるようにする機能です。
+StaticMesh のキャッシングや、いわゆる GPU Instancing と呼ばれるものなどはこれによって実現されています。
 
-今回のレンダラは単一メッシュなのに、どうして GPUScene をセットアップするんだ？　という疑問はごもっともです。実際、機能としては必要ありません。ただ、UE の StaticMesh 描画実装をうまく流用して実装を行おうとすると GPUScene を利用しないほうが複雑になるため、 1 プリミティブ 1 インスタンスの GPUScene をセットアップすることにしました。
+今回のレンダラはキャッシュ等を行わないし単一メッシュなのに、どうして GPUScene をセットアップするんだ？　という疑問はごもっともです。実際、機能としては必要ありません。ただ、UE の StaticMesh 描画実装をうまく流用して実装を行おうとすると GPUScene を利用しないほうが複雑になるため、 1 プリミティブ 1 インスタンスの GPUScene をセットアップすることにしました。
 
 なお、FLocalVertexFactory の派生ファクトリを作成し、Shader のコンパイルパラメータを変更してから利用させることで、 GPUScene を利用しないようにすることも可能ではあります。FLocalVertexFactory をそのまま利用する場合には、GPUScene の利用がプラットフォームと Feature Level で自動的に決定されてしまいます。
 
@@ -441,6 +443,7 @@ namespace TinyRendererShader
 	static void ModifyCompilationEnvironment(const FMaterialShaderPermutationParameters& Parameters,
 	                                         FShaderCompilerEnvironment& OutEnvironment)
 	{
+		/* GPUScene は利用するが、InstanceCulling は不要 */
 		OutEnvironment.SetDefine(TEXT("USE_INSTANCE_CULLING_DATA"), 0);
 		OutEnvironment.SetDefine(TEXT("USE_INSTANCE_CULLING"), 0);
 	}
@@ -532,9 +535,14 @@ struct FTinyRendererVSToPS
 void MainVS(FVertexFactoryInput Input, out FTinyRendererVSToPS Output)
 {
 	ResolvedView = ResolveView();
+	
 
 	/* GPUScene から現在の処理対象のインスタンスの情報を取得 */
-	const FVertexFactoryIntermediates VFIntermediates = GetVertexFactoryIntermediates(Input);
+	FVertexFactoryIntermediates VFIntermediates = GetVertexFactoryIntermediates(Input);
+	
+	/* InstanceCullingData を Off にしていると、以下のフラグが常に false になってしまい、マテリアルが要求しても WPO が評価されない */
+	/* このフラグが true でも、マテリアルが要求していない場合は WPO は評価されないので負荷の心配は不要 */
+	VFIntermediates.bEvaluateWorldPositionOffset = true;
 	
 	const float4 WorldPositionExcludingWPO = VertexFactoryGetWorldPosition(Input, VFIntermediates);
 	float4 WorldPos = WorldPositionExcludingWPO;
@@ -559,6 +567,9 @@ void MainVS(FVertexFactoryInput Input, out FTinyRendererVSToPS Output)
 
 有り体に言えば、 `GetMaterialWorldPositionOffset` の値はマテリアルグラフで `WorldPositionOffset` に繋いだワイヤーの値がそのまま出てくるということです。
 
+また、 GPUScene を有効にしているにもかかわらず InstanceCulling 機能を Off にしていると、 Primitive の InstanceCulling フラグが常に 0 になってしまい、マテリアルが要求しても WorldPositionOffset が評価されないという問題があります。
+このため、シェーダー側で bEvaluateWorldPositionOffset を強制的に true にしています。ただし、マテリアルが要求していない場合は WPO は評価されないため、負荷の心配は不要です。
+
 ### 独自メッシュ描画パス処理のピクセルシェーダー実装
 続いて、ピクセルシェーダーの実装です。
 
@@ -570,19 +581,6 @@ void MainVS(FVertexFactoryInput Input, out FTinyRendererVSToPS Output)
 #include "/Engine/Private/ShadingModelsMaterial.ush"
 #include "/Engine/Generated/VertexFactory.ush"
 #include "/Engine/Private/DeferredLightingCommon.ush"
-
-/* Pixel Shader で使用するデータ */
-FLightAccumulator LightAccumulator_SimpleAdd(FLightAccumulator A, FLightAccumulator B)
-{
-	FLightAccumulator Sum = (FLightAccumulator)0;
-	Sum.TotalLight = A.TotalLight + B.TotalLight;
-	Sum.ScatterableLightLuma = A.ScatterableLightLuma + B.ScatterableLightLuma;
-	Sum.ScatterableLight = A.ScatterableLight + B.ScatterableLight;
-	Sum.EstimatedCost = A.EstimatedCost + B.EstimatedCost;
-	Sum.TotalLightDiffuse = A.TotalLightDiffuse + B.TotalLightDiffuse;
-	Sum.TotalLightSpecular = A.TotalLightSpecular + B.TotalLightSpecular;
-	return Sum;
-}
 
 /* Pixel Shader */
 void MainPS(
@@ -645,13 +643,10 @@ void MainPS(
 	}
 	half3 DiffuseColor = GBuffer.DiffuseColor * 0.05f;
 
-	/* ディレクショナルライトの影響を計算 */
-	FLightAccumulator DirectLighting = (FLightAccumulator)0;
-	LightAccumulator_AddSplit(DirectLighting, DiffuseColor, 0.0f, DiffuseColor, 1.0f, false);
-
 	half3 CameraVector = -MaterialParameters.CameraVector;
 	float DirectionalLightShadow = 1.0f;
 
+	/* Directional Light の設定 */
 	FDeferredLightData LightData = (FDeferredLightData)0;
 	{
 		LightData.Color = float3(1, 1, 1);
@@ -663,12 +658,12 @@ void MainPS(
 		LightData.HairTransmittance = InitHairTransmittanceData();
 	}
 	half4 LightAttenuation = 1.0f;
-	FLightAccumulator NewLighting = AccumulateDynamicLighting(WorldPosition, CameraVector, GBuffer,
+	/* ライティングを計算 */
+	FLightAccumulator DirectionalLighting = AccumulateDynamicLighting(WorldPosition, CameraVector, GBuffer,
 	                                                          1, ShadingModelID, LightData,
 	                                                          LightAttenuation, 0, uint2(0, 0),
 	                                                          DirectionalLightShadow);
-	DirectLighting = LightAccumulator_SimpleAdd(DirectLighting, NewLighting);
-	half3 Color = DirectLighting.TotalLight;
+	half3 Color = DirectionalLighting.TotalLight;
 
 	/* 最後にエミッシブカラーを加算 */
 	half3 Emissive = GetMaterialEmissive(PixelMaterialInputs);
@@ -679,14 +674,336 @@ void MainPS(
 }
 ```
 
-このピクセルシェーダーは、UE のモバイル向けレンダラを参考に、固定された DirectionalLight による照明のみを行うように実装したシンプルなものです。
-エンジンのために便利なユーティリティが多数用意されているため、照明計算やマテリアルのパラメータ取得なども比較的簡単に行うことができます。
+このピクセルシェーダーは、UE のモバイル向け BasePass を参考に、固定された DirectionalLight による照明のみを行うようにしたシンプルなものです。単一メッシュであるため、反射や GI などの機能も無視することができます。
+エンジンのために便利なユーティリティが多数用意されているため、照明計算やマテリアルのパラメータ取得なども比較的簡単に行うことができます。シェーディングモデルなども流用可能です。また、そのようにすることで、UE の標準レンダリング機能と近い見た目を提供することができます。
 
 `GetMaterialPixelParameters` は、頂点シェーダーで取得した情報をもとに、マテリアルが生成したピクセルシェーダー用のコードを呼び出し、その結果を取得するための関数です。これにより、マテリアルのピクセルシェーダー向け出力を取得することができます。
+ほかにもいくつかマテリアルからの出力を取得して利用しています。
 
-また、この Pixel
+### シェーダーの登録と RDG によるパラメータ定義
+作成したシェーダーの C++ 定義と USF 実装を関連付けて登録します。また、シェーダーが利用するパラメータ構造体を RDG が提供するマクロを使って定義します。
+
+```cpp
+/* TinyRenderer の頂点シェーダーとピクセルシェーダーの実装 (.usf ファイル) と C++ 定義を関連付けて登録 */
+IMPLEMENT_MATERIAL_SHADER_TYPE(, FTinyRendererShaderVS,
+                                 TEXT("/StaticMeshRenderer/Private/TinyRendererShader.usf"),
+                                 TEXT("MainVS"), SF_Vertex);
+IMPLEMENT_MATERIAL_SHADER_TYPE(, FTinyRendererShaderPS,
+                                 TEXT("/StaticMeshRenderer/Private/TinyRendererShader.usf"),
+                                 TEXT("MainPS"), SF_Pixel);
+
+/* TinyRenderer のシェーダーが利用するパラメータ構造体を定義 */
+BEGIN_SHADER_PARAMETER_STRUCT(FTinyRendererShaderParameters,)
+	SHADER_PARAMETER_STRUCT_REF(FViewUniformShaderParameters, View)
+	SHADER_PARAMETER_RDG_UNIFORM_BUFFER(FSceneUniformParameters, Scene)
+	SHADER_PARAMETER_STRUCT_INCLUDE(FInstanceCullingDrawParams, InstanceCullingDrawParams)
+
+	RENDER_TARGET_BINDING_SLOTS()
+END_SHADER_PARAMETER_STRUCT()
+```
+
+これにより、C++ の定義クラスと USF の実装が関連付けられるため、 C++ 定義クラスを使ってシェーダーを指定したり、 RDG のパラメータ構造体を使ってシェーダーにパラメータを渡すことができるようになります。
+特に RDG のマクロによるパラメータ定義は便利です。主機能としては C++ 構造体を定義するマクロなのですが、同時にパラメータの名前やシェーダー側での参照名などのメタデータを定義してくれます。
+手動でシェーダーへのパラメータのバインディングを書かなくても、RDG パスへパラメータ構造体として渡すだけで、名前や型をもとにバインディングやライフタイム管理を行ってくれます。
+
+上で一度みたコードですが、パラメータ構造体を RDG のパスにわたしている部分のコードを再度見てみます。
+```cpp
+// パラメータ構造体の確保を行う
+FTinyRendererShaderParameters* PassParameters = GraphBuilder.AllocParameters<FTinyRendererShaderParameters>();
+// パラメータ構造体にパラメータをセット
+PassParameters->View = View->ViewUniformBuffer;
+PassParameters->Scene = SceneUniforms.GetBuffer(GraphBuilder);
+// RenderTargets は RENDER_TARGET_BINDING_SLOTS マクロで定義されたスロットを指している。
+PassParameters->RenderTargets[0] = FRenderTargetBinding(SceneTextures.SceneColorTexture,
+														ERenderTargetLoadAction::EClear);
+PassParameters->RenderTargets.DepthStencil = FDepthStencilBinding(SceneTextures.SceneDepthTexture,
+																	ERenderTargetLoadAction::EClear,
+																	ERenderTargetLoadAction::ELoad,
+																	FExclusiveDepthStencil::DepthWrite_StencilWrite);
+// パラメータ構造体 (PassParameters) を RDG のパスに渡す。これだけで RDG がシェーダーへのパラメータのバインディングやライフタイム管理を行ってくれる
+AddSimpleMeshPass(
+	GraphBuilder, PassParameters, nullptr, *View, nullptr,
+	RDG_EVENT_NAME("TinyRendererBasePass"),
+	View->UnscaledViewRect, ERDGPassFlags::Raster,
+	[View, MeshBatches](FDynamicPassMeshDrawListContext* DynamicMeshPassContext)
+	{
+		// 省略。パスの実装
+	});
+```
+
+特にリソース管理を人間が書かなくていいのは大きな利点と言えるでしょう。 注意点として、RDG が管理しているリソース(特に ~Ref みたいな型のリソース)はパスの外側ではまだ確保されていないことが普通です。そのため、リソースの実体にアクセスするためには AddPass や AddSimpleMeshPass などのパス実装の中で行う必要があります。
+RDG はパスとそれが必要とするリソースを紐づけて管理することで、リソースを最適化するため、。
+
+つまり、RDG で定義したパラメータ構造体を RDG パスに渡すというのは、構造体に含まれるリソースをメタデータをもとに列挙させ、必要に応じてリソースを確保・解放してもらうということになります。
 
 ## MeshBatch の描画命令を発行する MeshPassProcessor 
-作成した MeshBatch  
+さて、CPU 側でのメッシュの準備と、GPU 側でそれを処理するシェーダーが準備できたので、それらを使って描画パスを発行する MeshPassProcessor を作成します。
 
-# 使い方
+### FTinyRendererBasePassMeshProcessor
+
+```cpp
+class FTinyRendererBasePassMeshProcessor : public FMeshPassProcessor
+{
+public:
+	FTinyRendererBasePassMeshProcessor(const FSceneView* InView,
+	                                   FMeshPassDrawListContext* InDrawListContext)
+		: FMeshPassProcessor(nullptr, InView->GetFeatureLevel(), InView, InDrawListContext),
+		  FeatureLevel(InView->GetFeatureLevel())
+	{
+		/* メッシュ描画時の RenderState を設定。パイプラインの挙動を制御することになる */
+		PassDrawRenderState.SetBlendState(TStaticBlendState<>::GetRHI());
+		PassDrawRenderState.SetDepthStencilAccess(FExclusiveDepthStencil::DepthWrite_StencilWrite);
+		PassDrawRenderState.SetDepthStencilState(TStaticDepthStencilState<>::GetRHI());
+	}
+
+	/* この MeshPassProcessor を通じて指定された MeshBatch のメッシュ描画コマンドをコマンドリストに追加する処理 */
+	bool TryAddMeshBatch(const FMeshBatch& MeshBatch,
+	                     const uint64 BatchElementMask,
+	                     const FPrimitiveSceneProxy* PrimitiveSceneProxy,
+	                     const FMaterial& MaterialResource,
+	                     const FMaterialRenderProxy& MaterialRenderProxy,
+	                     const int32 StaticMeshId)
+	{
+		/* MeshBatch が利用する VertexFactory を取得 */
+		const FVertexFactory* VertexFactory = MeshBatch.VertexFactory;
+		TMeshProcessorShaders<FTinyRendererShaderVS, FTinyRendererShaderPS> TinyRenderPassShaders;
+
+		/* MeshBatch が利用する ShaderType を登録 */
+		FMaterialShaderTypes ShaderTypes;
+		ShaderTypes.AddShaderType<FTinyRendererShaderVS>();
+		ShaderTypes.AddShaderType<FTinyRendererShaderPS>();
+
+		/* 上で登録した ShaderType と MeshBatch に割り当てられたマテリアルをもとに、実際に利用するシェーダーコードたちを取得 */
+		FMaterialShaders Shaders;
+		if (const FVertexFactoryType* VertexFactoryType = VertexFactory->GetType();
+			!MaterialResource.TryGetShaders(ShaderTypes, VertexFactoryType, Shaders))
+		{
+			return false;
+		}
+
+		/* 頂点シェーダーとピクセルシェーダーを取得 */
+		Shaders.TryGetVertexShader(TinyRenderPassShaders.VertexShader);
+		Shaders.TryGetPixelShader(TinyRenderPassShaders.PixelShader);
+
+		/* メッシュ描画時の RenderState を設定 */
+		const FMeshPassProcessorRenderState DrawRenderState(PassDrawRenderState);
+
+		FMeshMaterialShaderElementData ShaderElementData;
+		ShaderElementData.InitializeMeshMaterialData(ViewIfDynamicMeshCommand, PrimitiveSceneProxy,
+		                                             MeshBatch, StaticMeshId, true);
+
+		const FMeshDrawCommandSortKey SortKey = CalculateMeshStaticSortKey(
+			TinyRenderPassShaders.VertexShader, TinyRenderPassShaders.PixelShader);
+
+		/* ラスタライザの FillMode と CullMode を設定 */
+		const FMeshDrawingPolicyOverrideSettings OverrideSettings = ComputeMeshOverrideSettings(MeshBatch);
+		const ERasterizerFillMode MeshFillMode = ComputeMeshFillMode(MaterialResource, OverrideSettings);
+		const ERasterizerCullMode MeshCullMode = ComputeMeshCullMode(MaterialResource, OverrideSettings);
+
+		/* MeshBatch に対応する描画コマンドを作成し、内部でコマンドリストに追加 */
+		BuildMeshDrawCommands(
+			MeshBatch,
+			BatchElementMask,
+			PrimitiveSceneProxy,
+			MaterialRenderProxy,
+			MaterialResource,
+			DrawRenderState,
+			TinyRenderPassShaders,
+			MeshFillMode,
+			MeshCullMode,
+			SortKey,
+			EMeshPassFeatures::Default,
+			ShaderElementData);
+		return true;
+	}
+
+	virtual void AddMeshBatch(const FMeshBatch& MeshBatch,
+	                          const uint64 BatchElementMask,
+	                          const FPrimitiveSceneProxy* PrimitiveSceneProxy,
+	                          const int32 StaticMeshId = -1) override
+	{
+		const FMaterialRenderProxy* MaterialRenderProxy = MeshBatch.MaterialRenderProxy;
+
+		while (MaterialRenderProxy)
+		{
+			if (const FMaterial* MaterialResource = MaterialRenderProxy->GetMaterialNoFallback(FeatureLevel);
+				MaterialResource && TryAddMeshBatch(MeshBatch, BatchElementMask, PrimitiveSceneProxy,
+				                                    *MaterialResource, *MaterialRenderProxy, StaticMeshId))
+			{
+				break;
+			}
+			/* 最初に取得したマテリアルが利用できなかったりコマンドの作成に失敗した場合は、Fallback のマテリアルを試す。
+			   Fallback のマテリアルがない場合には nullptr が返るので、ループを抜ける */
+			MaterialRenderProxy = MaterialRenderProxy->GetFallback(FeatureLevel);
+		}
+	}
+
+private:
+	FMeshPassProcessorRenderState PassDrawRenderState;
+	ERHIFeatureLevel::Type FeatureLevel;
+};
+```
+
+MeshPassProcessor は、UE が提供する `FMeshPassProcessor` を継承して作成するもので、シェーダーとそのパラメータをもとにメッシュ描画コマンドを発行します。詳細は[前回記事](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer-2/#メッシュレンダリング)および[公式ドキュメント](https://dev.epicgames.com/documentation/ja-jp/unreal-engine/mesh-drawing-pipeline-in-unreal-engine#fmeshpassprocessor)を参考にしてください。
+ここで発行されたメッシュ描画コマンドが、更に RHI コマンド、プラットフォーム API へと変換され GPU に送信されることで描画が行われます。
+
+`FMeshPassProcessor` には GPU のメッシュ描画バイプラインを設定するための便利な機能が多数用意されています。DepthStencil、BlendState、FillMode、CullMode などの設定を行うことで、描画の挙動を制御することができます。
+また、上記の実装では、USF によるシェーダー実装とマテリアルをあわせて利用する方法も示されています。
+
+# BP ラッパーの作成
+作成したレンダラを BP から利用するためのラッパーを作成します。
+基本的には単なる BP 向けクラスなのですべては解説しませんが、特に参考になりそうな部分のみ解説します。
+
+## API の定義
+以下のような単純な API の BP クラスを作成しました。
+
+```cpp
+UCLASS(BlueprintType)
+class STATICMESHRENDERER_API UTinyRenderer : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UTinyRenderer();
+
+	/* レンダーターゲットを指定して TinyRenderer を作成 */
+	UFUNCTION(BlueprintCallable, Category = "Tiny Renderer",
+		meta = (AutoCreateRefTerm = "BackgroundColor", WorldContext = "WorldContextObject"))
+	static UTinyRenderer* CreateTinyRenderer(UObject* WorldContextObject,
+	                                         UTextureRenderTarget2D* RenderTarget);
+
+	/* 描画する StaticMesh をセット */
+	UFUNCTION(BlueprintCallable, Category = "Static Mesh Renderer")
+	void SetStaticMesh(UStaticMesh* InStaticMesh, const int32 LODIndex, const FTransform& InTransform);
+
+	/* 描画を行う */
+	UFUNCTION(BlueprintCallable, Category = "Static Mesh Renderer")
+	void Render();
+
+	/* カメラの設定 */
+	UPROPERTY(BlueprintReadWrite, Category = "Static Mesh Renderer")
+	FMinimalViewInfo ViewInfo;
+
+private:
+	// 省略
+};
+```
+
+
+## カメラ設定 (FMinimalViewInfo) から ViewFamily の構築
+UE では、描画には ViewFamily という構造体が必要です。今回作成したレンダラでも、共通した ViewFamily の設定に基づいて描画を行うように実装していました。
+ViewFamily を構築するにあたっても、よく利用するカメラ設定と共通の項目で設定できたほうが便利です。そこで、 `FMinimalViewInfo` という構造体を設定項目として受け付けるようにしました。
+
+`FMimalViewInfo` も UE が提供している View 設定の構造体で、以下のような内容を持ちます。
+
+```cpp
+struct FMinimalViewInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+	/** Location */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Camera)
+	FVector Location;
+
+	/** Rotation */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Camera)
+	FRotator Rotation;
+
+	/** The horizontal field of view (in degrees) in perspective mode (ignored in orthographic mode). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Camera)
+	float FOV;
+
+	/** The originally desired horizontal field of view before any adjustments to account for different aspect ratios */
+	UPROPERTY(Transient)
+	float DesiredFOV;
+
+	/** The desired width (in world units) of the orthographic view (ignored in Perspective mode) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Camera)
+	float OrthoWidth;
+
+	... 以下省略
+```
+
+このように、よく見る UE のカメラ設定と同じような項目を持っていることがわかります。
+
+### UTinyRenderer::Renderer
+UTinyRenderer は、内部で FTinyRenderer オブジェクトを保持しています。 UTinyRenderer::Renderer では FTinyRenderer の Render を呼び出すことで描画を行いますが、それ以外にも ViewFamily の初期化や RDGBuilder の作成と実行といった重要な処理を行っています。
+
+```cpp
+void UTinyRenderer::Render()
+{
+	SCOPED_NAMED_EVENT(UTinyRenderer_Render, FColor::Green);
+	
+	if (!StaticMesh || !RenderTarget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UStaticMeshRenderBP::RenderStaticMesh: Invalid parameters"));
+		return;
+	}
+
+	/* RenderTaget から 描画リソースを取得 */
+	const FTextureRenderTargetResource* RenderTargetResource = RenderTarget->GameThread_GetRenderTargetResource();
+
+
+	/* ViewFamily オブジェクトの作成 */
+	FSceneViewFamily::ConstructionValues ConstructionValues(RenderTargetResource, nullptr, FEngineShowFlags(ESFIM_Game));
+	ConstructionValues.SetTime(FGameTime::GetTimeSinceAppStart());
+	TUniquePtr<FSceneViewFamilyContext> ViewFamily = MakeUnique<FSceneViewFamilyContext>(ConstructionValues);
+
+	/* ScreenPercentage の無効化 */
+	ViewFamily->EngineShowFlags.ScreenPercentage = false;
+	ViewFamily->SetScreenPercentageInterface(new FLegacyScreenPercentageDriver(*ViewFamily, 1.0f));
+
+	/* MinimalViewInfo から ViewInitOptions を作成 */
+	const FIntRect ViewRect(0, 0, RenderTarget->SizeX, RenderTarget->SizeY);
+	FSceneViewInitOptions ViewInitOptions;
+	ViewInitOptions.SetViewRectangle(ViewRect);
+	ViewInitOptions.ViewFamily = ViewFamily.Get();
+	ViewInitOptions.ViewOrigin = ViewInfo.Location;
+	ViewInitOptions.ViewRotationMatrix = FMatrix(
+		{0, 0, 1, 0},
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 0, 1});
+	ViewInitOptions.FOV = ViewInfo.FOV;
+	ViewInitOptions.DesiredFOV = ViewInfo.FOV;
+	/* 投影行列を計算し、ViewInitOptions に設定 */
+	FMinimalViewInfo::CalculateProjectionMatrixGivenViewRectangle(ViewInfo,
+	                                                              AspectRatio_MaintainYFOV,
+	                                                              ViewRect,
+	                                                              ViewInitOptions);
+
+	ENQUEUE_RENDER_COMMAND(FStaticMeshRenderCommand)(
+		[ViewFamily = MoveTemp(ViewFamily), LODIndex = LODIndex, ViewInitOptions, StaticMesh = StaticMesh, MeshTransform = Transform](
+		FRHICommandListImmediate& RHICmdList) mutable
+		{
+			SCOPED_NAMED_EVENT(FStaticMeshRenderCommand_Render, FColor::Green);
+
+			/* TinyRenderer オブジェクトの作成 */
+			FTinyRenderer Renderer(*ViewFamily);
+			/* RenderThread で ViewFamily の初期化を完了 */
+			GetRendererModule().CreateAndInitSingleView(RHICmdList, ViewFamily.Get(), &ViewInitOptions);
+
+			/* RDGBuilder の作成 */
+			FRDGBuilder GraphBuilder(RHICmdList,
+			                         RDG_EVENT_NAME("StaticMeshRender"),
+			                         ERDGBuilderFlags::AllowParallelExecute);
+			/* StaticMesh の設定 */
+			Renderer.SetStaticMesh(StaticMesh, LODIndex, MeshTransform.ToMatrixWithScale());
+			
+			/* 作成したレンダラによる描画処理の登録 */
+			Renderer.Render(GraphBuilder);
+
+			/* RDGBuilder による RHI コマンドの発行と実行 */
+			GraphBuilder.Execute();
+		});
+}
+```
+
+BP から設定された MinimalViewInfo には、投影モードや FOV などの情報が含まれています。これをもとに、 FSceneViewInitOptions という View 初期化オプション構造体を作成します。一部は手動で設定する必要がありますが、投影行列の計算といった複雑な部分は `FMinimalViewInfo::CalculateProjectionMatrixGivenViewRectangle` を使って自動的に設定することができます。
+また、これを利用することによって、UE のカメラと同じような挙動をさせることができます。
+
+`ENQUEUE_RENDER_COMMAND` マクロで囲まれた部分は、次の RenderThread 処理で実行するように予約される部分です。 ViewFamily の完全な初期化は RenderThread で行う必要があるため、こちらで書かれています。
+
+また、RGDBuilder や FTinyRenderer のオブジェクトもここで作成しています。これらは毎フレーム作成され、フレームの終了で破棄されるということです。
+最後には RDGBuilder に登録された描画処理を下に RHI コマンドの発行が行われます。
+このように見ると、今回書いたレンダラは RDGBuilder に描画処理の登録を行うものであり、実際のコマンドの発行は RDGBuilder に任せていることがよくわかります。パスに関わるコマンドが一度 RDGBuilder に登録され、最後にまとめてコマンドを発行する仕組みになっていることで、不要な処理の最適化や、任意のリソースがどの期間存在していなければならないかの決定をすることができるのです。
