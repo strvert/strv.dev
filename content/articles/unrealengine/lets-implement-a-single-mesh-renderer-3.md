@@ -1,8 +1,7 @@
 ---
 title: '単一Static Meshレンダラを独自メッシュパスで実装する'
-description: 'アイテムの描画とか、一つだけのメッシュをレンダリングするのに便利なツールを実装してみる記事のその２。独自のメッシュパスを実装して単一パスの軽量なレンダラを書く。'
+description: 'アイテムの描画とか、一つだけのメッシュをレンダリングするのに便利なツールを実装してみる記事のその３。独自のメッシュパスを実装して単一パスの軽量なレンダラを書く。'
 enforceCreatedAt: 2024/04/10
-enforceUpdatedAt: 2024/04/10
 tags:
     - Unreal Engine
     - Unreal C++
@@ -106,13 +105,14 @@ UE の デスクトップやハイエンドコンソール向けのレンダリ�
 レンダラを表すクラスは `FTinyRenderer` であり、以下のように定義されています。
 
 ```cpp
-class FTinyRenderer
+class TINYRENDERER_API FTinyRenderer
 {
 public:
 	// コンストラクタ。FSceneViewFamilyを受け取る
 	explicit FTinyRenderer(const FSceneViewFamily& InViewFamily);
 	// StaticMesh およびその変換行列を設定する
-	void SetStaticMesh(UStaticMesh* InStaticMesh, const int32 InLODIndex, const FMatrix& InTransform);
+	void SetStaticMeshData(UStaticMesh* InStaticMesh, const int32 InLODIndex, const FMatrix& InLocalToWorld,
+	                       const TArray<UMaterialInterface*>& InOverrideMaterials);
 	// 描画命令を発行する
 	void Render(FRDGBuilder& GraphBuilder);
 
@@ -122,7 +122,7 @@ private:
 		FRDGTextureRef SceneColorTexture;
 		FRDGTextureRef SceneDepthTexture;
 	};
-	
+
 	struct FMeshBatchesRequiredFeatures
 	{
 		bool bWorldPositionOffset = false;
@@ -131,26 +131,27 @@ private:
 	FTinySceneTextures SetupSceneTextures(FRDGBuilder& GraphBuilder) const;
 	void RenderBasePass(FRDGBuilder& GraphBuilder, const FTinySceneTextures& SceneTextures);
 
-	bool CreateMeshBatch(UStaticMesh* InStaticMesh,
-	                     const int32 InLODIndex,
-	                     TArray<FMeshBatch>& InMeshBatches,
+	bool CreateMeshBatch(TArray<FMeshBatch>& InMeshBatches,
 	                     FMeshBatchesRequiredFeatures& RequiredFeatures) const;
-	
+
 	FGPUSceneResourceParameters SetupGPUSceneResourceParameters(FRDGBuilder& GraphBuilder,
-	                                                            const FMeshBatchesRequiredFeatures& RequiredFeatures) const;
+	                                                            const FMeshBatchesRequiredFeatures& RequiredFeatures)
+	const;
 
 	void SetGPUSceneResourceParameters(const FGPUSceneResourceParameters& Parameters);
 
 	ERHIFeatureLevel::Type FeatureLevel;
 	const FSceneViewFamily& ViewFamily;
 	FSceneUniformBuffer SceneUniforms;
+
 	TWeakObjectPtr<UStaticMesh> StaticMesh;
 	FMatrix LocalToWorld;
 	int32 LODIndex;
+	TArray<TWeakObjectPtr<UMaterialInterface>> OverrideMaterials;
 };
 ```
 
-UE の他の機能との相互利用性を考慮して、 コンストラクタでは `FSceneViewFamily` を受け取って利用します。また、描画するメッシュや変換行列は `SetStaticMesh` で設定し、描画の実行は `Render` で行います。
+UE の他の機能との相互利用性を考慮して、 コンストラクタでは `FSceneViewFamily` を受け取って利用します。また、描画するメッシュや変換行列は `SetStaticMeshData` で設定し、描画の実行は `Render` で行います。
 
 `FSceneViewFamily` については[こちら](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer/#ue-のレンダリングの登場人物を理解する)を参照してください。
 
@@ -219,7 +220,7 @@ void FTinyRenderer::RenderBasePass(FRDGBuilder& GraphBuilder, const FTinySceneTe
 	// StaticMesh から MeshBatch を作成
 	TArray<FMeshBatch> MeshBatches;
 	FMeshBatchesRequiredFeatures RequiredFeatures;
-	if (!CreateMeshBatch(Mesh, LODIndex, MeshBatches, RequiredFeatures))
+	if (!CreateMeshBatch(MeshBatches, RequiredFeatures))
 	{
 		UE_LOG(LogTinyRenderer, Warning, TEXT("Failed to create mesh batch"));
 		return;
@@ -286,29 +287,26 @@ void FTinyRenderer::RenderBasePass(FRDGBuilder& GraphBuilder, const FTinySceneTe
 
 ```cpp
 /**
- * @param InStaticMesh MeshBatch を作成する StaticMesh
- * @param InLODIndex MeshBatch を作成する StaticMesh の LODIndex
- * @param InMeshBatches 作成した MeshBatch を格納する配列
- * @param RequiredFeatures MeshBatch が描画時に必要とする機能
+ * @param OutMeshBatches 作成した MeshBatch を格納する配列
+ * @param OutRequiredFeatures MeshBatch が描画時に必要とする機能
  * @return MeshBatch が作成できた場合は true、それ以外は false
  */
-bool FTinyRenderer::CreateMeshBatch(UStaticMesh* InStaticMesh, const int32 InLODIndex,
-                                    TArray<FMeshBatch>& InMeshBatches,
-                                    FMeshBatchesRequiredFeatures& RequiredFeatures) const
+bool FTinyRenderer::CreateMeshBatch(TArray<FMeshBatch>& OutMeshBatches,
+                                    FMeshBatchesRequiredFeatures& OutRequiredFeatures) const
 {
-	SCOPED_NAMED_EVENT_F(TEXT("FTinyRenderer::CreateMeshBatch - %s"), FColor::Emerald, *InStaticMesh->GetName());
+	SCOPED_NAMED_EVENT_F(TEXT("FTinyRenderer::CreateMeshBatch - %s"), FColor::Emerald, *StaticMesh->GetName());
 
 	// StaticMesh がコンパイル中の場合は MeshBatch を作成しない
 	// Editor 用チェックであり、非 Editor ビルドでは定数化するので、最適化で消える
-	if (InStaticMesh->IsCompiling())
+	if (StaticMesh->IsCompiling())
 	{
 		return false;
 	}
 
 	// StaticMesh から RenderData を取得。ここに StaticMesh のメッシュデータが格納されている
-	FStaticMeshRenderData* RenderData = InStaticMesh->GetRenderData();
+	FStaticMeshRenderData* RenderData = StaticMesh->GetRenderData();
 
-	const int32 LODResourceIndex = FMath::Min(InLODIndex, RenderData->LODResources.Num() - 1);
+	const int32 LODResourceIndex = FMath::Min(LODIndex, RenderData->LODResources.Num() - 1);
 	if (LODResourceIndex < 0)
 	{
 		return false;
@@ -349,25 +347,32 @@ bool FTinyRenderer::CreateMeshBatch(UStaticMesh* InStaticMesh, const int32 InLOD
 		MeshBatch.SegmentIndex = SectionIndex;
 		MeshBatch.CastShadow = false;
 
+		const UMaterialInterface* OverrideMaterial = OverrideMaterials.IsValidIndex(Section.MaterialIndex)
+			                                             ? OverrideMaterials[Section.MaterialIndex].Get()
+			                                             : nullptr;
+
+		const UMaterialInterface* MaterialInterface = OverrideMaterial
+			                                              ? OverrideMaterial
+			                                              : StaticMesh->GetMaterial(Section.MaterialIndex);
+
 		// マテリアルを取得
-		if (const UMaterialInterface* MaterialInterface = InStaticMesh->GetMaterial(Section.MaterialIndex);
-			BatchElement.NumPrimitives > 0 && MaterialInterface != nullptr)
+		if (BatchElement.NumPrimitives > 0 && MaterialInterface)
 		{
 			const auto MaterialProxy = MaterialInterface->GetRenderProxy();
 			// マテリアルのレンダースレッド表現である MaterialRenderProxy を MeshBatch に MaterialRenderProxy を格納
 			MeshBatch.MaterialRenderProxy = MaterialProxy;
-			InMeshBatches.Add(MeshBatch);
+			OutMeshBatches.Add(MeshBatch);
 
 			const FMaterialRelevance& MaterialRelevance = MaterialInterface->GetRelevance_Concurrent(FeatureLevel);
 			// マテリアルが利用を要求しているレンダリング機能を RequiredFeatures に格納
 			if (MaterialRelevance.bUsesWorldPositionOffset)
 			{
-				RequiredFeatures.bWorldPositionOffset = true;
+				OutRequiredFeatures.bWorldPositionOffset = true;
 			}
 		}
 	}
 
-	if (InMeshBatches.IsEmpty())
+	if (OutMeshBatches.IsEmpty())
 	{
 		return false;
 	}
@@ -915,28 +920,33 @@ MeshPassProcessor は、UE が提供する `FMeshPassProcessor` を継承して�
 
 ```cpp
 UCLASS(BlueprintType)
-class STATICMESHRENDERER_API UTinyRenderer : public UObject
+class UTinyRenderer : public UObject
 {
 	GENERATED_BODY()
 
 public:
 	UTinyRenderer();
 
-	/* レンダーターゲットを指定して TinyRenderer を作成 */
 	UFUNCTION(BlueprintCallable, Category = "Tiny Renderer",
 		meta = (AutoCreateRefTerm = "BackgroundColor", WorldContext = "WorldContextObject"))
 	static UTinyRenderer* CreateTinyRenderer(UObject* WorldContextObject,
 	                                         UTextureRenderTarget2D* RenderTarget);
 
-	/* 描画する StaticMesh をセット */
 	UFUNCTION(BlueprintCallable, Category = "Static Mesh Renderer")
-	void SetStaticMesh(UStaticMesh* InStaticMesh, const int32 LODIndex, const FTransform& InTransform);
+	void SetStaticMesh(UStaticMesh* InStaticMesh, const int32 LODIndex);
 
-	/* 描画を行う */
+	UFUNCTION(BlueprintCallable, Category = "Static Mesh Renderer", meta = (AutoCreateRefTerm = "InTransform"))
+	void SetTransform(const FTransform& InTransform);
+
+	UFUNCTION(BlueprintCallable, Category = "Static Mesh Renderer")
+	void SetOverrideMaterial(UMaterialInterface* InMaterial, int32 InMaterialIndex);
+
+	UFUNCTION(BlueprintCallable, Category = "Static Mesh Renderer")
+	UMaterialInstanceDynamic* CreateAndSetMaterialInstanceDynamic(UMaterialInterface* SourceMaterial, const int32 MaterialIndex);
+
 	UFUNCTION(BlueprintCallable, Category = "Static Mesh Renderer")
 	void Render();
 
-	/* カメラの設定 */
 	UPROPERTY(BlueprintReadWrite, Category = "Static Mesh Renderer")
 	FMinimalViewInfo ViewInfo;
 
@@ -989,7 +999,7 @@ UTinyRenderer は、内部で FTinyRenderer オブジェクトを保持してい
 void UTinyRenderer::Render()
 {
 	SCOPED_NAMED_EVENT(UTinyRenderer_Render, FColor::Green);
-	
+
 	if (!StaticMesh || !RenderTarget)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UStaticMeshRenderBP::RenderStaticMesh: Invalid parameters"));
@@ -1001,7 +1011,8 @@ void UTinyRenderer::Render()
 
 
 	/* ViewFamily オブジェクトの作成 */
-	FSceneViewFamily::ConstructionValues ConstructionValues(RenderTargetResource, nullptr, FEngineShowFlags(ESFIM_Game));
+	FSceneViewFamily::ConstructionValues
+		ConstructionValues(RenderTargetResource, nullptr, FEngineShowFlags(ESFIM_Game));
 	ConstructionValues.SetTime(FGameTime::GetTimeSinceAppStart());
 	TUniquePtr<FSceneViewFamilyContext> ViewFamily = MakeUnique<FSceneViewFamilyContext>(ConstructionValues);
 
@@ -1029,7 +1040,7 @@ void UTinyRenderer::Render()
 	                                                              ViewInitOptions);
 
 	ENQUEUE_RENDER_COMMAND(FStaticMeshRenderCommand)(
-		[ViewFamily = MoveTemp(ViewFamily), LODIndex = LODIndex, ViewInitOptions, StaticMesh = StaticMesh, MeshTransform = Transform](
+		[this, ViewFamily = MoveTemp(ViewFamily), ViewInitOptions](
 		FRHICommandListImmediate& RHICmdList) mutable
 		{
 			SCOPED_NAMED_EVENT(FStaticMeshRenderCommand_Render, FColor::Green);
@@ -1043,9 +1054,10 @@ void UTinyRenderer::Render()
 			FRDGBuilder GraphBuilder(RHICmdList,
 			                         RDG_EVENT_NAME("StaticMeshRender"),
 			                         ERDGBuilderFlags::AllowParallelExecute);
+
 			/* StaticMesh の設定 */
-			Renderer.SetStaticMesh(StaticMesh, LODIndex, MeshTransform.ToMatrixWithScale());
-			
+			Renderer.SetStaticMeshData(StaticMesh, LODIndex, Transform.ToMatrixWithScale(), OverrideMaterials);
+
 			/* 作成したレンダラによる描画処理の登録 */
 			Renderer.Render(GraphBuilder);
 
