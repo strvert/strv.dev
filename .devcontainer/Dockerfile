@@ -14,4 +14,10 @@ RUN echo "ubuntu:ubuntu" | chpasswd && adduser ubuntu sudo
 # no password for sudo
 RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+# Install docker-cli
+RUN curl -fsSL https://get.docker.com -o get-docker.sh
+RUN sh get-docker.sh
+
+EXPOSE 3000
+
 USER ubuntu

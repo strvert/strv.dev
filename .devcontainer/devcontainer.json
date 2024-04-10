@@ -4,5 +4,15 @@
         "dockerfile": "./Dockerfile"
     },
     "postCreateCommand": "yarn install",
-    "containerUser": "ubuntu"
+    "containerUser": "ubuntu",
+    "mounts": [
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    }
 }
