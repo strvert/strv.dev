@@ -1,8 +1,8 @@
 ---
 title: '単一Static Meshレンダラを独自メッシュパスで実装する'
 description: 'アイテムの描画とか、一つだけのメッシュをレンダリングするのに便利なツールを実装してみる記事のその２。独自のメッシュパスを実装して単一パスの軽量なレンダラを書く。'
-enforceCreatedAt: 2024/04/07
-enforceUpdatedAt: 2024/04/07
+enforceCreatedAt: 2024/04/10
+enforceUpdatedAt: 2024/04/10
 tags:
     - Unreal Engine
     - Unreal C++
