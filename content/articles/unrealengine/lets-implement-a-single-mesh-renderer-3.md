@@ -44,6 +44,8 @@ assets: '/article-assets/unrealengine/lets-implement-a-single-mesh-renderer-3'
 
 背景色は RenderTarget の ClearColor で指定したものになるので、背景抜きのことを考えなくても透明に設定するだけではじめから背景無しで描画できます。
 
+試した方は、動いたとか動かなかったとか、もしよければ @strvert までおしえてください。
+
 ## パフォーマンス
 詳しくは [パフォーマンスの検証](#パフォーマンスの検証) に記載していますが、単一メッシュの描画においては、 SceneCapture2D や FPreviewScene といった手段よりもかなり高速に動作します。
 
