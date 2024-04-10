@@ -1135,11 +1135,10 @@ SceneCapture2D は描画したい数だけレベル上に Actor を配置する�
 | --- | --- |
 | TinyRenderer | 43.0 FPS |
 | FPreviewScene | 2.2 FPS |
-| SceneCapture2D | 100 個配置してRenderTarget設定するの作るの面倒すぎて検証してない |
+| SceneCapture2D | 100 個配置してRenderTarget設定するやつ作るの面倒すぎて検証してない |
 
 やはり、 FPS にも大きな差が出ました。TinyRenderer は 2万ポリゴン近いメッシュを 100 個描画しても 40 FPS 程度で安定しているので、軽量なメッシュをインベントリで並べて表示するくらいの用途では十分な速度が得られると思われます。
-いっぽう、 [FPreviewScene](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer/#独自の専用シーンを用意できないか) は設定によって SceneCapture2D よりは軽量であるはずですが、あまり実用的な結果にはなりませんでした。
-仮に
+いっぽう、 [FPreviewScene](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer/#独自の専用シーンを用意できないか) は設定によって SceneCapture2D よりは軽量であるはずですが、実用的な速度にはなりませんでした。
 
 # さらなる改善可能性
 
