@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/blog/series", {data:[{}],fetch:{"data-v-05273f2a:0":{serieses:[],completed:true}},mutations:void 0});
