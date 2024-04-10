@@ -43,8 +43,9 @@ assets: '/article-assets/unrealengine/lets-implement-a-single-mesh-renderer-3'
 ![](#/lamp.png)
 
 背景色は RenderTarget の ClearColor で指定したものになるので、背景抜きのことを考えなくても透明に設定するだけではじめから背景無しで描画できます。
+プラグインコンテンツ内に Widget にキューブを描画する[サンプル](https://github.com/strvert/TinyRenderer/tree/master/Content)が含まれているので、そちらも参考にしてください。
 
-試した方は、動いたとか動かなかったとか、もしよければ @strvert までおしえてください。
+試した方は、動いたとか動かなかったとか、もしよければ [@strvert](https://twitter.com/strvert) までおしえてください。
 
 ## パフォーマンス
 詳しくは [パフォーマンスの検証](#パフォーマンスの検証) に記載していますが、単一メッシュの描画においては、 SceneCapture2D や FPreviewScene といった手段よりもかなり高速に動作します。
