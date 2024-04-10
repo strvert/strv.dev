@@ -272,7 +272,7 @@ void FTinyRenderer::RenderBasePass(FRDGBuilder& GraphBuilder, const FTinySceneTe
 `AddSimpleMeshPass` は RDG 向けに提供されている便利な関数で、 MeshPassProcessor を使ったメッシュ描画パスに必要なコンテキストのセットアップを行ってくれます。
 
 ## StaticMesh から直接 MeshBatch を作成する
-通常の UE のシーンでは、 StaticMesh などのアセットを直接シーンに配置されることはありません(できません)。シーンに存在するすべての可視存在は、 `UStaticMeshComponent` など `UPrimitiveComponent` を継承したコンポーネントとして配置されます。StaticMesh などのアセットは、コンポーネントに設定されることで間接的に利用されることになります。
+通常の UE のシーンでは、 StaticMesh などのアセットが直接シーンに配置されることはありません(できません)。シーンに存在するすべての可視存在は、 `UStaticMeshComponent` など `UPrimitiveComponent` を継承したコンポーネントとして配置されます。StaticMesh などのアセットは、コンポーネントに設定されることで間接的に利用されることになります。
 レンダリングプロセスとしても、ゲームスレッドの `UPrimitiveComponent` の持つメソッドをもとに `FPrimitiveSceneProxy` が作成され、それをもとに `FMeshBatch` が作成されるという流れになります。 `FMeshBatch` が作成できれば、あとは `MeshPassProcessor` を使って描画命令を登録するだけで描画が行えます。
 
 ### FTinyRenderer::CreateMeshBatch
