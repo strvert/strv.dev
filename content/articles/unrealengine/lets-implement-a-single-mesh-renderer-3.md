@@ -33,25 +33,72 @@ assets: '/article-assets/unrealengine/lets-implement-a-single-mesh-renderer-3'
  **StaticMesh から出発して独自のメッシュ描画パスを実装してみることは、UE のレンダリング機能を知る入口としても適しています。** 
 
 # プラグインの公開
-この記事の執筆にあたっては、プラグインとして機能を実装しました。プラグインのソースコードは [GitHub]() で公開しています。
-中身の説明はともかくとりあえず使ってみたいという方は、[使い方](#使い方) のセクションまでスキップしてください。
+この記事の執筆にあたっては、TinyRenderer というプラグインとして機能を実装しました。プラグインのソースコードは [GitHub]() で公開しています。
 なお、実験的な実装であり、きちんとした検証は行っていないので、あくまでも手法の参考としてご利用ください。
+
+## 簡単な使い方
+以下のように、BP から簡単にメッシュを指定して RenderTarget に描画させることができます。
+![](#/sample.png)
+これは UMG 上の Image Widget に配置した例です。
+![](#/lamp.png)
+
+背景色は RenderTarget の ClearColor で指定したものになるので、背景抜きのことを考えなくても透明に設定するだけではじめから背景無しで描画できます。
+
+## パフォーマンス
+詳しくは [パフォーマンスの検証](#パフォーマンスの検証) に記載していますが、単一メッシュの描画においては、 SceneCapture2D や FPreviewScene といった手段よりもかなり高速に動作します。
+
+参考として、 同一フレームに 500x500 の RenderTarget に 19382 三角ポリゴンのメッシュを描画して計測すると、フレーム内に占める時間は以下のような結果になりました。
+
+![](#/compare.png)
+
+- SceneCapture2D: 4.12ms
+- [FPreviewScene](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer): 1.11ms
+- <b>Tiny Renderer (本プラグイン): 0.02ms</b>
+
+はやい。いや、むしろ SceneCapture2D などが単純なメッシュ描画には不要な機能が多すぎるということかもしれません。
+
+## このプラグインでできないこと
+このプラグインは、単一 StaticMesh を軽量に描画したいという目的に特化しています。そのため、以下のような機能は提供していません。
+
+- 多数のメッシュからなるシーンの描画
+- 複雑な照明環境の描画
+- エフェクトやポストプロセスの適用
+
+また、以下のような機能は技術的には(たぶん)可能ですが、実装には含まれていません。
+
+- 不透明 (Opaque) 以外のマテリアルの描画
+- Nanite メッシュの描画
+- etc...
+
+Nanite メッシュの描画については、Nanite を使った描画はできませんが、Fallback Mesh の LOD を指定して描画することは可能です。
+
+さて、以降はこのプラグインの実装と関連する UE のグラフィックス機能について解説していきます。
 
 # 目次
 
+# おおまかな仕組みとコンセプト
+長い記事になるので、まずはどんなコンセプトで実装されたものかをざっくりとまとめておきます。
+
+UE の デスクトップやハイエンドコンソール向けのレンダリング機能は、Diferred Rendering による高度な機能を提供します。Deferred Rendering は多数のメッシュや光源を描画したり、高度なポストプロセスを適用したりするのには有益ですが、シンプルな単一メッシュの描画には不要です。
+
+たとえば、ゲームのインベントリ画面にアイテムの 3D モデルをたくさん並べて表示したいとか、そんなときには高度な機能は不要で、小さな RenderTarget に単一のメッシュを高速に描画できることが重要です。
+
+また、UE のレンダリング機能には AO や GI などの高度な機能のためのパスが多数含まれており、これらのパスは特定の Viewport だけで ON / OFF したりできない (CVars で一括管理されてしまう)ため、シンプルな Viewport 描画を行いにくいです。
+利用される Shader についても複雑な構造になっており、単一メッシュの描画にはオーバースペックです。
+
+そこで、単一のパスでライティングまでを行う Forward Rendering によるレンダラを UE の RHI / RDG を使って実装してみることにしました。また、 UWorld や FScene といったシーン表現や Actor, Component といったものも単一メッシュでは不要(ローカルのTransformしかない)なので利用せず、StaticMesh アセットを直接処理して描画することにします。
+
+独自のシェーダーで描画を行いますが、アセットの互換性のため、きちんとUEのマテリアルアセットを利用して描画を行えるようにもしました。
+
+**TinyRenderer は軽量で高速ですが、すごいことをしているわけではありません。むしろ、単一メッシュを描画するにはいらないことをなにもしてないないだけです。**
+
 # 軽量な単一 StaticMesh レンダラの実装
-UE の デスクトップやハイエンドコンソール向けのレンダリング機能は、 `FDeferredShadingSceneRenderer` というクラスを中心に構成されています。このクラスは、名前の通り Deferred Rendering による描画機能を提供します。しかし、Deferred Rendering は多数のメッシュや光源を描画したり、高度なポストプロセスを適用したりするのには有益ですが、今回のようなシンプルな単一メッシュの描画には不要かもしれません。そこで、今回はデフォルトのレンダラを使わず、単一のパスでライティングまでを行う Forward Rendering によるレンダラを実装してみます。また、 UWorld や FScene といったシーン表現もオーバースペックなので利用せず、StaticMesh アセットを直接処理して描画することにします。
 
-
-おおまかなレンダリングの流れは以下のようになります。
-
-
-
-すべてのコードを示すと長くなるため、ここでは説明すると面白い部分のみを抜粋して説明します。また、エラーハンドリング等も記事上では省略しています。
+すべてのコードを示すと長くなるため、面白い部分のみを抜粋して説明します。
 全体のコードは [GitHub]() を参照してください。プラグインのソースを読みながら、その解説として記事を読むのが理解しやすいかもしれません。
 
 ## レンダラクラス FTinyRenderer の定義
-手始めに、レンダラを表すクラスとして以下のような定義の `FTinyRenderer` クラスを作成します。
+レンダラを表すクラスは `FTinyRenderer` であり、以下のように定義されています。
 
 ```cpp
 class FTinyRenderer
@@ -100,8 +147,10 @@ private:
 
 UE の他の機能との相互利用性を考慮して、 コンストラクタでは `FSceneViewFamily` を受け取って利用します。また、描画するメッシュや変換行列は `SetStaticMesh` で設定し、描画の実行は `Render` で行います。
 
+`FSceneViewFamily` については[こちら](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer/#ue-のレンダリングの登場人物を理解する)を参照してください。
+
 ## レンダリング呼び出しの流れ
-まず流れの把握のために、`FTinyRenderer::Render` の実装を見ていきます。
+`FTinyRenderer::Render` は、呼び出し元から RDGBuilder を受け取り、 RDG を使ってリソースやパスの登録を行います。
 
 ```cpp
 void FTinyRenderer::Render(FRDGBuilder& GraphBuilder)
@@ -113,11 +162,10 @@ void FTinyRenderer::Render(FRDGBuilder& GraphBuilder)
 }
 ```
 
-流れとしては、まず `SetupSceneTextures` でレンダリングに利用するのテクスチャリソースを作成し、そこに `RenderBasePass` で描画を実行するというものです。
-引数の FRDGBuilder は、RDG のビルダークラスで、RHI コマンドの生成やそれに伴うリソースのライフタイム管理を発行するために利用します。詳細は [前回の記事](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer-2#rdg-を使った描画命令発行のボイラープレート) を参照してください。
+流れとしては、 `SetupSceneTextures` でレンダリングに利用するのテクスチャリソースを登録し、そこに `RenderBasePass` でパスの登録確保したリソースのパラメータのセットアップを実行するというものです。
+RDG についての詳細は [前回の記事](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer-2#rdg-を使った描画命令発行のボイラープレート) を参照してください。
 
-
-それぞれの関数の実装は以下のようになります。
+呼び出している関数の実装は次節以降で解説します。
 
 ### FTinyRenderer::SetupSceneTextures
 まずは、 `SetupSceneTextures` の実装を見ていきます。
@@ -218,7 +266,7 @@ void FTinyRenderer::RenderBasePass(FRDGBuilder& GraphBuilder, const FTinySceneTe
 	- [SetupGPUSceneResourceParameters() ](#gpuscene-のためのパラメータをセットアップする)
 - パスを RDG に登録する。 RDG には描画パスを登録するための関数が用意されており、ここでは `AddSimpleMeshPass` を使って MeshBatch を RDG に登録している。
 - パス内部では、MeshPassProcessor を使って MeshBatch の描画命令を登録する。
-	- FTinyRendererBasePassMeshProcessor
+	- [FTinyRendererBasePassMeshProcessor](#meshbatch-の描画命令を発行する-meshpassprocessor)
 
 
 `AddSimpleMeshPass` は RDG 向けに提供されている便利な関数で、 MeshPassProcessor を使ったメッシュ描画パスに必要なコンテキストのセットアップを行ってくれます。
@@ -239,7 +287,9 @@ void FTinyRenderer::RenderBasePass(FRDGBuilder& GraphBuilder, const FTinySceneTe
  * @param RequiredFeatures MeshBatch が描画時に必要とする機能
  * @return MeshBatch が作成できた場合は true、それ以外は false
  */
-bool FTinyRenderer::CreateMeshBatch(UStaticMesh* InStaticMesh, const int32 InLODIndex, TArray<FMeshBatch>& InMeshBatches, FMeshBatchesRequiredFeatures& RequiredFeatures) const
+bool FTinyRenderer::CreateMeshBatch(UStaticMesh* InStaticMesh, const int32 InLODIndex,
+                                    TArray<FMeshBatch>& InMeshBatches,
+                                    FMeshBatchesRequiredFeatures& RequiredFeatures) const
 {
 	SCOPED_NAMED_EVENT_F(TEXT("FTinyRenderer::CreateMeshBatch - %s"), FColor::Emerald, *InStaticMesh->GetName());
 
@@ -253,14 +303,14 @@ bool FTinyRenderer::CreateMeshBatch(UStaticMesh* InStaticMesh, const int32 InLOD
 	// StaticMesh から RenderData を取得。ここに StaticMesh のメッシュデータが格納されている
 	FStaticMeshRenderData* RenderData = InStaticMesh->GetRenderData();
 
-	const int32 LODIndex = FMath::Min(InLODIndex, RenderData->LODResources.Num() - 1);
-	if (LODIndex < 0)
+	const int32 LODResourceIndex = FMath::Min(InLODIndex, RenderData->LODResources.Num() - 1);
+	if (LODResourceIndex < 0)
 	{
 		return false;
 	}
 
 	// 以下、LODResources から指定の LODIndex のメッシュデータを読み出し、MeshBatch を作成する
-	const FStaticMeshSectionArray& Sections = RenderData->LODResources[LODIndex].Sections;
+	const FStaticMeshSectionArray& Sections = RenderData->LODResources[LODResourceIndex].Sections;
 
 	// セクションの数だけ MeshBatch を作成。一般的に、StaticMesh に割り当てられているマテリアルの数と対応している
 	for (int32 SectionIndex = 0; SectionIndex < Sections.Num(); SectionIndex++)
@@ -271,11 +321,11 @@ bool FTinyRenderer::CreateMeshBatch(UStaticMesh* InStaticMesh, const int32 InLOD
 			continue;
 		}
 
-		const FStaticMeshLODResources& LODResource = RenderData->LODResources[LODIndex];
+		const FStaticMeshLODResources& LODResource = RenderData->LODResources[LODResourceIndex];
 
 		// データを MeshBatch に格納していく
 		FMeshBatch MeshBatch;
-		MeshBatch.VertexFactory = &RenderData->LODVertexFactories[LODIndex].VertexFactory;
+		MeshBatch.VertexFactory = &RenderData->LODVertexFactories[LODResourceIndex].VertexFactory;
 		MeshBatch.Type = PT_TriangleList;
 
 		// MeshBatch の Element に IndexBuffer などを格納。MeshBatch は複数の Element を持つことができるが、エンジンでも多くの場合は 1 つの Element しか使われていない
@@ -290,7 +340,7 @@ bool FTinyRenderer::CreateMeshBatch(UStaticMesh* InStaticMesh, const int32 InLOD
 		BatchElement.MaxVertexIndex = Section.MaxVertexIndex;
 		BatchElement.PrimitiveIdMode = PrimID_DynamicPrimitiveShaderData;
 
-		MeshBatch.LODIndex = LODIndex;
+		MeshBatch.LODIndex = LODResourceIndex;
 		MeshBatch.SegmentIndex = SectionIndex;
 		MeshBatch.CastShadow = false;
 
@@ -303,8 +353,9 @@ bool FTinyRenderer::CreateMeshBatch(UStaticMesh* InStaticMesh, const int32 InLOD
 			MeshBatch.MaterialRenderProxy = MaterialProxy;
 			InMeshBatches.Add(MeshBatch);
 
+			const FMaterialRelevance& MaterialRelevance = MaterialInterface->GetRelevance_Concurrent(FeatureLevel);
 			// マテリアルが利用を要求しているレンダリング機能を RequiredFeatures に格納
-			if (MaterialInterface->GetRelevance_Concurrent(FeatureLevel).bUsesWorldPositionOffset)
+			if (MaterialRelevance.bUsesWorldPositionOffset)
 			{
 				RequiredFeatures.bWorldPositionOffset = true;
 			}
@@ -1007,3 +1058,112 @@ BP から設定された MinimalViewInfo には、投影モードや FOV など�
 また、RGDBuilder や FTinyRenderer のオブジェクトもここで作成しています。これらは毎フレーム作成され、フレームの終了で破棄されるということです。
 最後には RDGBuilder に登録された描画処理を下に RHI コマンドの発行が行われます。
 このように見ると、今回書いたレンダラは RDGBuilder に描画処理の登録を行うものであり、実際のコマンドの発行は RDGBuilder に任せていることがよくわかります。パスに関わるコマンドが一度 RDGBuilder に登録され、最後にまとめてコマンドを発行する仕組みになっていることで、不要な処理の最適化や、任意のリソースがどの期間存在していなければならないかの決定をすることができるのです。
+
+# パフォーマンスの検証
+簡単にですが、作成したレンダラのパフォーマンスを検証してみます。
+
+以下の3つを比較してみます。
+1. SceneCaptureComponent2D による描画 (よくやるやつ)
+1. 以前作成した FPreviewScene による描画
+1. 今回作成した単一パスレンダラ(TinyRenderer)の描画
+
+その他詳細は以下のとおりです。
+- Win64 Development Build
+- 描画サイズは 500x500 で描画
+- サンプルのメッシュは
+	- Triangles: 19382
+	- Vertices: 11556
+	- Materials: 1
+- SceneCapture2D は SceneColor with SceneDepth をキャプチャし、マテリアルを使って深度で背景抜き。
+- FPreviewScene は FPreviewScene でレンダリング後、背景抜き。
+- TinyRenderer レンダリングしてそのまま表示 (RenderTarget の ClearColor を透明にしているので背景が描画されず、抜く必要がない)
+
+セットアップが雑で(特に SceneCapture2D は制御がしにくいため)少しずつ見た目が違いますが、調整すればほぼ同じ見た目にすることは可能と思われます。
+
+## 比較
+
+検証環境は以下のとおりです。
+
+- CPU: Ryzen 9 3900X 12-Core Processor
+- RAM: 128GB
+- GPU: GeForce RTX 3080 10GB
+
+### Nsight Graphics の Scrubber を眺める
+まずは、こんな比較画面のフレームを計測してみます。
+![](#/compare.png)
+ViewportSize: 1920x1080
+
+Nsight Graphics の Scrubber を使って、フレーム内の描画処理を見てみます。
+![](#/nsight-scrubber.png)
+
+注意: この横軸は時間ではありません。
+
+- <b style="color: blue">青領域</b>: メインのViewportの描画処理
+- <b style="color: red">赤領域</b>: SceneCapture2D による描画処理
+- <b style="color: yellow">黃領域</b>: FPreviewScene による描画処理
+- <b style="color: green">緑領域</b>: TinyRenderer による描画処理
+
+なんというか、驚異的です。メインの Viewport が最も大きな部分を占めているのは当然として、SceneCaptrue2D と FPreviewScene もそれなりに目立つ大きさで表示されています。また、処理内容としてもメインの Viewport と類似していて、Scene に対する一通りの描画処理が行われていそうなことがわかります。
+
+いっぽう、TinyRenderer はもはや Scrubber 上ではほとんど見えないほどに小さな処理で済んでいることが伺えます。
+
+### フレーム内処理時間の比較
+次に、各描画処理の処理時間を比較してみます。
+
+| 描画手法 | 処理時間 | フレーム内における割合 |
+| --- | --- | --- |
+| SceneCapture2D | 4.12 ms | 17.4 % |
+| FPreviewScene | 1.11 ms | 4.7 % |
+| TinyRenderer | 0.02 ms (16.38 μs) | 0.1 % |
+| メインの Viewport(参考) | 約 13 ms | 約 55 % |
+
+処理速度の面でも TinyRenderer が優位に立っています。また、詳しく計測していませんが、TinyRenderer は描画先の RenderTarget と Depth しか利用しないので、リソース面の優位性もあると思われます。
+
+**もちろん、他の描画手法も BasePass の該当メッシュの描画処理だけ抜き出せば TinyRenderer と同等程度の処理時間しかかかっていません。** 冒頭の繰り返しになりますが、TinyRenderer は凄いことをしているわけではありません。 ただ、なにぶん標準の方法は単一メッシュ描画には不要な処理がほとんどすべてを占めてしまっており、それらを局所的に OFF にしたりすることにも限界があるため、全体としての処理時間が大きくなってしまっているのです。
+
+### いっぱい描画したときの FPS の比較
+この比較は FPreviewScene と TinyRenderer のみを対象に行いました。
+SceneCapture2D は描画したい数だけレベル上に Actor を配置する必要があるので、そもそも個別にメッシュを大量にレンダリングするのが大変すぎて検証からはずしました。
+
+画面は以下のように、10x10 で 100 個の StaticMesh を個別に描画し、毎フレーム描画するようにしました。
+
+![](#/10x10.png)
+
+以下が FPS の比較結果です。
+
+| 描画手法 | 平均 FPS |
+| --- | --- |
+| TinyRenderer | 43.0 FPS |
+| FPreviewScene | 2.2 FPS |
+| SceneCapture2D | 100 個配置してRenderTarget設定するの作るの面倒すぎて検証してない |
+
+やはり、 FPS にも大きな差が出ました。TinyRenderer は 2万ポリゴン近いメッシュを 100 個描画しても 40 FPS 程度で安定しているので、軽量なメッシュをインベントリで並べて表示するくらいの用途では十分な速度が得られると思われます。
+いっぽう、 [FPreviewScene](https://strv.dev/blog/unrealengine--lets-implement-a-single-mesh-renderer/#独自の専用シーンを用意できないか) は設定によって SceneCapture2D よりは軽量であるはずですが、あまり実用的な結果にはなりませんでした。
+仮に
+
+# さらなる改善可能性
+
+## Opaque 以外の BlendMode の対応
+現在、TinyRenderer は Opaque な BlendMode のマテリアルのみをサポートしています。半透明等の BlendMode もサポートするためには、ピクセルシェーダーの実装を変更する必要があります。
+
+## ライティングの拡張
+現在は一つの DirectionalLight のみをサポートしています。また、パラメータも固定されています。ピクセルシェーダーの変更によって、複数のライトやポイントライト、スポットライトなどのライトのサポートを追加することができます。
+
+## Shader Permutaion の最適化
+TinyRenderer のための MeshMaterialShader は、TinyRenderer で描画を行わないマテリアルなどに対しても組み合わせが作成されてしまいます。
+
+何らかの方法で、TinyRenderer で利用したいマテリアルのみを設定できれば、TinyRenderer のためにシェーダーコンパイル時間が伸びる懸念を解消できますし、レンダラのシェーダーを変更したときの作業のイテレーションも早くなります。
+
+## パフォーマンスの改善
+すでに十分に高速ではありますが、主に CPU 側での描画コマンドの発行についてはまだ最適化の余地があります。というのも、現在の実装では毎フレーム MeshBatch や MeshDrawCommand の作成を1から行っています。
+これらについては、フレームをまたいで再利用を行う実装を考えることは十分に可能であり、(実際にエンジンの StaticMesh を使ったシーン描画はそのようになっており)、さらなるパフォーマンスの向上が期待できます。
+
+# まとめ
+今回の記事では、シンプルな StaticMesh レンダラである TinyRenderer の紹介と、その実装方法について解説しました。TinyRenderer は目的のために必要なこと以外を何もしないことで高速に動作します。
+UE の RHI や RDG、マテリアルといったグラフィックス機能は、エディタの背後で動くだけでなく、プラグイン実装のために柔軟に利用することができます。TinyRenderer の実装も、それらのお陰でかなりシンプルに実現されています。
+
+記事内でも触れましたが、TinyRenderer はあくまで単一メッシュの描画に特化したものであり、複数のメッシュやライト、半透明などの複雑な描画を行う場合には、通常の UE の描画パスを利用することが望ましいです。また、見た目に関しても通常の UE の描画パスとは完全に一致するわけではないため、その点も注意が必要です。
+単純に BP から制御してメッシュ描画を行いたい場合には、 FPreviewScene などの手法を取るのが適切と言えます。いくつかの個数のメッシュを少し表示したいだけであれば、 SceneCapture2D で頑張るのでも十分でしょう。
+
+
+現時点では、技術的には可能でも実装していないことも多数あるため、今後気が向いたら改善していくかもしれません。よければ改造して遊んでみたり、Issue や PR を投げてもらえると楽しいので助かります。
