@@ -25,7 +25,7 @@
       {
         "name": "Unity",
         "icon": "/images/skills/unity.webp",
-        "content": "かなり前に触っていました。業務でもすこしだけ。最近のことはよくわかりません。"
+        "content": "2D ゲーム開発案件などで経験があります( R3 / UniTask / MessagePipe ) 。エンジンのシステムとしては UE のほうが詳しいです。"
       }
     ]
   },
@@ -38,6 +38,11 @@
         "content": "出来るとは(怖くて)言えませんが、一番得意で好きな言語です。一番書いてる言語でもあります。"
       },
       {
+        "name": "Rust",
+        "icon": "/images/skills/rust.webp",
+        "content": "とにかくカッコよくて好きです。最近ハマっています。UEでRustが使えたらいいのにと思っています。"
+      },
+      {
         "name": "C",
         "icon": "/images/skills/c.webp",
         "content": "低レイヤなコーディングも結構好きなので、Cも好きです。業務経験もあり。"
@@ -46,11 +51,6 @@
         "name": "Go",
         "icon": "/images/skills/go.webp",
         "content": "一時期ハマってました。業務経験もあり。"
-      },
-      {
-        "name": "Rust",
-        "icon": "/images/skills/rust.webp",
-        "content": "とにかくカッコよくて好きです。最近ハマっています。UEでRustが使えたらいいのにとか思っています。"
       },
       {
         "name": "Python",
@@ -72,7 +72,11 @@
   {
     "category": "Web系",
     "skills": [
-      { "name": "HTML", "icon": "/images/skills/html.webp", "content": "黙々と書きます。" },
+      {
+        "name": "HTML",
+        "icon": "/images/skills/html.webp",
+        "content": "黙々と書きます。"
+      },
       {
         "name": "JavaScript",
         "icon": "/images/skills/javascript.webp",
@@ -196,4 +200,3 @@
     ]
   }
 ]
-
