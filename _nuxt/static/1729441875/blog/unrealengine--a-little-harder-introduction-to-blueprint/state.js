@@ -1,0 +1,1 @@
+window.__NUXT__=(function(a){return {staticAssetsBase:"\u002F_nuxt\u002Fstatic\u002F1729441875",layout:"default",error:a,serverRendered:true,routePath:"\u002Fblog\u002Funrealengine--a-little-harder-introduction-to-blueprint",config:{_app:{basePath:"\u002F",assetsPath:"\u002F_nuxt\u002F",cdnURL:a},content:{dbHash:"309443c8"}},_asyncData:{},_errors:{}}}(null));
