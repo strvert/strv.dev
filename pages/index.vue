@@ -31,7 +31,7 @@ import JobOffer from '@/components/atoms/JobOffer.vue';
 
 export default defineNuxtComponent({
   name: 'top',
-  components: { TopLargeLogo, BasicProfile, ContactProfile, SkillProfile },
+  components: { TopLargeLogo, BasicProfile, ContactProfile, SkillProfile, JobOffer },
   setup() {
     useNuxt2Meta({ titleTemplate: 'strv.dev' });
     const first = ref(true);
