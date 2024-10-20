@@ -15,6 +15,7 @@
       </p>
       <basic-profile class="b-profile" />
       <contact-profile class="c-profile" />
+      <job-offer class="j-offer" />
       <skill-profile class="s-profile" />
     </div>
   </article>
@@ -26,6 +27,7 @@ import TopLargeLogo from '@/components/atoms/TopLargeLogo.vue';
 import BasicProfile from '@/components/atoms/BasicProfile.vue';
 import ContactProfile from '@/components/atoms/ContanctProfile.vue';
 import SkillProfile from '@/components/atoms/SkillProfile.vue';
+import JobOffer from '@/components/atoms/JobOffer.vue';
 
 export default defineNuxtComponent({
   name: 'top',
